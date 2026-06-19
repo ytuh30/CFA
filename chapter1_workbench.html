@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ch.1 Workbench — Overview of Corporate Financial Analysis</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root{
+  --ink:#15263D;
+  --ink-2:#1F3454;
+  --ledger:#EAF1E8;
+  --ledger-line:#C7D9CB;
+  --paper:#F7FAF5;
+  --gold:#B8862E;
+  --gold-light:#D9AE5C;
+  --teal:#2F6B5E;
+  --teal-light:#3F8C7B;
+  --ink-text:#1E2A22;
+  --muted:#5C6B5F;
+  --red:#A23E3E;
+  --green:#2F6B5E;
+  --radius:5px;
+}
+*{box-sizing:border-box;}
+@media (prefers-reduced-motion: reduce){ *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;} }
+
+body{
+  margin:0;
+  font-family:'Inter',sans-serif;
+  color:var(--ink-text);
+  background:var(--ink);
+}
+::selection{ background:var(--gold-light); color:var(--ink);}
+
+.app{ display:flex; min-height:100vh; }
+
+/* ---------- SIDEBAR ---------- */
+.sidebar{
+  width:268px;
+  flex-shrink:0;
+  background: linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%);
+  color:#EAF1E8;
+  position:fixed; top:0; left:0; bottom:0;
+  padding:28px 20px;
+  display:flex; flex-direction:column;
+  z-index:10;
+}
+.brand{
+  border-bottom:1px solid rgba(234,241,232,0.18);
+  padding-bottom:18px; margin-bottom:18px;
+}
+.brand .tag{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px; letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--gold-light); margin-bottom:6px;
+}
+.brand h1{
+  font-family:'Fraunces',serif; font-weight:600; font-size:22px; line-height:1.25;
+  margin:0 0 6px 0;
+}
+.brand p{ font-size:12.5px; color:#B9C9BC; margin:0; line-height:1.5;}
+
+.navlist{ list-style:none; padding:0; margin:0; flex:1; }
+.navlist li{ margin-bottom:4px; }
+.navbtn{
+  width:100%; text-align:left; background:none; border:none; color:#DCE7DD;
+  font-family:'Inter',sans-serif; font-size:14px; padding:10px 12px; border-radius:var(--radius);
+  cursor:pointer; display:flex; align-items:center; gap:10px;
+  transition:background .15s ease, color .15s ease;
+}
+.navbtn .num{
+  font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--gold-light);
+  width:30px; flex-shrink:0;
+}
+.navbtn:hover{ background:rgba(234,241,232,0.08); }
+.navbtn.active{ background:var(--gold); color:var(--ink); font-weight:600; }
+.navbtn.active .num{ color:var(--ink); }
+.navbtn:focus-visible{ outline:2px solid var(--gold-light); outline-offset:2px; }
+
+.sidebar-foot{
+  font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:#7E9482;
+  border-top:1px solid rgba(234,241,232,0.15); padding-top:14px; line-height:1.6;
+}
+
+/* ---------- MAIN ---------- */
+.main{
+  margin-left:268px; flex:1;
+  background:
+    repeating-linear-gradient(180deg, transparent 0px, transparent 35px, var(--ledger-line) 36px),
+    var(--ledger);
+  min-height:100vh;
+  padding:40px 48px 80px 48px;
+}
+.section{ display:none; max-width:920px; margin:0 auto; animation:fadein .35s ease; }
+.section.active{ display:block; }
+@keyframes fadein{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+
+.crumb{
+  font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted);
+  text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;
+}
+.sec-title{
+  font-family:'Fraunces',serif; font-size:34px; font-weight:600; color:var(--ink);
+  margin:0 0 6px 0; line-height:1.15;
+}
+.sec-sub{ color:var(--muted); font-size:15px; margin:0 0 28px 0; max-width:640px; }
+
+.card{
+  background:var(--paper); border:1px solid var(--ledger-line); border-radius:var(--radius);
+  padding:22px 24px; margin-bottom:18px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+}
+.card h3{
+  font-family:'Fraunces',serif; font-size:19px; font-weight:600; color:var(--ink); margin:0 0 10px 0;
+}
+.card p{ line-height:1.65; font-size:14.5px; margin:0 0 10px 0; }
+.card p:last-child{ margin-bottom:0; }
+
+.deflabel{
+  display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:10.5px;
+  text-transform:uppercase; letter-spacing:.08em; color:#fff; background:var(--teal);
+  padding:3px 8px; border-radius:3px; margin-bottom:10px;
+}
+.purplabel{ background:var(--gold); color:var(--ink); }
+
+.tip{
+  border-left:3px solid var(--gold); background:#FBF3E2; padding:14px 16px; border-radius:0 var(--radius) var(--radius) 0;
+  font-size:13.5px; line-height:1.6; margin:14px 0;
+}
+.tip b{ color:var(--gold); font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.06em; display:block; margin-bottom:4px;}
+
+/* grid helpers */
+.grid2{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.grid4{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+@media(max-width:760px){ .grid2,.grid4{ grid-template-columns:1fr 1fr; } }
+
+/* ---------- FLIP CARDS (roles) ---------- */
+.flip-card{ background:transparent; perspective:1000px; height:148px; cursor:pointer; }
+.flip-inner{ position:relative; width:100%; height:100%; transition:transform .5s; transform-style:preserve-3d; }
+.flip-card.flipped .flip-inner{ transform:rotateY(180deg); }
+.flip-front,.flip-back{
+  position:absolute; width:100%; height:100%; backface-visibility:hidden;
+  border-radius:var(--radius); padding:16px; display:flex; flex-direction:column; justify-content:center;
+  border:1px solid var(--ledger-line);
+}
+.flip-front{ background:var(--ink); color:#fff; align-items:center; text-align:center; }
+.flip-front .icon{ font-size:26px; margin-bottom:8px; }
+.flip-front .name{ font-family:'Fraunces',serif; font-size:15px; font-weight:600; }
+.flip-front .hint{ font-size:10.5px; color:var(--gold-light); margin-top:8px; font-family:'IBM Plex Mono',monospace;}
+.flip-back{ background:var(--gold); color:var(--ink); transform:rotateY(180deg); }
+.flip-back .name{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px; opacity:.75;}
+.flip-back ul{ margin:0; padding-left:18px; font-size:13px; line-height:1.55; }
+
+/* ---------- ACCORDION ---------- */
+.acc-item{ border:1px solid var(--ledger-line); border-radius:var(--radius); margin-bottom:10px; background:var(--paper); overflow:hidden; }
+.acc-head{
+  width:100%; text-align:left; background:none; border:none; padding:14px 18px; cursor:pointer;
+  display:flex; justify-content:space-between; align-items:center; font-family:'Inter',sans-serif;
+  font-size:14.5px; font-weight:600; color:var(--ink);
+}
+.acc-head .arrow{ font-family:'IBM Plex Mono',monospace; color:var(--teal); transition:transform .2s; }
+.acc-item.open .arrow{ transform:rotate(90deg); }
+.acc-body{ max-height:0; overflow:hidden; transition:max-height .25s ease; }
+.acc-item.open .acc-body{ max-height:300px; }
+.acc-body-inner{ padding:0 18px 16px 18px; font-size:13.5px; line-height:1.6; color:var(--ink-text); }
+
+/* ---------- PROCESS STEPPER ---------- */
+.stepper{ display:flex; gap:8px; flex-wrap:wrap; margin:18px 0; }
+.step{
+  flex:1; min-width:140px; background:var(--paper); border:1px solid var(--ledger-line); border-radius:var(--radius);
+  padding:16px; position:relative;
+}
+.step .stepnum{
+  font-family:'Fraunces',serif; font-size:26px; font-weight:600; color:var(--gold); display:block; margin-bottom:6px;
+}
+.step .steplabel{ font-size:13px; font-weight:600; color:var(--ink); margin-bottom:4px; }
+.step::after{
+  content:"→"; position:absolute; right:-18px; top:50%; transform:translateY(-50%);
+  color:var(--teal); font-size:16px;
+}
+.step:last-child::after{ content:""; }
+@media(max-width:760px){ .step::after{ content:""; } }
+
+/* ---------- QUIZ (audit opinions) ---------- */
+.quiz-card{ background:var(--paper); border:1px solid var(--ledger-line); border-radius:var(--radius); padding:18px 20px; margin-bottom:14px; }
+.quiz-situation{ font-size:14px; line-height:1.6; margin-bottom:12px; }
+.quiz-options{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
+.quiz-opt{
+  font-family:'IBM Plex Mono',monospace; font-size:12px; padding:8px 12px; border-radius:4px;
+  border:1px solid var(--teal); background:#fff; color:var(--teal); cursor:pointer; transition:all .15s;
+}
+.quiz-opt:hover{ background:var(--teal); color:#fff; }
+.quiz-opt.correct{ background:var(--green); border-color:var(--green); color:#fff; }
+.quiz-opt.wrong{ background:var(--red); border-color:var(--red); color:#fff; }
+.quiz-opt[disabled]{ cursor:default; }
+.quiz-explain{ display:none; font-size:13px; background:#F1F6F0; border-left:3px solid var(--teal); padding:10px 14px; border-radius:0 4px 4px 0; line-height:1.55;}
+.quiz-explain.show{ display:block; }
+
+/* ---------- CALCULATOR ---------- */
+.calc{ background:var(--ink); color:#EAF1E8; border-radius:var(--radius); padding:20px 22px; margin:16px 0; }
+.calc h4{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--gold-light); margin:0 0 14px 0; }
+.calc-row{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:14px; }
+.calc-field{ flex:1; min-width:130px; }
+.calc-field label{ display:block; font-size:11.5px; color:#B9C9BC; margin-bottom:5px; }
+.calc-field input{
+  width:100%; background:rgba(255,255,255,0.07); border:1px solid rgba(234,241,232,0.25); color:#fff;
+  border-radius:4px; padding:9px 10px; font-family:'IBM Plex Mono',monospace; font-size:14px;
+}
+.calc-field input:focus{ outline:2px solid var(--gold-light); border-color:transparent; }
+.calc-out{
+  background:rgba(184,134,46,0.12); border:1px dashed var(--gold-light); border-radius:4px;
+  padding:14px 16px; font-family:'IBM Plex Mono',monospace; font-size:13.5px; line-height:1.9;
+}
+.calc-out .stamp{
+  display:inline-block; font-family:'Fraunces',serif; font-weight:700; font-size:13px; letter-spacing:.04em;
+  padding:3px 10px; border-radius:3px; margin-left:6px; transform:rotate(-2deg);
+}
+.stamp.up{ background:var(--green); color:#fff; }
+.stamp.down{ background:var(--red); color:#fff; }
+.stamp.flat{ background:var(--gold); color:var(--ink); }
+table.calc-table{ width:100%; border-collapse:collapse; font-family:'IBM Plex Mono',monospace; font-size:12.5px; margin-top:6px;}
+table.calc-table th, table.calc-table td{ text-align:right; padding:6px 8px; border-bottom:1px solid rgba(234,241,232,0.15); }
+table.calc-table th:first-child, table.calc-table td:first-child{ text-align:left; }
+
+.formula{
+  font-family:'IBM Plex Mono',monospace; background:var(--ink); color:var(--gold-light);
+  padding:14px 18px; border-radius:4px; font-size:14px; margin:12px 0; overflow-x:auto;
+}
+
+/* ---------- methods nav (sub-tabs) ---------- */
+.subtabs{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px; }
+.subtab{
+  font-family:'Inter',sans-serif; font-size:13px; font-weight:600; padding:8px 14px; border-radius:20px;
+  border:1px solid var(--teal); background:#fff; color:var(--teal); cursor:pointer;
+}
+.subtab.active{ background:var(--teal); color:#fff; }
+.subpanel{ display:none; }
+.subpanel.active{ display:block; }
+
+/* ---------- FLASHCARDS ---------- */
+.fc-wrap{ display:flex; flex-direction:column; align-items:center; }
+.fc-progress{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted); margin-bottom:10px; }
+.fc-card{
+  width:100%; max-width:620px; min-height:220px; perspective:1200px; cursor:pointer; margin-bottom:18px;
+}
+.fc-inner{ position:relative; width:100%; height:100%; min-height:220px; transition:transform .5s; transform-style:preserve-3d; }
+.fc-card.flipped .fc-inner{ transform:rotateY(180deg); }
+.fc-face{
+  position:absolute; inset:0; backface-visibility:hidden; border-radius:8px; padding:30px;
+  display:flex; flex-direction:column; justify-content:center; border:1px solid var(--ledger-line);
+}
+.fc-front{ background:var(--paper); }
+.fc-front .fc-eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; color:var(--teal); letter-spacing:.08em; margin-bottom:10px;}
+.fc-front .fc-q{ font-family:'Fraunces',serif; font-size:19px; font-weight:600; color:var(--ink); line-height:1.4; }
+.fc-front .fc-flip-hint{ margin-top:auto; padding-top:14px; font-size:11.5px; color:var(--muted); }
+.fc-back{ background:var(--ink); color:#EAF1E8; transform:rotateY(180deg); }
+.fc-back .fc-eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; color:var(--gold-light); letter-spacing:.08em; margin-bottom:10px;}
+.fc-back .fc-a{ font-size:14px; line-height:1.65; }
+.fc-controls{ display:flex; gap:10px; }
+.fc-btn{
+  font-family:'Inter',sans-serif; font-size:13px; font-weight:600; padding:10px 18px; border-radius:6px;
+  border:1px solid var(--ink); background:var(--ink); color:#fff; cursor:pointer;
+}
+.fc-btn.ghost{ background:#fff; color:var(--ink); }
+.fc-btn:hover{ opacity:.85; }
+
+.cheat{ background:var(--ink); color:#EAF1E8; border-radius:var(--radius); padding:20px 24px; margin-bottom:24px; }
+.cheat h4{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--gold-light); margin:0 0 12px 0;}
+.cheat-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px 24px; font-family:'IBM Plex Mono',monospace; font-size:12.5px; line-height:1.7;}
+@media(max-width:760px){ .cheat-grid{ grid-template-columns:1fr; } }
+.cheat-grid b{ color:#fff; }
+
+/* ---------- responsive sidebar ---------- */
+@media (max-width:900px){
+  .sidebar{ position:relative; width:100%; height:auto; flex-direction:row; align-items:center; padding:14px 16px; }
+  .brand{ border-bottom:none; margin-bottom:0; padding-bottom:0; margin-right:16px; flex-shrink:0; }
+  .brand p{ display:none; }
+  .navlist{ display:flex; overflow-x:auto; gap:4px; flex:1; }
+  .navlist li{ margin-bottom:0; flex-shrink:0; }
+  .navbtn{ white-space:nowrap; }
+  .sidebar-foot{ display:none; }
+  .app{ flex-direction:column; }
+  .main{ margin-left:0; padding:28px 18px 60px 18px; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="tag">FIN713 · HUB</div>
+      <h1>Chapter 1 Workbench</h1>
+      <p>Overview of Corporate Financial Analysis — interactive review for your essay exam.</p>
+    </div>
+    <ul class="navlist" id="navlist">
+      <li><button class="navbtn active" data-target="s1"><span class="num">1.1</span> Concepts &amp; Roles</button></li>
+      <li><button class="navbtn" data-target="s2"><span class="num">1.2</span> Content of Analysis</button></li>
+      <li><button class="navbtn" data-target="s3"><span class="num">1.3</span> Information &amp; Audits</button></li>
+      <li><button class="navbtn" data-target="s4"><span class="num">1.4</span> Analysis Process</button></li>
+      <li><button class="navbtn" data-target="s5"><span class="num">1.5</span> Methods (Live Calcs)</button></li>
+      <li><button class="navbtn" data-target="s6"><span class="num">✍</span> Self-Test</button></li>
+    </ul>
+    <div class="sidebar-foot">Click a tile to flip it.<br>Type your own numbers into any calculator — the worksheet recalculates live.</div>
+  </aside>
+
+  <main class="main">
+
+    <!-- ============ 1.1 ============ -->
+    <section class="section active" id="s1">
+      <div class="crumb">FIN713 / Chapter 1</div>
+      <h2 class="sec-title">1.1 Concept &amp; Roles</h2>
+      <p class="sec-sub">Why financial analysis exists, and who actually reads the output.</p>
+
+      <div class="card">
+        <span class="deflabel">Definition</span>
+        <h3>What is corporate financial analysis?</h3>
+        <p><b>Corporate financial analysis</b> is the process of examining a firm's financial data in order to (1) evaluate performance, (2) detect potential opportunities and risks, and then (3) make decisions to achieve set objectives.</p>
+        <div class="tip"><b>Essay tip</b>Notice the definition has three moving parts — examine, evaluate/detect, decide. If an exam question asks you to "define and explain the purpose," structure your paragraph around exactly these three verbs instead of just repeating the sentence.</div>
+      </div>
+
+      <div class="card">
+        <span class="deflabel purplabel">1.1.2 Roles</span>
+        <h3>Five groups read the same numbers for different reasons</h3>
+        <p>Click each tile to reveal what that stakeholder actually looks for.</p>
+        <div class="grid4" id="roleGrid"></div>
+      </div>
+    </section>
+
+    <!-- ============ 1.2 ============ -->
+    <section class="section" id="s2">
+      <div class="crumb">FIN713 / Chapter 1</div>
+      <h2 class="sec-title">1.2 Content of Financial Analysis</h2>
+      <p class="sec-sub">Four lenses analysts apply to the same set of financial statements.</p>
+
+      <div class="grid2" id="contentGrid"></div>
+
+      <div class="tip"><b>Essay tip</b>If asked "what does corporate financial analysis cover," answer in these four buckets — performance, structure, cash flow, ratios — rather than listing random ratios. Examiners reward structure as much as content.</div>
+    </section>
+
+    <!-- ============ 1.3 ============ -->
+    <section class="section" id="s3">
+      <div class="crumb">FIN713 / Chapter 1</div>
+      <h2 class="sec-title">1.3 Information for Analysis</h2>
+      <p class="sec-sub">An analyst is only as good as the data feeding the analysis. Click each row to expand.</p>
+
+      <div id="infoAccordion"></div>
+
+      <div class="card" style="margin-top:24px;">
+        <span class="deflabel">Inside 1.3.5</span>
+        <h3>Audit opinions on the financial statements</h3>
+        <p>Before trusting a Balance Sheet, Income Statement, or Cash Flow Statement, an analyst checks <i>what the auditor said about it</i>. There are four possible opinions:</p>
+        <div class="grid2" style="margin-top:14px;">
+          <div class="acc-item open" style="cursor:default;">
+            <div class="acc-head" style="cursor:default;">✅ Unqualified <span style="font-weight:400;font-size:12px;color:var(--muted)">— clean opinion</span></div>
+            <div class="acc-body" style="max-height:200px;"><div class="acc-body-inner">Statements are fairly presented, follow accounting rules, free of material errors. The best possible result.</div></div>
+          </div>
+          <div class="acc-item open" style="cursor:default;">
+            <div class="acc-head" style="cursor:default;">⚠️ Qualified <span style="font-weight:400;font-size:12px;color:var(--muted)">— fine, except for one issue</span></div>
+            <div class="acc-body" style="max-height:200px;"><div class="acc-body-inner">Fairly stated <i>except for</i> the possible effects of a misstatement that is material but <b>not pervasive</b> (i.e. isolated).</div></div>
+          </div>
+          <div class="acc-item open" style="cursor:default;">
+            <div class="acc-head" style="cursor:default;">❌ Adverse <span style="font-weight:400;font-size:12px;color:var(--muted)">— don't trust it</span></div>
+            <div class="acc-body" style="max-height:200px;"><div class="acc-body-inner">Errors are serious <b>and widespread (pervasive)</b>. The statements do not give a true and fair view.</div></div>
+          </div>
+          <div class="acc-item open" style="cursor:default;">
+            <div class="acc-head" style="cursor:default;">❓ Disclaimer <span style="font-weight:400;font-size:12px;color:var(--muted)">— can't say anything</span></div>
+            <div class="acc-body" style="max-height:200px;"><div class="acc-body-inner">Auditor could not obtain enough evidence to form any conclusion. This is about <b>uncertainty</b>, not proven error.</div></div>
+          </div>
+        </div>
+        <div class="tip"><b>The key distinction</b>Qualified vs. Adverse is about <i>scope</i> — is the problem isolated (qualified) or does it taint the whole report (adverse)? Disclaimer is different in kind — the auditor never even got enough evidence to judge.</div>
+      </div>
+
+      <div class="card">
+        <h3>Try it: classify the auditor's opinion</h3>
+        <p>Four real-style situations from the lecture. Pick the opinion you think applies, then read the reasoning.</p>
+        <div id="quizArea"></div>
+      </div>
+    </section>
+
+    <!-- ============ 1.4 ============ -->
+    <section class="section" id="s4">
+      <div class="crumb">FIN713 / Chapter 1</div>
+      <h2 class="sec-title">1.4 Process of Financial Analysis</h2>
+      <p class="sec-sub">Five sequential steps — this order itself is a common essay question.</p>
+
+      <div class="stepper" id="stepper"></div>
+
+      <div class="tip"><b>Essay tip</b>A common trap: students start describing step 3 (collect data) as if it were step 1. Anchor your essay on the fact that you must <i>identify the objective first</i> — without a clear objective you don't know what content or data to collect.</div>
+    </section>
+
+    <!-- ============ 1.5 ============ -->
+    <section class="section" id="s5">
+      <div class="crumb">FIN713 / Chapter 1</div>
+      <h2 class="sec-title">1.5 Methods of Corporate Financial Analysis</h2>
+      <p class="sec-sub">Four methods. Type your own figures into each worksheet below the explanation — watch the analyst's conclusion stamp itself in real time.</p>
+
+      <div class="subtabs" id="methodTabs">
+        <button class="subtab active" data-m="m1">Comparative</button>
+        <button class="subtab" data-m="m2">Ratio</button>
+        <button class="subtab" data-m="m3">Breakdown</button>
+        <button class="subtab" data-m="m4">Graphical</button>
+      </div>
+
+      <!-- M1 Comparative -->
+      <div class="subpanel active" id="m1">
+        <div class="card">
+          <span class="deflabel">1.5.1</span>
+          <h3>Comparative Method</h3>
+          <p>Compares quantifiable indicators of the same content and similar characteristics to find a <b>trend</b> — up, down, or stable.</p>
+          <p><b>Conditions for comparability:</b> (1) uniform economic content &amp; calculation method, (2) same time length / corresponding points in time, (3) same unit of measurement.</p>
+        </div>
+
+        <div class="card">
+          <h3>Horizontal comparison</h3>
+          <p>Compares the <b>ending number vs. the beginning number</b> of one item, in both absolute and relative (%) terms — reveals how that single item moved over time.</p>
+          <div class="formula">Absolute change = Item(Analysis Year) − Item(Base Year)<br>Relative change = Absolute change ÷ Item(Base Year) × 100%</div>
+        </div>
+        <div class="calc">
+          <h4>Worksheet — Horizontal Comparison (Example 1.1 prefilled)</h4>
+          <div class="calc-row">
+            <div class="calc-field"><label>Item — Base Year (e.g. 2024)</label><input type="number" id="hBase" value="10000"></div>
+            <div class="calc-field"><label>Item — Analysis Year (e.g. 2025)</label><input type="number" id="hAnalysis" value="15000"></div>
+          </div>
+          <div class="calc-out" id="hOut"></div>
+        </div>
+
+        <div class="card">
+          <h3>Vertical comparison</h3>
+          <p>Compares the <b>weight of one line item against a base total</b> (Net Revenue for the Income Statement; Total Assets for the Balance Sheet) — reveals structure, and lets you compare firms of different sizes.</p>
+          <div class="formula">Percentage = Line Item Amount ÷ Base Amount × 100%</div>
+        </div>
+        <div class="calc">
+          <h4>Worksheet — Vertical Comparison (Example 1.2 prefilled)</h4>
+          <div class="calc-row">
+            <div class="calc-field"><label>Line item (e.g. Selling Expenses)</label><input type="number" id="vItem" value="12000"></div>
+            <div class="calc-field"><label>Base amount (e.g. Net Revenue)</label><input type="number" id="vBase" value="20000"></div>
+          </div>
+          <div class="calc-out" id="vOut"></div>
+        </div>
+
+        <div class="card">
+          <h3>Pros &amp; cons</h3>
+          <div class="grid2">
+            <div><b style="color:var(--teal)">✓ Pros</b><p>Tracks trends over time · visualizes growth/seasonality · aids forecasting</p></div>
+            <div><b style="color:var(--red)">✗ Cons</b><p>Ignores detail inside one period · distorted by one-off events · doesn't explain <i>why</i> the change happened</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- M2 Ratio -->
+      <div class="subpanel" id="m2">
+        <div class="card">
+          <span class="deflabel">1.5.2</span>
+          <h3>Ratio Analysis</h3>
+          <p>Describes the significant relationship between different line items, to assess <b>profitability, solvency, and efficiency</b>.</p>
+          <div class="grid2" style="margin-top:12px;">
+            <div class="acc-item open" style="cursor:default;"><div class="acc-head" style="cursor:default;">Activity Ratios</div><div class="acc-body" style="max-height:100px;"><div class="acc-body-inner">Efficiency of operations (e.g. inventory turnover).</div></div></div>
+            <div class="acc-item open" style="cursor:default;"><div class="acc-head" style="cursor:default;">Liquidity Ratios</div><div class="acc-body" style="max-height:100px;"><div class="acc-body-inner">Ability to meet <b>short-term</b> obligations.</div></div></div>
+            <div class="acc-item open" style="cursor:default;"><div class="acc-head" style="cursor:default;">Solvency Ratios</div><div class="acc-body" style="max-height:100px;"><div class="acc-body-inner">Ability to meet <b>long-term</b> obligations.</div></div></div>
+            <div class="acc-item open" style="cursor:default;"><div class="acc-head" style="cursor:default;">Profitability Ratios</div><div class="acc-body" style="max-height:100px;"><div class="acc-body-inner">Ability to generate profit from assets or sales.</div></div></div>
+          </div>
+          <p style="margin-top:14px;"><b>5-step process:</b> Select relevant ratios → Calculate them → Compare with benchmarks (prior periods / industry / targets) → Interpret the results → Draw conclusions &amp; decide.</p>
+        </div>
+
+        <div class="calc">
+          <h4>Worksheet — Current Ratio over 3 years (Example 1.3 prefilled)</h4>
+          <div class="calc-row">
+            <div class="calc-field"><label>Current Assets 2022</label><input type="number" id="ca22" value="6000"></div>
+            <div class="calc-field"><label>Current Liab. 2022</label><input type="number" id="cl22" value="6910"></div>
+          </div>
+          <div class="calc-row">
+            <div class="calc-field"><label>Current Assets 2023</label><input type="number" id="ca23" value="6910"></div>
+            <div class="calc-field"><label>Current Liab. 2023</label><input type="number" id="cl23" value="6900"></div>
+          </div>
+          <div class="calc-row">
+            <div class="calc-field"><label>Current Assets 2024</label><input type="number" id="ca24" value="7800"></div>
+            <div class="calc-field"><label>Current Liab. 2024</label><input type="number" id="cl24" value="6380"></div>
+          </div>
+          <div class="calc-out" id="ratioOut"></div>
+        </div>
+      </div>
+
+      <!-- M3 Breakdown -->
+      <div class="subpanel" id="m3">
+        <div class="card">
+          <span class="deflabel">1.5.3</span>
+          <h3>Breakdown (Decomposition) Method</h3>
+          <p>Deconstructs one complex indicator into its underlying components, so you can see <b>what caused</b> the change.</p>
+          <p><b>4 steps:</b> Break down the indicator → analyze how each component moves over time → assess each component's contribution → summarize the main driver(s) of the overall change.</p>
+          <div class="formula">ROA = EAT ÷ A&#772;bq = (EAT ÷ S) × (S ÷ A&#772;bq)<br>↳ Cost-saving efficiency × Asset efficiency</div>
+        </div>
+        <div class="calc">
+          <h4>Worksheet — ROA Breakdown (Example 1.4 prefilled)</h4>
+          <p style="font-size:12px;color:#B9C9BC;margin:-6px 0 12px 0;">EAT = Earnings after tax · S = Net sales · A&#772;bq = Average total assets</p>
+          <div class="calc-row">
+            <div class="calc-field"><label>EAT — Year 1</label><input type="number" id="eat1" value="2306"></div>
+            <div class="calc-field"><label>Sales (S) — Year 1</label><input type="number" id="s1" value="10000"></div>
+            <div class="calc-field"><label>Avg. Assets — Year 1</label><input type="number" id="abq1" value="10340"></div>
+          </div>
+          <div class="calc-row">
+            <div class="calc-field"><label>EAT — Year 2</label><input type="number" id="eat2" value="597"></div>
+            <div class="calc-field"><label>Sales (S) — Year 2</label><input type="number" id="s2" value="10000"></div>
+            <div class="calc-field"><label>Avg. Assets — Year 2</label><input type="number" id="abq2" value="12330"></div>
+          </div>
+          <div class="calc-out" id="roaOut"></div>
+        </div>
+      </div>
+
+      <!-- M4 Graphical -->
+      <div class="subpanel" id="m4">
+        <div class="card">
+          <span class="deflabel">1.5.4</span>
+          <h3>Graphical Method</h3>
+          <p>Visually represents financial data so trends and anomalies jump out immediately.</p>
+        </div>
+        <div class="grid2">
+          <div class="card"><h3>📈 Line graphs</h3><p>Best for change in <b>one or few items over many periods</b> — revenue, profit, or stock price trends.</p></div>
+          <div class="card"><h3>📊 Bar charts</h3><p>Best for <b>comparing amounts across categories or periods</b> — e.g. revenue by year or by business unit.</p></div>
+          <div class="card"><h3>🥧 Pie charts</h3><p>Best for showing the <b>proportion of each part to a whole</b> — e.g. cost structure, asset allocation.</p></div>
+          <div class="card"><h3>📶 Stacked bar charts</h3><p>Best when you need <b>both the total and its composition</b> at once — e.g. total liabilities split into short- and long-term.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SELF TEST ============ -->
+    <section class="section" id="s6">
+      <div class="crumb">FIN713 / Chapter 1</div>
+      <h2 class="sec-title">Self-Test &amp; Quick Reference</h2>
+      <p class="sec-sub">Flip through essay-style prompts. Try answering out loud before you flip the card.</p>
+
+      <div class="cheat">
+        <h4>60-second formula sheet</h4>
+        <div class="cheat-grid">
+          <div><b>Absolute change</b> = Analysis Year − Base Year</div>
+          <div><b>Relative change</b> = Absolute change ÷ Base Year × 100%</div>
+          <div><b>Vertical %</b> = Line item ÷ Base amount × 100%</div>
+          <div><b>ROA</b> = EAT ÷ Avg. Assets = (EAT÷S) × (S÷Avg. Assets)</div>
+          <div><b>Current Ratio</b> = Current Assets ÷ Current Liabilities</div>
+          <div><b>5-step process</b> = Objective → Content → Collect → Process → Summarize</div>
+        </div>
+      </div>
+
+      <div class="fc-wrap">
+        <div class="fc-progress" id="fcProgress">Card 1 of 12</div>
+        <div class="fc-card" id="fcCard">
+          <div class="fc-inner">
+            <div class="fc-face fc-front">
+              <div class="fc-eyebrow">Question</div>
+              <div class="fc-q" id="fcQ"></div>
+              <div class="fc-flip-hint">Click card to reveal the model answer →</div>
+            </div>
+            <div class="fc-face fc-back">
+              <div class="fc-eyebrow">Model answer</div>
+              <div class="fc-a" id="fcA"></div>
+            </div>
+          </div>
+        </div>
+        <div class="fc-controls">
+          <button class="fc-btn ghost" id="fcPrev">← Previous</button>
+          <button class="fc-btn ghost" id="fcShuffle">Shuffle</button>
+          <button class="fc-btn" id="fcNext">Next →</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+/* ---------------- NAVIGATION ---------------- */
+const navBtns = document.querySelectorAll('.navbtn');
+navBtns.forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    navBtns.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+    document.getElementById(btn.dataset.target).classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+
+/* ---------------- ROLE FLIP CARDS ---------------- */
+const roles = [
+  {icon:'🧑‍💼', name:'Business Manager', points:['Improve operating efficiency','Increase business value']},
+  {icon:'📈', name:'Investor', points:['Evaluate expected income','Assess investment risks']},
+  {icon:'👷', name:'Employee', points:['Judge fairness of reward / pay','Inform career decisions']},
+  {icon:'🏦', name:'Credit Supplier', points:['Check the firm\'s repayment ability','Decide on loan approval']},
+  {icon:'🏛️', name:'State Management Agency', points:['Evaluate existing policy','Inform policy modification']},
+];
+const roleGrid = document.getElementById('roleGrid');
+roles.forEach((r,i)=>{
+  const el = document.createElement('div');
+  el.className='flip-card';
+  el.innerHTML = `<div class="flip-inner">
+      <div class="flip-front"><div class="icon">${r.icon}</div><div class="name">${r.name}</div><div class="hint">tap to flip</div></div>
+      <div class="flip-back"><div class="name">looks for</div><ul>${r.points.map(p=>`<li>${p}</li>`).join('')}</ul></div>
+    </div>`;
+  el.addEventListener('click', ()=> el.classList.toggle('flipped'));
+  roleGrid.appendChild(el);
+});
+
+/* ---------------- 1.2 CONTENT GRID ---------------- */
+const contents = [
+  {icon:'📋', title:'Analyze business performance', body:'Assess revenue, expenses, and profit to evaluate operating efficiency.'},
+  {icon:'⚖️', title:'Analyze asset & capital structure', body:'Compare assets and liabilities/equity to evaluate financial balance.'},
+  {icon:'💵', title:'Analyze cash flow', body:'Monitor cash inflows and outflows to evaluate liquidity.'},
+  {icon:'🧮', title:'Analyze financial ratios', body:'Assess financial ratios to understand overall financial health.'},
+];
+const contentGrid = document.getElementById('contentGrid');
+contents.forEach(c=>{
+  const el = document.createElement('div');
+  el.className='card';
+  el.innerHTML = `<h3>${c.icon} ${c.title}</h3><p>${c.body}</p>`;
+  contentGrid.appendChild(el);
+});
+
+/* ---------------- 1.3 INFO ACCORDION ---------------- */
+const infos = [
+  {t:'Macro-economic Information', d:'Inflation rates, interest rates, exchange rates, and economic growth of the overall economy.'},
+  {t:'Political & Legal Information', d:'Laws, regulations, and government policies that affect businesses.'},
+  {t:'Industry-specific Information', d:'Market trends, customer behavior, and competitor strategies in the firm\'s industry.'},
+  {t:'Business Operations Information', d:'Production processes, supply chain, technology, and human resources.'},
+  {t:'Financial Statements', d:'The official reports — Balance Sheet (BS), Income Statement (IS), Cash Flow Statement (CFS).'},
+  {t:'Business Plans', d:'Business plans, budgets, and strategies set by management.'},
+  {t:'Other Information', d:'Any other relevant data not captured above.'},
+];
+const infoAcc = document.getElementById('infoAccordion');
+infos.forEach((it,i)=>{
+  const el = document.createElement('div');
+  el.className='acc-item' + (i===0?' open':'');
+  el.innerHTML = `<button class="acc-head"><span>${it.t}</span><span class="arrow">›</span></button>
+    <div class="acc-body"><div class="acc-body-inner">${it.d}</div></div>`;
+  el.querySelector('.acc-head').addEventListener('click', ()=> el.classList.toggle('open'));
+  infoAcc.appendChild(el);
+});
+
+/* ---------------- AUDIT QUIZ ---------------- */
+const situations = [
+  {text:'ANZ Real Estate Company intentionally recorded revenue at the wrong time, concealed debts, and failed to set up required provisions. These misstatements were widespread and had a serious impact on the overall financial statements.',
+   correct:'Adverse', explain:'The errors are intentional, serious, AND widespread (pervasive) → Adverse Opinion: "don\'t trust this report."'},
+  {text:'The auditor reviewed all books and supporting documents in VNM\'s financial statements and found that all items were properly recorded in accordance with accounting standards, with no material misstatements.',
+   correct:'Unqualified', explain:'Everything checks out, no material errors found → Unqualified (clean) Opinion.'},
+  {text:'The auditor worked with BYT Company but was not provided with contracts, original invoices, or evidence to verify inventory. There was not enough information to conduct the audit.',
+   correct:'Disclaimer', explain:'The auditor never got enough evidence to form a conclusion at all → Disclaimer of Opinion (uncertainty, not proven error).'},
+  {text:'FPT recorded almost all items correctly in its financial statements, but there was one mistake in the valuation of inventory, which had not been adjusted in line with accounting standards.',
+   correct:'Qualified', explain:'One isolated, material issue — everything else is fine → Qualified Opinion: "fine, except for this part."'},
+];
+const options = ['Unqualified','Qualified','Adverse','Disclaimer'];
+const quizArea = document.getElementById('quizArea');
+situations.forEach((s,i)=>{
+  const card = document.createElement('div');
+  card.className='quiz-card';
+  card.innerHTML = `<div class="quiz-situation"><b>Situation ${i+1}.</b> ${s.text}</div>
+    <div class="quiz-options">${options.map(o=>`<button class="quiz-opt" data-opt="${o}">${o}</button>`).join('')}</div>
+    <div class="quiz-explain"></div>`;
+  const buttons = card.querySelectorAll('.quiz-opt');
+  const explainBox = card.querySelector('.quiz-explain');
+  buttons.forEach(b=>{
+    b.addEventListener('click', ()=>{
+      buttons.forEach(x=>x.disabled=true);
+      if(b.dataset.opt === s.correct){ b.classList.add('correct'); }
+      else { b.classList.add('wrong'); card.querySelector(`[data-opt="${s.correct}"]`).classList.add('correct'); }
+      explainBox.textContent = s.explain;
+      explainBox.classList.add('show');
+    });
+  });
+  quizArea.appendChild(card);
+});
+
+/* ---------------- 1.4 PROCESS STEPPER ---------------- */
+const steps = [
+  {n:1, label:'Identify the objectives', d:'What question must this analysis answer?'},
+  {n:2, label:'Determine the content', d:'Which area(s) — performance, structure, cash flow, ratios?'},
+  {n:3, label:'Collect data', d:'Gather the statements and supporting information needed.'},
+  {n:4, label:'Process the data', d:'Apply comparative, ratio, breakdown, or graphical methods.'},
+  {n:5, label:'Summarize results', d:'Conclude and turn findings into a decision.'},
+];
+const stepperEl = document.getElementById('stepper');
+steps.forEach(s=>{
+  const el = document.createElement('div');
+  el.className='step';
+  el.innerHTML = `<span class="stepnum">${s.n}</span><div class="steplabel">${s.label}</div><div style="font-size:12px;color:var(--muted);line-height:1.4;">${s.d}</div>`;
+  stepperEl.appendChild(el);
+});
+
+/* ---------------- METHOD SUBTABS ---------------- */
+document.querySelectorAll('.subtab').forEach(t=>{
+  t.addEventListener('click', ()=>{
+    document.querySelectorAll('.subtab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.querySelectorAll('.subpanel').forEach(p=>p.classList.remove('active'));
+    document.getElementById(t.dataset.m).classList.add('active');
+  });
+});
+
+/* ---------------- CALCULATORS ---------------- */
+function fmt(n){ return Number(n).toLocaleString('en-US', {maximumFractionDigits:2}); }
+function stampFor(val){
+  if(val > 0.0001) return '<span class="stamp up">▲ INCREASE</span>';
+  if(val < -0.0001) return '<span class="stamp down">▼ DECREASE</span>';
+  return '<span class="stamp flat">■ STABLE</span>';
+}
+
+function calcHorizontal(){
+  const base = parseFloat(document.getElementById('hBase').value)||0;
+  const ana = parseFloat(document.getElementById('hAnalysis').value)||0;
+  const abs = ana - base;
+  const rel = base!==0 ? (abs/base*100) : 0;
+  document.getElementById('hOut').innerHTML =
+    `Absolute change = ${fmt(ana)} − ${fmt(base)} = <b>${fmt(abs)}</b><br>
+     Relative change = ${fmt(abs)} ÷ ${fmt(base)} × 100% = <b>${fmt(rel)}%</b>
+     ${stampFor(abs)}`;
+}
+['hBase','hAnalysis'].forEach(id=>document.getElementById(id).addEventListener('input', calcHorizontal));
+calcHorizontal();
+
+function calcVertical(){
+  const item = parseFloat(document.getElementById('vItem').value)||0;
+  const base = parseFloat(document.getElementById('vBase').value)||0;
+  const pct = base!==0 ? (item/base*100) : 0;
+  document.getElementById('vOut').innerHTML =
+    `Vertical % = ${fmt(item)} ÷ ${fmt(base)} × 100% = <b>${fmt(pct)}%</b> of the base amount.`;
+}
+['vItem','vBase'].forEach(id=>document.getElementById(id).addEventListener('input', calcVertical));
+calcVertical();
+
+function calcRatio(){
+  const yrs = [
+    {label:'2022', ca:parseFloat(document.getElementById('ca22').value)||0, cl:parseFloat(document.getElementById('cl22').value)||0},
+    {label:'2023', ca:parseFloat(document.getElementById('ca23').value)||0, cl:parseFloat(document.getElementById('cl23').value)||0},
+    {label:'2024', ca:parseFloat(document.getElementById('ca24').value)||0, cl:parseFloat(document.getElementById('cl24').value)||0},
+  ];
+  const ratios = yrs.map(y => y.cl!==0 ? y.ca/y.cl : 0);
+  let rows = yrs.map((y,i)=>`<tr><td>${y.label}</td><td>${fmt(y.ca)}</td><td>${fmt(y.cl)}</td><td><b>${ratios[i].toFixed(2)}</b></td></tr>`).join('');
+  const d1 = ratios[1]-ratios[0];
+  const d2 = ratios[2]-ratios[1];
+  document.getElementById('ratioOut').innerHTML =
+    `<table class="calc-table"><tr><th>Year</th><th>Current Assets</th><th>Current Liab.</th><th>Current Ratio</th></tr>${rows}</table>
+     <div style="margin-top:10px;">Year-on-year: ${ratios[0].toFixed(2)} → ${ratios[1].toFixed(2)} → ${ratios[2].toFixed(2)}
+     &nbsp;${stampFor(d2)}<br>
+     <span style="font-size:12px;color:#B9C9BC;">A current ratio above 1.0 means current assets exceed current liabilities — short-term obligations are covered.</span></div>`;
+}
+['ca22','cl22','ca23','cl23','ca24','cl24'].forEach(id=>document.getElementById(id).addEventListener('input', calcRatio));
+calcRatio();
+
+function calcROA(){
+  const eat1=parseFloat(document.getElementById('eat1').value)||0, s1=parseFloat(document.getElementById('s1').value)||0, abq1=parseFloat(document.getElementById('abq1').value)||0;
+  const eat2=parseFloat(document.getElementById('eat2').value)||0, s2=parseFloat(document.getElementById('s2').value)||0, abq2=parseFloat(document.getElementById('abq2').value)||0;
+  const m1 = s1!==0?eat1/s1*100:0, e1 = abq1!==0?s1/abq1:0, roa1 = abq1!==0?eat1/abq1*100:0;
+  const m2 = s2!==0?eat2/s2*100:0, e2 = abq2!==0?s2/abq2:0, roa2 = abq2!==0?eat2/abq2*100:0;
+  const dM = m2-m1, dE = e2-e1, dROA = roa2-roa1;
+  let driver = Math.abs(dM) >= Math.abs(dE*100/Math.max(e1,0.0001)) ? 'cost-saving efficiency (EAT/S)' : 'asset efficiency (S/A&#772;bq)';
+  document.getElementById('roaOut').innerHTML =
+    `<table class="calc-table">
+       <tr><th>Indicator</th><th>Year 1</th><th>Year 2</th><th>Change</th></tr>
+       <tr><td>EAT/S (%)</td><td>${m1.toFixed(2)}</td><td>${m2.toFixed(2)}</td><td>${dM.toFixed(2)}</td></tr>
+       <tr><td>S/A&#772;bq (times)</td><td>${e1.toFixed(2)}</td><td>${e2.toFixed(2)}</td><td>${dE.toFixed(2)}</td></tr>
+       <tr><td><b>ROA (%)</b></td><td><b>${roa1.toFixed(2)}</b></td><td><b>${roa2.toFixed(2)}</b></td><td><b>${dROA.toFixed(2)}</b></td></tr>
+     </table>
+     <div style="margin-top:10px;">ROA moved by ${dROA.toFixed(2)} pts ${stampFor(dROA)}<br>
+     <span style="font-size:12px;color:#B9C9BC;">Compare the two % changes above — whichever factor moved more is the bigger driver of the ROA change. Write that comparison out in your essay rather than stating the conclusion only.</span></div>`;
+}
+['eat1','s1','abq1','eat2','s2','abq2'].forEach(id=>document.getElementById(id).addEventListener('input', calcROA));
+calcROA();
+
+/* ---------------- FLASHCARDS ---------------- */
+let cards = [
+  {q:'Define corporate financial analysis and name its three core actions.', a:'It is the process of examining financial data to evaluate performance, detect potential opportunities and risks, and then make decisions to achieve the set objectives. Three actions: examine → evaluate/detect → decide.'},
+  {q:'Name the five stakeholders interested in financial analysis and one thing each looks for.', a:'Business Manager (efficiency & firm value), Investor (income & risk), Employee (fair reward & career decisions), Credit Supplier (repayment ability for loan approval), State Management Agency (policy evaluation & modification).'},
+  {q:'What are the four content areas of corporate financial analysis?', a:'(1) Business performance, (2) Asset & capital structure, (3) Cash flow, (4) Financial ratios.'},
+  {q:'List the seven categories of information used for financial analysis.', a:'Macro-economic, Political & Legal, Industry-specific, Business Operations, Financial Statements, Business Plans, and Other information.'},
+  {q:'Explain the four types of audit opinions.', a:'Unqualified = clean, no material errors. Qualified = fine except one isolated material issue. Adverse = serious, pervasive errors — don\'t trust the report. Disclaimer = not enough evidence to give any opinion at all.'},
+  {q:'Describe the five-step process of corporate financial analysis, in order.', a:'1) Identify the objectives → 2) Determine the content to be analyzed → 3) Collect data → 4) Process the data → 5) Summarize the results.'},
+  {q:'What three conditions must indicators meet to be comparable?', a:'Uniform economic content and calculation method; the same time length or corresponding time points; and the same unit of measurement.'},
+  {q:'Differentiate horizontal and vertical comparison.', a:'Horizontal comparison tracks one item\'s ending vs. beginning value over time (absolute & relative change) to reveal trend. Vertical comparison expresses one item as a % of a base total (Net Revenue for the IS, Total Assets for the BS) to reveal structure and allow size-independent comparison.'},
+  {q:'What are the four groups of financial ratios and what does each measure?', a:'Activity (operating efficiency), Liquidity (ability to meet short-term obligations), Solvency (ability to meet long-term obligations), Profitability (ability to generate profit from assets/sales).'},
+  {q:'Write the ROA breakdown formula and name its two driving factors.', a:'ROA = EAT/A&#772;bq = (EAT/S) × (S/A&#772;bq). The two factors are cost-saving efficiency (EAT/S) and asset efficiency (S/A&#772;bq).'},
+  {q:'Which chart type would you use to show total liabilities split into short-term vs long-term across several years, and why?', a:'A stacked bar chart — because it shows both the total value AND the composition of subcomponents at once.'},
+  {q:'State one advantage and one disadvantage of the comparative method.', a:'Advantage: it tracks trends over time and aids forecasting. Disadvantage: it ignores the detail inside each period and does not explain why the change happened.'},
+];
+let order = cards.map((_,i)=>i);
+let cur = 0;
+const fcCard = document.getElementById('fcCard');
+const fcQ = document.getElementById('fcQ');
+const fcA = document.getElementById('fcA');
+const fcProgress = document.getElementById('fcProgress');
+
+function renderCard(){
+  fcCard.classList.remove('flipped');
+  const c = cards[order[cur]];
+  fcQ.innerHTML = c.q;
+  fcA.innerHTML = c.a;
+  fcProgress.textContent = `Card ${cur+1} of ${cards.length}`;
+}
+fcCard.addEventListener('click', ()=> fcCard.classList.toggle('flipped'));
+document.getElementById('fcNext').addEventListener('click', ()=>{ cur=(cur+1)%cards.length; renderCard(); });
+document.getElementById('fcPrev').addEventListener('click', ()=>{ cur=(cur-1+cards.length)%cards.length; renderCard(); });
+document.getElementById('fcShuffle').addEventListener('click', ()=>{
+  for(let i=order.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [order[i],order[j]]=[order[j],order[i]]; }
+  cur=0; renderCard();
+});
+renderCard();
+</script>
+</body>
+</html>
