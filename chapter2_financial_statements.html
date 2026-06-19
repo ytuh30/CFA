@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 2: Financial Statements | HUB Study Guide</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#0B1F3A;--navy2:#1A3560;--gold:#F0A500;--gold-light:#FFF8E8;
+  --green:#1DB954;--green-light:#E8FBF0;--red:#E53E3E;--red-light:#FFF5F5;
+  --blue:#2B6CB0;--blue-light:#EBF8FF;--purple:#553C9A;--purple-light:#FAF5FF;
+  --bg:#F0F4F8;--card:#FFFFFF;--text:#1A202C;--muted:#718096;
+  --border:#E2E8F0;--shadow:0 4px 24px rgba(11,31,58,.12);--radius:12px
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;min-height:100vh}
+
+/* HEADER */
+.site-header{background:var(--navy);padding:24px 20px 0;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.3)}
+.header-top{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.header-title h1{font-size:20px;font-weight:800;color:#fff;letter-spacing:-.5px}
+.header-title p{font-size:12px;color:rgba(255,255,255,.5);margin-top:2px}
+.badge{background:var(--gold);color:var(--navy);font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase}
+
+/* TABS */
+.tabs{display:flex;gap:2px;max-width:1100px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab-btn{background:transparent;border:none;color:rgba(255,255,255,.5);font-size:13px;font-weight:600;padding:12px 16px;cursor:pointer;border-radius:8px 8px 0 0;transition:all .2s;white-space:nowrap;position:relative}
+.tab-btn:hover{color:rgba(255,255,255,.85)}
+.tab-btn.active{color:#fff;background:rgba(255,255,255,.1)}
+.tab-btn.active::after{content:'';position:absolute;bottom:0;left:8px;right:8px;height:3px;background:var(--gold);border-radius:2px}
+
+/* MAIN */
+.main{max-width:1100px;margin:0 auto;padding:24px 14px 60px}
+.section{display:none}
+.section.active{display:block}
+
+/* CARDS */
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;margin-bottom:18px;border:1px solid var(--border)}
+.card-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.card-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.icon-gold{background:var(--gold-light)}.icon-green{background:var(--green-light)}.icon-blue{background:var(--blue-light)}.icon-purple{background:var(--purple-light)}
+.card h2{font-size:17px;font-weight:700;color:var(--navy)}
+.card h3{font-size:14px;font-weight:700;color:var(--navy);margin:14px 0 8px}
+
+/* GRIDS */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:720px){.grid-2,.grid-3,.two-col{grid-template-columns:1fr}}
+
+/* FORMULA */
+.formula-box{background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:10px;padding:14px 18px;margin:10px 0;text-align:center}
+.formula-box .formula{font-size:15px;font-weight:700;color:var(--gold);font-family:'Courier New',monospace}
+.formula-box .flabel{font-size:11px;color:rgba(255,255,255,.5);margin-top:4px}
+
+/* FLOW */
+.flow{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin:8px 0}
+.fi{background:var(--navy);color:#fff;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600}
+.fi.gold{background:var(--gold);color:var(--navy)}
+.fi.green{background:var(--green);color:#fff}
+.fa{color:var(--muted);font-size:16px}
+.fm{color:var(--red);font-weight:bold;font-size:16px}
+.fp{color:var(--green);font-weight:bold;font-size:16px}
+
+/* INFO BOX */
+.ib{border-left:4px solid;border-radius:0 8px 8px 0;padding:10px 14px;margin:8px 0;font-size:13.5px}
+.ib.gold{border-color:var(--gold);background:var(--gold-light)}
+.ib.green{border-color:var(--green);background:var(--green-light)}
+.ib.red{border-color:var(--red);background:var(--red-light)}
+.ib.blue{border-color:var(--blue);background:var(--blue-light)}
+.ib.purple{border-color:var(--purple);background:var(--purple-light)}
+.ib strong{color:var(--navy)}
+
+/* TABLE */
+.comp-table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13.5px}
+.comp-table th{background:var(--navy);color:#fff;padding:9px 13px;text-align:left;font-weight:600}
+.comp-table td{padding:9px 13px;border-bottom:1px solid var(--border)}
+.comp-table tr:nth-child(even) td{background:#F8FAFC}
+.comp-table tr:hover td{background:var(--blue-light)}
+
+/* LIST */
+.sl{list-style:none;padding:0}
+.sl li{padding:7px 0 7px 22px;position:relative;font-size:13.5px;color:#4A5568;border-bottom:1px solid var(--border)}
+.sl li:last-child{border-bottom:none}
+.sl li::before{content:'▸';position:absolute;left:4px;color:var(--gold);top:9px;font-size:11px}
+
+/* EXAMPLE */
+.ex-box{border:2px dashed var(--border);border-radius:10px;overflow:hidden;margin:12px 0}
+.ex-hdr{background:var(--bg);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
+.ex-hdr:hover{background:var(--blue-light)}
+.ex-hdr h4{font-size:13.5px;font-weight:600;color:var(--navy)}
+.ex-btn{background:var(--navy);color:#fff;border:none;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;font-weight:600}
+.ex-content{display:none;padding:16px;background:#fff;border-top:1px solid var(--border);font-size:13px}
+.ex-content.open{display:block}
+
+/* SECTION LABEL */
+.slabel{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:22px 0 12px;display:flex;align-items:center;gap:10px}
+.slabel::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* CF TABLE */
+.cft{width:100%;border-collapse:collapse;font-size:13px}
+.cft th,.cft td{padding:7px 11px;border:1px solid var(--border)}
+.cft th{background:var(--navy);color:#fff;font-weight:600}
+.pos{color:var(--green);font-weight:700}
+.neg{color:var(--red);font-weight:700}
+.cft tr:nth-child(even) td{background:#F8FAFC}
+
+/* QUIZ */
+.quiz-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px;margin-bottom:18px}
+.quiz-progress{height:6px;background:var(--border);border-radius:3px;margin-bottom:22px;overflow:hidden}
+.quiz-progress-bar{height:100%;background:linear-gradient(to right,var(--gold),var(--green));border-radius:3px;transition:width .4s ease}
+.quiz-question{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:18px;line-height:1.5}
+.quiz-options{display:flex;flex-direction:column;gap:9px}
+.quiz-option{background:var(--bg);border:2px solid var(--border);border-radius:10px;padding:13px 16px;cursor:pointer;font-size:13.5px;transition:all .2s;text-align:left;font-weight:500;color:var(--text)}
+.quiz-option:hover:not(.disabled){border-color:var(--gold);background:var(--gold-light)}
+.quiz-option.correct{border-color:var(--green);background:var(--green-light);color:#1A6E3C}
+.quiz-option.wrong{border-color:var(--red);background:var(--red-light);color:#9B2335}
+.quiz-option.disabled{cursor:not-allowed;opacity:.75}
+.quiz-fb{margin-top:12px;padding:11px 15px;border-radius:8px;font-size:13.5px;font-weight:500;display:none}
+.quiz-fb.show{display:block}
+.quiz-fb.ok{background:var(--green-light);color:#1A6E3C;border:1px solid var(--green)}
+.quiz-fb.nok{background:var(--red-light);color:#9B2335;border:1px solid var(--red)}
+.quiz-nav{display:flex;justify-content:space-between;align-items:center;margin-top:18px}
+.btn{padding:9px 18px;border-radius:8px;border:none;cursor:pointer;font-size:13.5px;font-weight:600;transition:all .2s}
+.btn-primary{background:var(--navy);color:#fff}
+.btn-primary:hover{background:var(--navy2);transform:translateY(-1px)}
+.btn-gold{background:var(--gold);color:var(--navy)}
+.btn-gold:hover{transform:translateY(-1px)}
+.btn-outline{background:transparent;border:2px solid var(--navy);color:var(--navy)}
+.btn-outline:hover{background:var(--navy);color:#fff}
+.qcounter{font-size:13px;color:var(--muted);font-weight:600}
+.score-display{text-align:center;padding:30px;display:none}
+.score-display.show{display:block}
+.score-circle{width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:center;margin:0 auto 14px;flex-direction:column}
+.score-num{font-size:34px;font-weight:800;color:var(--gold)}
+.score-den{font-size:13px;color:rgba(255,255,255,.6)}
+.score-msg{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.score-sub{font-size:13px;color:var(--muted)}
+
+/* FLASHCARD */
+.fc-wrap{perspective:1000px;margin:0 auto;max-width:580px}
+.flashcard{width:100%;height:210px;position:relative;cursor:pointer;transform-style:preserve-3d;transition:transform .5s ease}
+.flashcard.flipped{transform:rotateY(180deg)}
+.fc-face{position:absolute;width:100%;height:100%;border-radius:var(--radius);backface-visibility:hidden;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;box-shadow:var(--shadow)}
+.fc-front{background:linear-gradient(135deg,var(--navy),var(--navy2))}
+.fc-front h3{font-size:20px;font-weight:700;color:var(--gold)}
+.fc-front p{font-size:12px;color:rgba(255,255,255,.45);margin-top:8px}
+.fc-back{background:var(--card);transform:rotateY(180deg);border:2px solid var(--gold);flex-direction:column;gap:10px}
+.fc-def{font-size:13.5px;color:var(--text);line-height:1.55}
+.fc-formula{background:var(--navy);color:var(--gold);padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;font-family:monospace;max-width:100%;word-break:break-word}
+.fc-controls{display:flex;justify-content:center;align-items:center;gap:14px;margin-top:18px}
+.fc-cnt{font-size:13px;color:var(--muted);font-weight:600;min-width:55px;text-align:center}
+.hint{text-align:center;font-size:12px;color:var(--muted);margin-top:8px}
+.tag{display:inline-block;padding:3px 9px;border-radius:20px;font-size:12px;font-weight:600;margin:3px;cursor:pointer}
+.tag-navy{background:var(--navy);color:#fff}
+.tag-navy:hover{background:var(--navy2)}
+</style>
+</head>
+<body>
+
+<div class="site-header">
+  <div class="header-top">
+    <div class="header-title">
+      <h1>📊 Chapter 2 — Financial Statements</h1>
+      <p>HUB · Corporate Finance Analysis FIN713 · Interactive Exam Study Guide</p>
+    </div>
+    <span class="badge">Essay Exam Prep</span>
+  </div>
+  <div style="max-width:1100px;margin:0 auto">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('overview')">2.1 Overview</button>
+      <button class="tab-btn" onclick="showTab('bs')">2.2 Balance Sheet</button>
+      <button class="tab-btn" onclick="showTab('is')">2.3 Income Statement</button>
+      <button class="tab-btn" onclick="showTab('cfs')">2.4 Cash Flow</button>
+      <button class="tab-btn" onclick="showTab('notes')">2.5 Notes</button>
+      <button class="tab-btn" onclick="showTab('quiz')">🎯 Quiz</button>
+      <button class="tab-btn" onclick="showTab('flashcards')">🃏 Flashcards</button>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ============================== 2.1 OVERVIEW ============================== -->
+<div class="section active" id="sec-overview">
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon icon-gold">📋</div>
+      <div>
+        <h2>2.1 Overview of Financial Statements</h2>
+        <p style="color:var(--muted);font-size:12px">Definition · Significance · Classification · Advantages & Disadvantages</p>
+      </div>
+    </div>
+    <div class="ib blue">
+      <strong>Definition:</strong> Financial statements are reports prepared according to current accounting standards and regulations, reflecting a comprehensive overview of assets, equity, liabilities, cash flows, as well as the financial situation and business results <em>during the period</em> of the enterprise.
+    </div>
+    <h3>Who Uses Financial Statements?</h3>
+    <div class="grid-3">
+      <div class="ib gold"><strong>🏢 Business:</strong> Overview of financial situation → managers make accurate decisions → sustainable development</div>
+      <div class="ib blue"><strong>🏦 Banks:</strong> Assess operational status & debt repayment ability → decide loan amount & duration</div>
+      <div class="ib green"><strong>📦 Suppliers:</strong> Assess liquidity → decide whether to allow buy-now-pay-later terms</div>
+      <div class="ib purple"><strong>💰 Investors:</strong> Judge business health → decide to invest or divest</div>
+      <div class="ib red"><strong>🏛 Government:</strong> Verify correct tax payment amount & adjust/change policies</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-bottom:14px">Classification of Financial Statements</h2>
+    <div class="two-col">
+      <div>
+        <h3>By Content Reflected</h3>
+        <ul class="sl">
+          <li><strong>Balance Sheet (BS)</strong> — Assets & Sources (Liabilities + Equity)</li>
+          <li><strong>Income Statement (IS)</strong> — Sales & Expenses → Profit</li>
+          <li><strong>Cash Flow Statement (CFS)</strong> — Cash In & Cash Out</li>
+          <li><strong>Notes to Financial Statements</strong> — Explanatory information</li>
+        </ul>
+        <h3>By Preparation Time</h3>
+        <ul class="sl">
+          <li><strong>Annual</strong> — for one full financial year</li>
+          <li><strong>Interim</strong> — monthly or quarterly (midway through year)</li>
+        </ul>
+      </div>
+      <div>
+        <h3>By Scope</h3>
+        <ul class="sl">
+          <li><strong>Consolidated:</strong> Parent company + subsidiaries (entire group) — summarizes financial situation of whole group</li>
+          <li><strong>Separate:</strong> Reflects the parent company alone — financial situation of parent only</li>
+        </ul>
+        <h3>Advantages vs Disadvantages</h3>
+        <div class="ib green" style="margin-top:6px">✅ Comprehensive overview; Useful for management; Helps stakeholders decide</div>
+        <div class="ib red" style="margin-top:6px">❌ Objectivity questionable; Data is <strong>historical</strong>; Differences in accounting methods applied</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-bottom:14px">📊 Summary Comparison — All Three Financial Statements</h2>
+    <table class="comp-table">
+      <tr><th></th><th>Income Statement (IS)</th><th>Balance Sheet (BS)</th><th>Cash Flow Statement (CFS)</th></tr>
+      <tr><td><strong>Time</strong></td><td>Period of time</td><td>A point in time (snapshot)</td><td>Period of time</td></tr>
+      <tr><td><strong>Purpose</strong></td><td>Profitability</td><td>Financial position</td><td>Cash movements</td></tr>
+      <tr><td><strong>Measures</strong></td><td>Revenue, expenses, profit</td><td>Assets, liabilities, equity</td><td>Increases/decreases in cash</td></tr>
+      <tr><td><strong>Starting Point</strong></td><td>Revenue</td><td>Cash balance</td><td>Net income (indirect)</td></tr>
+      <tr><td><strong>Ending Point</strong></td><td>Net income</td><td>Retained earnings</td><td>Cash balance</td></tr>
+      <tr><td><strong>Accounting Basis</strong></td><td>Accrual</td><td>Accrual</td><td>Cash</td></tr>
+    </table>
+    <div class="ib gold">
+      <strong>Key Insight:</strong> BS & IS use <strong>accrual accounting</strong> (recorded when earned/incurred). CFS uses <strong>cash accounting</strong> (recorded only when cash changes hands). This creates the difference between profit and cash flow.
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================== 2.2 BALANCE SHEET ============================== -->
+<div class="section" id="sec-bs">
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon icon-blue">⚖️</div>
+      <div>
+        <h2>2.2 Balance Sheet (BS)</h2>
+        <p style="color:var(--muted);font-size:12px">A snapshot of the company's financial position at a SPECIFIC POINT IN TIME</p>
+      </div>
+    </div>
+    <div class="ib blue">
+      <strong>Definition:</strong> The Balance Sheet reflects the total value of existing assets and the sources that form those assets of an enterprise at a <strong>specific point in time</strong> (e.g., December 31 of a year).
+    </div>
+    <div class="formula-box">
+      <div class="formula">Assets (A) = Liabilities (L) + Owner's Equity (E)</div>
+      <div class="flabel">The Fundamental Accounting Equation — Always must balance!</div>
+    </div>
+    <div class="grid-3" style="margin-top:10px">
+      <div class="ib blue">All indicators expressed in <strong>monetary terms</strong></div>
+      <div class="ib gold">Divided into <strong>two parts</strong>: Asset structure & Sources of assets</div>
+      <div class="ib green">Reflects capital at a <strong>specific point in time</strong>, not a period</div>
+    </div>
+    <h3>Significance of the Balance Sheet</h3>
+    <div class="grid-3">
+      <div class="ib blue">Evaluates <strong>structure of assets</strong> and sources of capital</div>
+      <div class="ib gold">Assesses <strong>financial situation</strong> of the enterprise</div>
+      <div class="ib green">Evaluates <strong>liquidity</strong> of the enterprise</div>
+    </div>
+  </div>
+
+  <div class="slabel">Assets Side — Sorted by DECREASING Liquidity (most liquid first)</div>
+
+  <div class="card">
+    <h2 style="margin-bottom:14px">ASSETS</h2>
+    <div class="two-col">
+      <div>
+        <div class="ib gold"><strong>A. Current Assets</strong> — Expected to convert to cash within <strong>1 year</strong> or 1 operating cycle. Higher liquidity.</div>
+        <ul class="sl">
+          <li><strong>Cash & Cash Equivalents</strong> — Currency, bank deposits, investments with original maturity ≤ 90 days</li>
+          <li><strong>Short-term Financial Investments</strong> — Marketable securities and other investments expected to sell short-term</li>
+          <li><strong>Accounts Receivable</strong> — Amounts due from customers from credit sales of products/services</li>
+          <li><strong>Inventories</strong> — Goods purchased or produced for sale to customers</li>
+          <li><strong>Other Current Assets</strong> — Prepaid expenses (rent, insurance, advertising paid in advance)</li>
+        </ul>
+      </div>
+      <div>
+        <div class="ib blue"><strong>B. Non-current (Long-term) Assets</strong> — Expected to be held for <strong>more than 1 year</strong>. Provides info about firm's investing activities.</div>
+        <ul class="sl">
+          <li><strong>Long-term Receivables</strong> — Amounts due after 1 year</li>
+          <li><strong>Fixed Assets (PPE)</strong> — Land, factory buildings, warehouses, machinery, vehicles, office equipment</li>
+          <li><strong>Investment Properties</strong> — Real estate held for rental income or capital appreciation</li>
+          <li><strong>Long-term Financial Investments</strong> — Investments not intended to sell in near future</li>
+          <li><strong>Intangible & Other Assets</strong> — Patents, trademarks, goodwill, franchise rights (no physical substance)</li>
+          <li><strong>Construction in Progress</strong> — Assets not yet placed into service</li>
+        </ul>
+      </div>
+    </div>
+    <table class="comp-table" style="margin-top:14px">
+      <tr><th>Criteria</th><th>Current Assets</th><th>Long-term Assets</th></tr>
+      <tr><td><strong>Turnover Time</strong></td><td>Within 12 months or 1 operating cycle</td><td>More than 12 months</td></tr>
+      <tr><td><strong>Liquidity</strong></td><td>Higher</td><td>Lower</td></tr>
+      <tr><td><strong>Financing Source</strong></td><td>Can use <strong>BOTH</strong> short-term and long-term capital</td><td>Must use <strong>ONLY</strong> long-term capital</td></tr>
+    </table>
+  </div>
+
+  <div class="slabel">Liabilities & Equity Side — Sorted by INCREASING Maturity (shortest first)</div>
+
+  <div class="card">
+    <h2 style="margin-bottom:14px">LIABILITIES & OWNER'S EQUITY</h2>
+    <div class="two-col">
+      <div>
+        <div class="ib red"><strong>A. Liabilities</strong> — Current obligations from past transactions the business must settle from its resources. Sorting principle: by the <strong>term of the debt</strong>.</div>
+        <h3>I. Current Liabilities (≤ 1 year or 1 operating cycle)</h3>
+        <ul class="sl">
+          <li><strong>Short-term Borrowings & Finance Lease Liabilities</strong> — Short-term bank loans</li>
+          <li><strong>Accounts Payable</strong> — Owed to suppliers for goods/services on credit</li>
+          <li><strong>Accrued Liabilities</strong> — Incurred but not yet paid (wages, interest, taxes payable)</li>
+          <li><strong>Unearned Revenues</strong> — Payment received before goods/services delivered</li>
+          <li><strong>Current Maturities of LT Debt</strong> — Principal portion of LT debt due within 1 year</li>
+        </ul>
+        <h3>II. Non-current Liabilities (> 1 year)</h3>
+        <ul class="sl">
+          <li><strong>Long-term Borrowings & Finance Lease Liabilities</strong> — Bonds, mortgages, long-term loans</li>
+          <li><strong>Long-term Payables</strong> — Various obligations settled beyond 1 year</li>
+          <li><strong>Deferred Tax Liabilities</strong> — Future tax obligations from temporary differences</li>
+        </ul>
+      </div>
+      <div>
+        <div class="ib green"><strong>B. Owner's Equity</strong> — Value calculated as Assets minus Liabilities. Residual interest of owners. No fixed maturity or interest obligation.</div>
+        <ul class="sl">
+          <li><strong>Owner's Capital Contribution</strong> — Capital directly invested by owners/shareholders</li>
+          <li><strong>Common Stock</strong> — Par value from original sale of common stock to investors</li>
+          <li><strong>Capital Surplus (Additional Paid-in Capital)</strong> — Amounts received above par value</li>
+          <li><strong>Preferred Stock</strong> — Fewer ownership rights than common stock</li>
+          <li><strong>Treasury Stock</strong> — Amount paid to reacquire own stock (deducted from equity)</li>
+          <li><strong>Retained Earnings / Undistributed Profits</strong> — Accumulated net income not paid as dividends</li>
+          <li><strong>Accumulated Other Comprehensive Income (OCI)</strong> — Fair value changes not in income statement</li>
+        </ul>
+        <div class="formula-box" style="margin-top:10px">
+          <div class="formula">RE(end) = RE(begin) + Net Income − Dividends</div>
+          <div class="flabel">Retained Earnings bridge formula</div>
+        </div>
+      </div>
+    </div>
+
+    <table class="comp-table" style="margin-top:16px">
+      <tr><th>Criteria</th><th>Liabilities</th><th>Owner's Equity</th></tr>
+      <tr><td><strong>Source</strong></td><td>Creditors (external)</td><td>Owners (internal)</td></tr>
+      <tr><td><strong>Interest Payment</strong></td><td>Must pay interest</td><td>No interest obligation</td></tr>
+      <tr><td><strong>Maturity</strong></td><td>Fixed maturity date</td><td>No maturity</td></tr>
+      <tr><td><strong>Collateral</strong></td><td>Required</td><td>Not required</td></tr>
+      <tr><td><strong>Tax Shield</strong></td><td>Tax-deductible (interest)</td><td>Not tax-deductible</td></tr>
+      <tr><td><strong>Cost of Capital</strong></td><td>Lower (tax shield)</td><td>Higher (more risk)</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2 style="color:var(--red);margin-bottom:12px">⚠️ Limitations of the Balance Sheet</h2>
+    <div class="grid-2">
+      <div class="ib red"><strong>Book Values Only:</strong> Values are historical book values — may not reflect current market values</div>
+      <div class="ib red"><strong>Accuracy Issues:</strong> Some items included (estimates, provisions) may not be accurate</div>
+      <div class="ib red"><strong>Historical Situation:</strong> Only reflects the past; doesn't capture future potential or risks</div>
+      <div class="ib red"><strong>Point-in-time Snapshot:</strong> Only a single moment — doesn't show trends or seasonal fluctuations</div>
+    </div>
+    <div class="ib red"><strong>Omissions:</strong> Many important items are excluded from valuation (brand equity, human capital, customer relationships, innovation potential)</div>
+  </div>
+
+</div>
+
+<!-- ============================== 2.3 INCOME STATEMENT ============================== -->
+<div class="section" id="sec-is">
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon icon-green">📈</div>
+      <div>
+        <h2>2.3 Income Statement (IS)</h2>
+        <p style="color:var(--muted);font-size:12px">Reflects income, expenses, and results <strong>over a period of time</strong> — uses ACCRUAL basis</p>
+      </div>
+    </div>
+    <div class="ib green">
+      <strong>Definition:</strong> The Income Statement reflects the income, expenses, and business results of an enterprise over a period of time. It answers: <em>"How did the company perform? Did it generate a profit or a loss? Did it create economic value?"</em>
+    </div>
+    <h3>Three Activity Categories on the IS</h3>
+    <div class="grid-3">
+      <div class="ib blue"><strong>Core Business Activities</strong> — Sales revenue, COGS, Selling Expenses, G&A Expenses → Core Business Profit</div>
+      <div class="ib gold"><strong>Financial Activities</strong> — Financial Income, Financial Expenses (including Interest) → Financial Profit</div>
+      <div class="ib purple"><strong>Other Activities</strong> — Non-routine transactions (fixed asset disposals, penalties, recoveries) → Other Profit</div>
+    </div>
+    <h3>Two Key Accounting Principles</h3>
+    <div class="two-col">
+      <div class="ib green"><strong>Revenue Recognition:</strong> Revenue recognized when transaction occurs, economic benefits are certain, and amount is determinable — regardless of whether cash has been received.</div>
+      <div class="ib blue"><strong>Expense Recognition (Matching Principle):</strong> Expenses recognized in the period when the related revenue is recognized — not when cash is paid.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-bottom:14px">📐 The Complete Income Statement Flow</h2>
+    <div style="background:var(--bg);border-radius:10px;padding:16px">
+      <div class="flow">
+        <span class="fi gold">① Gross Revenue (01)</span>
+        <span class="fm">−</span>
+        <span class="fi">Deductions (02)</span>
+        <span class="fa">→</span>
+        <span class="fi green">Net Revenue (10 = 01−02)</span>
+      </div>
+      <div class="flow" style="margin-top:8px">
+        <span class="fi green">Net Revenue (10)</span>
+        <span class="fm">−</span>
+        <span class="fi">COGS (11)</span>
+        <span class="fa">→</span>
+        <span class="fi gold">Gross Profit (20 = 10−11)</span>
+      </div>
+      <div class="flow" style="margin-top:8px">
+        <span class="fi gold">Gross Profit (20)</span>
+        <span class="fp">+</span>
+        <span class="fi">(21−22) Fin. Profit</span>
+        <span class="fm">−</span>
+        <span class="fi">Sell. (25)</span>
+        <span class="fm">−</span>
+        <span class="fi">G&A (26)</span>
+        <span class="fa">→</span>
+        <span class="fi">Net Op. Profit (30)</span>
+      </div>
+      <div class="flow" style="margin-top:8px">
+        <span class="fi">Net Op. Profit (30)</span>
+        <span class="fp">+</span>
+        <span class="fi">(31−32) Other Profit (40)</span>
+        <span class="fa">→</span>
+        <span class="fi gold">EBT / Profit Before Tax (50)</span>
+      </div>
+      <div class="flow" style="margin-top:8px">
+        <span class="fi gold">EBT (50)</span>
+        <span class="fm">−</span>
+        <span class="fi">ITE Current (51)</span>
+        <span class="fm">−</span>
+        <span class="fi">ITE Deferred (52)</span>
+        <span class="fa">→</span>
+        <span class="fi green">EAT / Net Profit (60)</span>
+      </div>
+    </div>
+    <div class="formula-box" style="margin-top:12px">
+      <div class="formula">CBP = GP − Selling Expenses − G&A Expenses &nbsp;|&nbsp; EBIT = EBT + I &nbsp;|&nbsp; EAT = EBT − ITE</div>
+      <div class="flabel">Core formulas for the exam</div>
+    </div>
+  </div>
+
+  <div class="slabel">Key Income Statement Items</div>
+  <div class="grid-2">
+    <div class="card">
+      <h3>Revenue Deductions (Codes 02)</h3>
+      <ul class="sl">
+        <li><strong>Trade Discounts</strong> — Given at time of sale to encourage bulk buying (e.g., 10% off for 1,000+ units) → reduces Net Revenue</li>
+        <li><strong>Sales Reductions</strong> — Price reductions for defective or low-quality goods</li>
+        <li><strong>Value of Returned Goods</strong> — Revenue reversed for goods returned by customers</li>
+      </ul>
+      <div class="ib gold" style="font-size:12.5px"><strong>Trade Discount (reduces revenue)</strong> ≠ <strong>Payment Discount</strong> (e.g., "2/10, net 30" → increases financial expenses)</div>
+    </div>
+    <div class="card">
+      <h3>COGS (Code 11) — Varies by Sector</h3>
+      <ul class="sl">
+        <li><strong>Trade sector:</strong> Total purchase price + procurement costs of goods sold during the period</li>
+        <li><strong>Service sector:</strong> Direct costs incurred to create services provided during the period</li>
+        <li><strong>Manufacturing:</strong> Total production cost of the quantity of products sold during the period</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Selling Expenses (Code 25)</h3>
+      <ul class="sl">
+        <li>Transportation costs, loading/unloading of goods</li>
+        <li>Salaries for sales and marketing staff</li>
+        <li>Agent commissions</li>
+        <li>Advertising expenses, promotions</li>
+        <li>Customer conference costs</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>General & Administrative Expenses (Code 26)</h3>
+      <ul class="sl">
+        <li>Salaries for management/administrative employees</li>
+        <li>Expenses for fixed assets used in management</li>
+        <li>Costs for outsourced services</li>
+        <li>Other overhead costs for management department</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-bottom:14px">🔍 EBIT, EBT, and EAT — The Profit Cascade</h2>
+    <div class="grid-3">
+      <div class="ib blue">
+        <strong>EBIT</strong> (Earnings Before Interest & Taxes)<br>
+        Profit before impact of financing decisions and taxes.<br>
+        <span style="font-family:monospace;font-size:12px">= CBP + Fin Profit (excl. I) + Other Profit</span><br>
+        <span style="font-family:monospace;font-size:12px">= EBT + Interest Expense (I)</span>
+      </div>
+      <div class="ib gold">
+        <strong>EBT</strong> (Earnings Before Tax)<br>
+        Overall results before corporate income tax.<br>
+        <span style="font-family:monospace;font-size:12px">= EBIT − Interest Expense</span><br>
+        <span style="font-family:monospace;font-size:12px">= CBP + Financial Profit + Other Profit</span>
+      </div>
+      <div class="ib green">
+        <strong>EAT</strong> (Earnings After Tax / Net Income)<br>
+        The FINAL profit belonging to the owners.<br>
+        <span style="font-family:monospace;font-size:12px">= EBT − Income Tax Expense (ITE)</span>
+      </div>
+    </div>
+
+    <div class="ex-box" style="margin-top:14px">
+      <div class="ex-hdr" onclick="toggleEx(this)">
+        <h4>📝 Example 2.2 — Calculate EBIT using two approaches (2023 & 2024)</h4>
+        <button class="ex-btn">Show Solution ▼</button>
+      </div>
+      <div class="ex-content">
+        <table class="comp-table" style="font-size:12.5px">
+          <tr><th>Indicator</th><th>2023</th><th>2024</th></tr>
+          <tr><td>Net Revenue</td><td>5,600</td><td>6,400</td></tr>
+          <tr><td>COGS</td><td>3,600</td><td>4,200</td></tr>
+          <tr><td>Financial Income</td><td>1,200</td><td>1,500</td></tr>
+          <tr><td>Financial Expenses (total)</td><td>700</td><td>900</td></tr>
+          <tr><td>— of which: Interest Expense (I)</td><td>400</td><td>500</td></tr>
+          <tr><td>Selling Expenses</td><td>800</td><td>1,000</td></tr>
+          <tr><td>G&A Expenses</td><td>600</td><td>800</td></tr>
+          <tr><td>Other Income</td><td>400</td><td>300</td></tr>
+          <tr><td>Other Expenses</td><td>300</td><td>250</td></tr>
+          <tr><td><strong>EBT (given)</strong></td><td><strong>1,200</strong></td><td><strong>1,050</strong></td></tr>
+        </table>
+        <div class="two-col" style="margin-top:10px">
+          <div class="ib blue" style="font-size:12.5px">
+            <strong>Approach 1: EBIT = CBP + Fin Profit (excl. I) + Other Profit</strong><br>
+            2023: CBP = 5,600−3,600−800−600 = <strong>600</strong><br>
+            Fin Profit (excl I) = 1,200−(700−400) = <strong>900</strong><br>
+            Other = 400−300 = <strong>100</strong><br>
+            EBIT = 600+900+100 = <strong style="color:var(--green)">1,600</strong><br><br>
+            2024: CBP = 6,400−4,200−1,000−800 = <strong>400</strong><br>
+            Fin Profit (excl I) = 1,500−(900−500) = <strong>1,100</strong><br>
+            Other = 300−250 = <strong>50</strong><br>
+            EBIT = 400+1,100+50 = <strong style="color:var(--green)">1,550</strong>
+          </div>
+          <div class="ib green" style="font-size:12.5px">
+            <strong>Approach 2: EBIT = EBT + I</strong><br>
+            2023: 1,200 + 400 = <strong style="color:var(--navy)">1,600</strong> ✓<br>
+            2024: 1,050 + 500 = <strong style="color:var(--navy)">1,550</strong> ✓<br><br>
+            <em>Both approaches must give the same result — use Approach 2 as a quick check!</em>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slabel">Income Tax — Temporary vs Permanent Differences</div>
+
+  <div class="card">
+    <h2 style="margin-bottom:14px">💰 Income Tax Expense (ITE)</h2>
+    <div class="formula-box">
+      <div class="formula">ITE = ITE-Current + ITE-Deferred &nbsp;|&nbsp; ITE-Current = TI × t &nbsp;|&nbsp; ITE-Deferred = TD × t</div>
+      <div class="flabel">TI = Taxable Income · t = Tax Rate · TD = Temporary Difference</div>
+    </div>
+    <div class="two-col" style="margin-top:12px">
+      <div>
+        <div class="ib blue">
+          <strong>Temporary Difference (TD)</strong> — Difference in <strong>TIMING</strong> between EBT and TI that <strong>WILL REVERSE</strong> in the future. Creates Deferred Tax items (DTA or DTL).<br><br>
+          <span style="font-family:monospace">TD = EBT − TI</span><br>
+          When TD exists: <span style="font-family:monospace">ITE = EBT × t</span> and <span style="font-family:monospace">EAT = EBT × (1−t)</span>
+        </div>
+        <table class="comp-table" style="margin-top:10px;font-size:12.5px">
+          <tr><th>Feature</th><th>DTA</th><th>DTL</th></tr>
+          <tr><td>Condition</td><td>EBT < TI (pay more tax NOW)</td><td>EBT > TI (pay less tax NOW)</td></tr>
+          <tr><td>Future Impact</td><td>Future tax reduction</td><td>Future tax increase</td></tr>
+          <tr><td>Balance Sheet</td><td>Asset (non-current)</td><td>Liability (non-current)</td></tr>
+        </table>
+      </div>
+      <div>
+        <div class="ib gold">
+          <strong>Permanent Difference (PD)</strong> — Difference between EBT and TI from revenues/expenses <strong>NEVER included in TI</strong>. <strong>NEVER REVERSES</strong>. Changes effective tax rate.<br><br>
+          <span style="font-family:monospace">PD = |EBT − TI|</span><br>
+          When PD exists: <span style="font-family:monospace">ITE ≠ EBT×t</span> and <span style="font-family:monospace">EAT ≠ EBT×(1−t)</span>
+        </div>
+        <div class="ib green" style="margin-top:8px;font-size:12.5px">
+          <strong>PD from Tax-Exempt Income:</strong> Income in EBT but NOT in TI (e.g., donations received, income from capital contributions). TI < EBT → <strong>Tax burden DECREASES</strong> → EAT > EBT×(1−t)
+        </div>
+        <div class="ib red" style="font-size:12.5px">
+          <strong>PD from Non-deductible Expenses:</strong> Expenses in EBT but NOT allowed for TI (e.g., no-invoice expenses, excess advertising costs, excess loan interest). TI > EBT → <strong>Tax burden INCREASES</strong> → EAT < EBT×(1−t)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="ex-box">
+      <div class="ex-hdr" onclick="toggleEx(this)">
+        <h4>📝 Example 2.5 — Tax-Exempt Income (PD)</h4>
+        <button class="ex-btn">Show ▼</button>
+      </div>
+      <div class="ex-content">
+        <div class="ib blue">Revenue = 100, Expenses = 70, Tax-exempt income = 10 (within revenue), Tax rate = 20%</div>
+        <ul class="sl" style="font-size:12.5px;margin-top:6px">
+          <li>EBT = 100 − 70 = <strong>30</strong></li>
+          <li>TI = (100−10) − 70 = <strong>20</strong> (exempt income excluded from TI)</li>
+          <li>PD = |30 − 20| = <strong>10</strong></li>
+          <li>ITE = 20 × 20% = <strong>4</strong> (based on TI, not EBT)</li>
+          <li>EAT = 30 − 4 = <strong>26</strong></li>
+          <li>EBT×(1−t) = 30×0.8 = 24; EAT(26) > 24 ✓ Tax reduced</li>
+        </ul>
+      </div>
+    </div>
+    <div class="ex-box">
+      <div class="ex-hdr" onclick="toggleEx(this)">
+        <h4>📝 Example 2.6 — Non-deductible Expense (PD)</h4>
+        <button class="ex-btn">Show ▼</button>
+      </div>
+      <div class="ex-content">
+        <div class="ib red">Revenue = 100, Expenses = 70 (incl. 10 non-deductible), Tax rate = 20%</div>
+        <ul class="sl" style="font-size:12.5px;margin-top:6px">
+          <li>EBT = 100 − 70 = <strong>30</strong></li>
+          <li>TI = 100 − (70−10) = 100 − 60 = <strong>40</strong> (non-deductible added back to TI)</li>
+          <li>PD = |30 − 40| = <strong>10</strong></li>
+          <li>ITE = 40 × 20% = <strong>8</strong></li>
+          <li>EAT = 30 − 8 = <strong>22</strong></li>
+          <li>EBT×(1−t) = 24; EAT(22) < 24 ✓ Tax burden increased</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:4px">
+    <h2 style="color:var(--red);margin-bottom:12px">⚠️ Limitations of the Income Statement</h2>
+    <div class="grid-3">
+      <div class="ib red">Does NOT show <strong>actual cash inflows/outflows</strong> during the period</div>
+      <div class="ib red">Accounting profit can be <strong>distorted</strong> by management accounting choices</div>
+      <div class="ib red">Risk of <strong>"fake profit, real loss"</strong> — profitable on IS but negative cash flow in reality</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================== 2.4 CASH FLOW ============================== -->
+<div class="section" id="sec-cfs">
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon icon-purple">💸</div>
+      <div>
+        <h2>2.4 Cash Flow Statement (CFS)</h2>
+        <p style="color:var(--muted);font-size:12px">Uses CASH ACCOUNTING — recorded only when cash actually changes hands</p>
+      </div>
+    </div>
+    <div class="ib purple">
+      <strong>Definition:</strong> The CFS shows where cash comes from (inflows) and where it goes (outflows) during a period. Divided into three main activities: <strong>Operating (CFO), Investing (CFI), and Financing (CFF).</strong>
+    </div>
+    <div class="ib blue">
+      <strong>Key Difference:</strong> BS and IS use <strong>ACCRUAL accounting</strong> — recorded when earned/incurred. CFS uses <strong>CASH accounting</strong> — recorded only when cash actually comes in or goes out.
+    </div>
+    <div class="formula-box">
+      <div class="formula">Cash(end) = Cash(begin) + NCFO + NCFI + NCFF + Exchange Rate Effect</div>
+      <div class="flabel">The fundamental cash balance equation</div>
+    </div>
+  </div>
+
+  <div class="slabel">Three Cash Flow Components</div>
+
+  <div class="grid-3">
+    <div class="card">
+      <div style="background:var(--blue-light);border-radius:8px;padding:10px;margin-bottom:10px;text-align:center">
+        <div style="font-size:22px">🔄</div>
+        <h2 style="font-size:15px;color:var(--blue)">CFO — Operating</h2>
+      </div>
+      <div class="ib blue" style="font-size:12.5px">Cash from <strong>main business activities</strong>. Reflects the company's <strong>ability to generate cash</strong>.</div>
+      <div style="font-size:12px;margin:8px 0;background:var(--bg);padding:10px;border-radius:8px">
+        <strong>NCFO = (1)+(6) − (2)−(3)−(4)−(5)−(7)</strong><br>
+        (+) Cash received from customers<br>
+        (+) Other operating receipts<br>
+        (−) Paid to suppliers, employees<br>
+        (−) Interest paid, Income tax paid
+      </div>
+      <table class="cft">
+        <tr><th colspan="2">Interpretation</th></tr>
+        <tr><td><span class="pos">NCFO > 0</span></td><td>Cash surplus</td></tr>
+        <tr><td>NCFO = 0</td><td>Break even</td></tr>
+        <tr><td><span class="neg">NCFO < 0</span></td><td>Cash deficit</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <div style="background:var(--gold-light);border-radius:8px;padding:10px;margin-bottom:10px;text-align:center">
+        <div style="font-size:22px">🏗</div>
+        <h2 style="font-size:15px;color:var(--navy)">CFI — Investing</h2>
+      </div>
+      <div class="ib gold" style="font-size:12.5px">Cash from <strong>fixed assets, real estate, financial investments</strong>. Reflects <strong>investment trends</strong>.</div>
+      <div style="font-size:12px;margin:8px 0;background:var(--bg);padding:10px;border-radius:8px">
+        <strong>NCFI = (2)+(4)+(6)+(7) − (1)−(3)−(5)</strong><br>
+        (+) Disposal of fixed assets<br>
+        (+) Receipts from term deposits<br>
+        (+) Collections from investments<br>
+        (+) Interest & dividends received<br>
+        (−) Purchase of fixed assets, PPE<br>
+        (−) Payments for investments
+      </div>
+      <table class="cft">
+        <tr><th colspan="2">Interpretation</th></tr>
+        <tr><td><span class="pos">NCFI > 0</span></td><td>Contracting</td></tr>
+        <tr><td>NCFI = 0</td><td>No trend</td></tr>
+        <tr><td><span class="neg">NCFI < 0</span></td><td>Expanding 📈</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <div style="background:var(--green-light);border-radius:8px;padding:10px;margin-bottom:10px;text-align:center">
+        <div style="font-size:22px">🏦</div>
+        <h2 style="font-size:15px;color:var(--green)">CFF — Financing</h2>
+      </div>
+      <div class="ib green" style="font-size:12.5px">Cash flows changing <strong>borrowed capital and equity structure</strong>. Reflects <strong>external financing</strong>.</div>
+      <div style="font-size:12px;margin:8px 0;background:var(--bg);padding:10px;border-radius:8px">
+        <strong>NCFF = (1)+(3) − (2)−(4)−(5)−(6)</strong><br>
+        (+) Proceeds from borrowings<br>
+        (+) Capital contributions<br>
+        (−) Loan principal repayment<br>
+        (−) Dividends paid<br>
+        (−) Capital refunded
+      </div>
+      <table class="cft">
+        <tr><th colspan="2">Interpretation</th></tr>
+        <tr><td><span class="pos">NCFF > 0</span></td><td>External financed</td></tr>
+        <tr><td>NCFF = 0</td><td>No external need</td></tr>
+        <tr><td><span class="neg">NCFF < 0</span></td><td>Repaid debt/dividends</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-bottom:12px">⚡ Classification Guide — Which Activity?</h2>
+    <table class="comp-table" style="font-size:13px">
+      <tr><th>Item</th><th>Category</th><th>Reason</th></tr>
+      <tr><td>Cash received from customers</td><td><span class="pos">CFO</span></td><td>Main business operations</td></tr>
+      <tr><td>Cash paid to suppliers/employees</td><td><span class="pos">CFO</span></td><td>Main business operations</td></tr>
+      <tr><td>Interest paid</td><td><span class="pos">CFO</span></td><td>Cost of operating financing</td></tr>
+      <tr><td>Income tax paid</td><td><span class="pos">CFO</span></td><td>Tax on operating income</td></tr>
+      <tr><td>Trading securities (buy/sell)</td><td><span class="pos">CFO</span></td><td>Short-term intent, like inventory</td></tr>
+      <tr><td>Purchase of fixed assets (PPE)</td><td><span style="color:var(--gold);font-weight:700">CFI</span></td><td>Long-term investment in assets</td></tr>
+      <tr><td>Held-to-maturity investments</td><td><span style="color:var(--gold);font-weight:700">CFI</span></td><td>Long-term intent investments</td></tr>
+      <tr><td>Interest received from bank deposits</td><td><span style="color:var(--gold);font-weight:700">CFI</span></td><td>Return on investing activities</td></tr>
+      <tr><td>Dividends received in cash</td><td><span style="color:var(--gold);font-weight:700">CFI</span></td><td>Return on long-term investments</td></tr>
+      <tr><td>Proceeds from borrowings</td><td><span style="color:var(--purple);font-weight:700">CFF</span></td><td>Changes debt structure</td></tr>
+      <tr><td>Loan principal repayment</td><td><span style="color:var(--purple);font-weight:700">CFF</span></td><td>Changes debt structure</td></tr>
+      <tr><td>Dividends paid to shareholders</td><td><span style="color:var(--purple);font-weight:700">CFF</span></td><td>Changes equity structure</td></tr>
+      <tr><td>Equity investments in others (non-trading)</td><td><span style="color:var(--gold);font-weight:700">CFI</span></td><td>Long-term investment intent</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-bottom:14px">🔄 Indirect Method for NCFO</h2>
+    <div class="ib blue">The indirect method starts from <strong>EBT (or EAT)</strong> and adjusts for non-cash items and working capital changes to arrive at NCFO.</div>
+    <div class="two-col" style="margin-top:12px">
+      <div>
+        <div class="ib gold" style="font-size:13px"><strong>Starting from EBT:</strong></div>
+        <ul class="sl" style="font-size:12.5px">
+          <li><strong>1. EBT</strong></li>
+          <li><strong>2. Add back non-cash/non-operating items:</strong><br>+ Depreciation & Amortization<br>± Provisions (+ increase, − decrease)<br>− Gain / + Loss from investing activities<br><span style="color:var(--red)">+ Interest Expense</span> (added back here)</li>
+          <li><strong>3. Operating Profit before WC changes</strong></li>
+          <li>± Changes in receivables (↑ = outflow)</li>
+          <li>± Changes in inventories (↑ = outflow)</li>
+          <li>± Changes in payables excl. interest & CIT (↑ = inflow)</li>
+          <li>± Changes in prepaid expenses</li>
+          <li><span style="color:var(--red)">− Interest paid</span> (separately deducted)</li>
+          <li><span style="color:var(--red)">− Income tax paid</span> (separately deducted)</li>
+          <li><strong>= NCFO</strong></li>
+        </ul>
+      </div>
+      <div>
+        <div class="ib green" style="font-size:13px"><strong>Starting from EAT:</strong></div>
+        <ul class="sl" style="font-size:12.5px">
+          <li><strong>1. EAT</strong></li>
+          <li><strong>2. Add back non-cash items:</strong><br>+ Depreciation & Amortization<br>± Provisions<br>− Gain / + Loss from investing<br><span style="color:var(--blue)">(Note: Interest expense NOT added back — already in EAT)</span></li>
+          <li><strong>3. Cash Flow before WC changes</strong></li>
+          <li>± Changes in WC (ΔWC)<br><em>Includes changes in payables for interest and tax payable</em></li>
+          <li><strong>4. Cash Flow after WC changes</strong></li>
+          <li>± Other factors</li>
+          <li><strong>= NCFO</strong></li>
+        </ul>
+        <div class="ib gold" style="font-size:12px;margin-top:6px">
+          <strong>Key Difference:</strong> EBT method adds back interest expense and separately deducts cash paid for interest and tax. EAT method includes these effects within working capital changes (via changes in interest payable and taxes payable).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ex-box">
+    <div class="ex-hdr" onclick="toggleEx(this)">
+      <h4>📝 Example 2.10 — Calculate NCF for Company X</h4>
+      <button class="ex-btn">Show Solution ▼</button>
+    </div>
+    <div class="ex-content">
+      <table class="comp-table" style="font-size:12.5px">
+        <tr><th>Item</th><th>Amount</th><th>Category</th><th>Sign in NCF</th></tr>
+        <tr><td>Cash received from customers</td><td>1,000</td><td>CFO</td><td>+</td></tr>
+        <tr><td>Cash paid to suppliers</td><td>700</td><td>CFO</td><td>−</td></tr>
+        <tr><td>Cash paid to employees</td><td>400</td><td>CFO</td><td>−</td></tr>
+        <tr><td>Income tax paid</td><td>200</td><td>CFO</td><td>−</td></tr>
+        <tr><td><strong>NCFO</strong></td><td><span class="neg"><strong>−300</strong></span></td><td></td><td>Deficit! ⚠️</td></tr>
+        <tr><td>Payments for additions to fixed assets</td><td>500</td><td>CFI</td><td>−</td></tr>
+        <tr><td>Receipts from disposals of fixed assets</td><td>800</td><td>CFI</td><td>+</td></tr>
+        <tr><td>Payments for investments in bond</td><td>200</td><td>CFI</td><td>−</td></tr>
+        <tr><td>Receipts of interest and dividends</td><td>100</td><td>CFI</td><td>+</td></tr>
+        <tr><td><strong>NCFI</strong></td><td><span class="pos"><strong>+200</strong></span></td><td></td><td>Contracting</td></tr>
+        <tr><td>Proceeds from borrowings</td><td>2,000</td><td>CFF</td><td>+</td></tr>
+        <tr><td>Payments to settle loan principals</td><td>1,200</td><td>CFF</td><td>−</td></tr>
+        <tr><td>Payments of dividends</td><td>300</td><td>CFF</td><td>−</td></tr>
+        <tr><td><strong>NCFF</strong></td><td><span class="pos"><strong>+500</strong></span></td><td></td><td>External financed</td></tr>
+      </table>
+      <div class="ib green" style="margin-top:10px;font-size:13px">
+        <strong>NCF = −300 + 200 + 500 = 400</strong><br>
+        Cash at beginning of year: 300<br>
+        <strong>Cash at end of year = 300 + 400 = 700</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <h2 style="color:var(--red);margin-bottom:10px">⚠️ Limitations of the Cash Flow Statement</h2>
+    <div class="two-col">
+      <div class="ib red">Does <strong>NOT reflect the enterprise's profit</strong> for the reporting period</div>
+      <div class="ib red">Does <strong>NOT present the financial position</strong> (assets, liabilities, receivables, payables) at period end</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================== 2.5 NOTES ============================== -->
+<div class="section" id="sec-notes">
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon icon-gold">📝</div>
+      <div>
+        <h2>2.5 Notes to the Financial Statements</h2>
+        <p style="color:var(--muted);font-size:12px">Explanatory documents that help users better understand BS, IS, and CFS</p>
+      </div>
+    </div>
+    <div class="ib blue">
+      <strong>Definition:</strong> Notes to the Financial Statements are <strong>explanatory documents</strong> that help users better understand the Balance Sheet, the Income Statement, and the Cash Flow Statement. They provide context, accounting policies, and additional detail.
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <h2 style="margin-bottom:12px">📌 Significance</h2>
+      <ul class="sl">
+        <li>Provides information on the <strong>basis used to prepare</strong> the financial statements and specific accounting policies selected and applied to significant transactions and events</li>
+        <li>Provides information <strong>required by accounting standards</strong> that has not yet been presented in the other financial statements</li>
+        <li>Provides <strong>additional information</strong> not in other statements but necessary for a true and fair presentation of the enterprise's financial situation</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2 style="margin-bottom:12px">📋 Information Included in Notes</h2>
+      <ul class="sl">
+        <li>Nature of the company's operations (business description)</li>
+        <li>Accounting period and the currency used</li>
+        <li>Accounting standards and accounting regulations applied in preparing the financial statements</li>
+        <li>Applied accounting policies (depreciation method, inventory valuation, revenue recognition criteria, etc.)</li>
+        <li>Additional information supporting the Balance Sheet, Income Statement, and Cash Flow Statement (detailed breakdowns, contingencies, commitments)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-bottom:14px">🔗 Relationships Between All Three Financial Statements</h2>
+    <div class="grid-3">
+      <div class="ib blue"><strong>IS → BS:</strong> Net Income flows into Retained Earnings (equity). Revenue recognition creates Accounts Receivable. Accrued expenses create Accrued Liabilities.</div>
+      <div class="ib gold"><strong>BS → CFS:</strong> Changes in BS items drive Working Capital adjustments in indirect method. Cash balance on CFS = Cash on BS. Non-cash assets explain gap between profit and cash.</div>
+      <div class="ib green"><strong>IS → CFS:</strong> Net Income is the starting point for indirect method CFS. Depreciation (IS expense) added back to CFS. Non-cash revenues subtracted. Timing differences create the gap.</div>
+    </div>
+    <table class="comp-table" style="margin-top:14px;font-size:13px">
+      <tr><th>Transaction</th><th>Effect on IS</th><th>Effect on BS</th><th>Effect on CFS</th></tr>
+      <tr><td>Sell goods on credit ($500)</td><td>Revenue +500</td><td>Accounts Receivable +500</td><td>No immediate cash effect</td></tr>
+      <tr><td>Collect accounts receivable ($400)</td><td>No effect</td><td>Cash +400, AR −400</td><td>CFO inflow +400</td></tr>
+      <tr><td>Depreciation expense ($100)</td><td>Expense +100, Profit −100</td><td>PPE (net) −100</td><td>Added back in indirect method</td></tr>
+      <tr><td>Pay dividends ($200)</td><td>No effect on IS</td><td>Cash −200, RE −200</td><td>CFF outflow −200</td></tr>
+    </table>
+  </div>
+
+</div>
+
+<!-- ============================== QUIZ ============================== -->
+<div class="section" id="sec-quiz">
+  <div class="quiz-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <h2 style="font-size:19px;color:var(--navy)">🎯 Chapter 2 — Exam Practice Quiz</h2>
+      <span class="badge">12 Questions</span>
+    </div>
+    <div class="quiz-progress"><div class="quiz-progress-bar" id="qpbar" style="width:0%"></div></div>
+
+    <div id="quizContainer">
+      <div class="quiz-question" id="qText"></div>
+      <div class="quiz-options" id="qOpts"></div>
+      <div class="quiz-fb" id="qFb"></div>
+      <div class="quiz-nav">
+        <span class="qcounter" id="qCnt">Question 1 / 12</span>
+        <button class="btn btn-primary" id="qNext" onclick="nextQ()" style="display:none">Next →</button>
+      </div>
+    </div>
+
+    <div class="score-display" id="scoreSec">
+      <div class="score-circle">
+        <div class="score-num" id="sNum">0</div>
+        <div class="score-den" id="sDen">/12</div>
+      </div>
+      <div class="score-msg" id="sMsg"></div>
+      <div class="score-sub" id="sSub"></div>
+      <div style="margin-top:18px;display:flex;gap:12px;justify-content:center">
+        <button class="btn btn-gold" onclick="restartQ()">🔄 Try Again</button>
+        <button class="btn btn-primary" onclick="showTab('flashcards')">🃏 Flashcards →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== FLASHCARDS ============================== -->
+<div class="section" id="sec-flashcards">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <h2>🃏 Key Terms — Flashcards</h2>
+      <span class="badge">15 Cards</span>
+    </div>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:18px">Click the card to flip and reveal the definition & formula. Use arrows to navigate between cards.</p>
+    <div class="fc-wrap">
+      <div class="flashcard" id="fc" onclick="flipFC()">
+        <div class="fc-face fc-front">
+          <div><h3 id="fcTerm"></h3><p>Tap to reveal</p></div>
+        </div>
+        <div class="fc-face fc-back">
+          <div class="fc-def" id="fcDef"></div>
+          <div class="fc-formula" id="fcFml"></div>
+        </div>
+      </div>
+    </div>
+    <div class="hint">🖱 Click/tap card to flip · Use buttons below to navigate</div>
+    <div class="fc-controls">
+      <button class="btn btn-outline" onclick="prevFC()">← Prev</button>
+      <span class="fc-cnt" id="fcCnt">1 / 15</span>
+      <button class="btn btn-primary" onclick="nextFC()">Next →</button>
+    </div>
+    <div style="margin-top:22px;background:var(--bg);border-radius:10px;padding:14px">
+      <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px">Jump to term:</div>
+      <div id="termList" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end .main -->
+
+<script>
+// ====== TAB NAVIGATION ======
+const tabIds = ['overview','bs','is','cfs','notes','quiz','flashcards'];
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  const idx = tabIds.indexOf(id);
+  if(idx>=0) document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='quiz' && !qStarted) initQ();
+  if(id==='flashcards') buildTermList();
+}
+
+// ====== EXAMPLE TOGGLE ======
+function toggleEx(hdr) {
+  const c = hdr.nextElementSibling;
+  const b = hdr.querySelector('.ex-btn');
+  c.classList.toggle('open');
+  b.textContent = c.classList.contains('open') ? 'Hide ▲' : 'Show ▼';
+}
+
+// ====== QUIZ ======
+const qData = [
+  {q:"What is the fundamental equation of the Balance Sheet?",
+   opts:["Revenue − Expenses = Profit","Assets = Liabilities + Owner's Equity","NCFO + NCFI + NCFF = NCF","Net Revenue = Revenue − Deductions"],
+   a:1, exp:"The BS equation is A = L + E. Assets must always equal Liabilities plus Owner's Equity — the two sides always balance."},
+  {q:"Which financial statement uses CASH ACCOUNTING — only records when cash actually changes hands?",
+   opts:["Balance Sheet","Income Statement","Cash Flow Statement","Notes to Financial Statements"],
+   a:2, exp:"The CFS uses cash accounting. The BS and IS use ACCRUAL accounting — recorded when earned/incurred regardless of when cash moves."},
+  {q:"Company A: EBT = 1,200, Interest Expense (I) = 400. Calculate EBIT.",
+   opts:["800","1,200","1,600","400"],
+   a:2, exp:"EBIT = EBT + I = 1,200 + 400 = 1,600. Remember: EBIT = EBT + Interest Expense (the financing cost is added back)."},
+  {q:"If NCFI < 0, this indicates that the company's investment activities are:",
+   opts:["Contracting — selling more assets than buying","Stable — no change in investments","Expanding — investing more into long-term assets","Profitable — earning high returns"],
+   a:2, exp:"NCFI < 0 means more cash went OUT for investments (buying assets, PPE) than came IN — so investment activities are EXPANDING."},
+  {q:"A Temporary Difference where EBT > TI (Taxable Income) creates a:",
+   opts:["Deferred Tax Asset (DTA)","Deferred Tax Liability (DTL)","Permanent Difference only","No deferred tax — only current tax"],
+   a:1, exp:"When EBT > TI, the company pays LESS tax now (Tax Payable < Tax Expense) but will pay MORE in the future → Deferred Tax Liability (DTL)."},
+  {q:"Which of the following is classified as CFI — Cash Flow from Investing Activities?",
+   opts:["Interest paid to bank","Cash paid to employees","Payment for purchase of fixed assets (PPE)","Proceeds from new borrowings"],
+   a:2, exp:"Payments for fixed assets → CFI. Interest paid → CFO. Employee wages → CFO. New borrowings → CFF."},
+  {q:"Gross Profit (GP) is calculated as:",
+   opts:["Net Revenue − COGS","Revenue − All Expenses","Net Revenue − Selling Expenses − G&A","EBT + Interest Expense"],
+   a:0, exp:"GP = Net Revenue − COGS. It shows production efficiency. A higher gross profit margin indicates better efficiency in producing goods/services."},
+  {q:"Company B: Revenue = 100, Expenses = 70 (including 10 non-deductible), Tax rate = 20%. What is ITE?",
+   opts:["4","6","8","10"],
+   a:2, exp:"Permanent Difference from non-deductible expense: EBT = 30, TI = 100−(70−10) = 40. ITE = TI × t = 40 × 20% = 8. (Not EBT × t = 6!)"},
+  {q:"Which statement about the Balance Sheet is CORRECT?",
+   opts:["It covers a period of time like one year","Values represent current market values","It is a snapshot at a specific point in time","It records actual cash inflows and outflows"],
+   a:2, exp:"The Balance Sheet is a SNAPSHOT at a specific point in time (like December 31). Values are BOOK values, not market values. Cash flows are on the CFS, not BS."},
+  {q:"In the Indirect Method (starting from EBT), which adjustment must be ADDED BACK?",
+   opts:["Revenue received in advance","Gain from sale of fixed assets","Depreciation and amortization expense","Decrease in accounts payable"],
+   a:2, exp:"Depreciation is a non-cash expense (reduces profit but doesn't use cash) — so it's ADDED BACK in the indirect method. A gain from investing → subtracted (it's in CFI). Revenue in advance → changes in WC."},
+  {q:"A company receives rental income in advance of VND 5 billion for 5 years. In year 1, it records only VND 1 billion as accounting revenue. What type of difference is this?",
+   opts:["Permanent Difference from tax-exempt income","Permanent Difference from non-deductible expense","Temporary Difference can be deducted (DTA)","Temporary Difference must pay income tax (DTL)"],
+   a:2, exp:"Revenue for EBT = 1 billion, Revenue for IT = 5 billion (full amount). TI > EBT → EBT < TI. The company pays MORE tax now but LESS in the future → Temporary Difference can be deducted → DTA."},
+  {q:"Which financial statement does NOT reflect the financial position (assets, liabilities) of the company at period end?",
+   opts:["Balance Sheet","Income Statement","Cash Flow Statement","Both IS and CFS"],
+   a:3, exp:"The IS shows profitability over a period (not position), and the CFS shows cash movements over a period (not position). ONLY the Balance Sheet reflects the financial position at a specific point in time."}
+];
+
+let qIdx=0, qScore=0, qAnswered=false, qStarted=false;
+
+function initQ() {
+  qStarted=true; qIdx=0; qScore=0;
+  document.getElementById('quizContainer').style.display='block';
+  document.getElementById('scoreSec').classList.remove('show');
+  renderQ();
+}
+
+function renderQ() {
+  if(qIdx>=qData.length){showScore();return;}
+  const q=qData[qIdx];
+  qAnswered=false;
+  document.getElementById('qText').textContent=`Q${qIdx+1}. ${q.q}`;
+  document.getElementById('qCnt').textContent=`Question ${qIdx+1} / ${qData.length}`;
+  document.getElementById('qpbar').style.width=`${(qIdx/qData.length)*100}%`;
+  document.getElementById('qFb').className='quiz-fb';
+  document.getElementById('qFb').textContent='';
+  document.getElementById('qNext').style.display='none';
+  const el=document.getElementById('qOpts');
+  el.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const b=document.createElement('button');
+    b.className='quiz-option';
+    b.textContent=`${String.fromCharCode(65+i)}. ${o}`;
+    b.onclick=()=>pickQ(i);
+    el.appendChild(b);
+  });
+}
+
+function pickQ(i) {
+  if(qAnswered) return;
+  qAnswered=true;
+  const q=qData[qIdx];
+  document.querySelectorAll('.quiz-option').forEach(b=>b.classList.add('disabled'));
+  const fb=document.getElementById('qFb');
+  if(i===q.a){qScore++;document.querySelectorAll('.quiz-option')[i].classList.add('correct');fb.textContent='✅ Correct! '+q.exp;fb.className='quiz-fb show ok';}
+  else{document.querySelectorAll('.quiz-option')[i].classList.add('wrong');document.querySelectorAll('.quiz-option')[q.a].classList.add('correct');fb.textContent='❌ Incorrect. '+q.exp;fb.className='quiz-fb show nok';}
+  const nb=document.getElementById('qNext');
+  nb.style.display='block';
+  nb.textContent=qIdx+1<qData.length?'Next →':'See Score';
+}
+
+function nextQ(){qIdx++;renderQ();}
+
+function showScore(){
+  document.getElementById('quizContainer').style.display='none';
+  document.getElementById('scoreSec').classList.add('show');
+  document.getElementById('qpbar').style.width='100%';
+  document.getElementById('sNum').textContent=qScore;
+  document.getElementById('sDen').textContent='/'+qData.length;
+  const p=Math.round((qScore/qData.length)*100);
+  const msgs=p>=90?['🏆 Excellent!','You are exam-ready! Outstanding performance.']:p>=70?['👍 Good Job!','Solid understanding. Review the questions you missed.']:p>=50?['📚 Keep Studying','Good progress. Focus on the concepts you missed.']:['💪 Keep Going!','Review each section and try again. You\'ve got this!'];
+  document.getElementById('sMsg').textContent=`${msgs[0]} — ${p}%`;
+  document.getElementById('sSub').textContent=msgs[1];
+}
+
+function restartQ(){initQ();}
+
+// ====== FLASHCARDS ======
+const fcData=[
+  {t:"Balance Sheet (BS)",d:"Financial report reflecting the total value of existing assets and the sources forming those assets at a SPECIFIC POINT IN TIME. Shows the company's financial position/snapshot.",f:"A = L + E  (Assets = Liabilities + Owner's Equity)"},
+  {t:"Income Statement (IS)",d:"Financial statement reflecting income, expenses, and business results OVER A PERIOD OF TIME. Uses accrual basis. Answers: Did the company profit or lose?",f:"Revenue − Expenses = Profit"},
+  {t:"Cash Flow Statement (CFS)",d:"Shows where cash COMES FROM (inflows) and WHERE IT GOES (outflows) during a period. Uses CASH accounting basis. Divided into CFO, CFI, CFF.",f:"NCF = NCFO + NCFI + NCFF"},
+  {t:"EBIT",d:"Earnings Before Interest and Taxes. Profit before the impact of financing decisions (interest) and taxes. Measures pure operating performance.",f:"EBIT = EBT + I  |  EBIT = CBP + Fin Profit(excl.I) + Other"},
+  {t:"Core Business Profit (CBP)",d:"Profit from the main/core business activities of the enterprise. Also called Net Operating Profit from core activities.",f:"CBP = Gross Profit − Selling Exp. − G&A Exp.  (= GP − SG&A)"},
+  {t:"EAT (Net Income)",d:"Earnings After Tax — the FINAL profit belonging to the owners. After all expenses, interest, and income taxes are deducted.",f:"EAT = EBT − Income Tax Expense (ITE)"},
+  {t:"Gross Profit (GP)",d:"Profit after deducting Cost of Goods Sold from Net Revenue. Higher gross profit = better production/service efficiency.",f:"GP = Net Revenue − COGS"},
+  {t:"Temporary Difference (TD)",d:"Difference in TIMING between EBT and Taxable Income (TI) that WILL REVERSE in future periods. Creates Deferred Tax Assets (DTA) or Deferred Tax Liabilities (DTL).",f:"TD = EBT − TI  |  ITE = EBT×t  |  EAT = EBT×(1−t)"},
+  {t:"Permanent Difference (PD)",d:"Difference between EBT and TI from revenues/expenses NEVER included in TI. NEVER reverses. Changes the effective tax rate permanently.",f:"PD = |EBT − TI|  |  ITE ≠ EBT×t  |  EAT ≠ EBT×(1−t)"},
+  {t:"DTA vs DTL",d:"DTA (Deferred Tax Asset): EBT < TI — company pays MORE tax now, LESS in future. DTL (Deferred Tax Liability): EBT > TI — company pays LESS tax now, MORE in future.",f:"DTA: TI > EBT (pay more now)  |  DTL: EBT > TI (pay less now)"},
+  {t:"NCFO",d:"Net Cash Flow from Operating Activities. Reflects the company's ability to generate cash from core business. Positive NCFO is key sign of financial health.",f:"NCFO = Cash In(ops) − Cash Out(ops)"},
+  {t:"NCFI",d:"Net Cash Flow from Investing Activities. Reflects investment trends. NCFI < 0 means EXPANDING investments. NCFI > 0 means CONTRACTING (selling assets).",f:"NCFI = Cash In(invest) − Cash Out(invest)"},
+  {t:"NCFF",d:"Net Cash Flow from Financing Activities. Reflects external financing. NCFF > 0 means financed externally. NCFF < 0 means repaid debt or paid dividends.",f:"NCFF = Cash In(finance) − Cash Out(finance)"},
+  {t:"Retained Earnings",d:"Accumulated net income that has NOT been distributed to shareholders as dividends. Flows from Income Statement into the Balance Sheet equity section each period.",f:"RE(end) = RE(begin) + Net Income − Dividends"},
+  {t:"Accrual vs Cash Accounting",d:"ACCRUAL (BS, IS): Record revenue when EARNED and expenses when INCURRED — regardless of cash. CASH (CFS): Record only when cash ACTUALLY changes hands. This timing difference = gap between profit and cash flow.",f:"Cash Flow = Profit + Depreciation ± WC Changes ± Other Non-cash"},
+];
+
+let fcIdx=0, fcFlipped=false;
+
+function renderFC(){
+  const c=fcData[fcIdx];
+  document.getElementById('fcTerm').textContent=c.t;
+  document.getElementById('fcDef').textContent=c.d;
+  document.getElementById('fcFml').textContent=c.f;
+  document.getElementById('fcCnt').textContent=`${fcIdx+1} / ${fcData.length}`;
+}
+
+function flipFC(){fcFlipped=!fcFlipped;document.getElementById('fc').classList.toggle('flipped',fcFlipped);}
+function nextFC(){fcIdx=(fcIdx+1)%fcData.length;fcFlipped=false;document.getElementById('fc').classList.remove('flipped');renderFC();}
+function prevFC(){fcIdx=(fcIdx-1+fcData.length)%fcData.length;fcFlipped=false;document.getElementById('fc').classList.remove('flipped');renderFC();}
+
+function buildTermList(){
+  const tl=document.getElementById('termList');
+  if(tl.children.length>0) return;
+  fcData.forEach((c,i)=>{
+    const b=document.createElement('button');
+    b.textContent=c.t;
+    b.className='tag tag-navy';
+    b.onclick=()=>{fcIdx=i;fcFlipped=false;document.getElementById('fc').classList.remove('flipped');renderFC();};
+    tl.appendChild(b);
+  });
+}
+
+// INIT
+renderFC();
+renderQ();
+</script>
+</body>
+</html>
