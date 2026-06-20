@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Working Paper · Chapter 3 — Analysis of Business Performance</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
+
+:root{
+  --paper:#EFF1E9;
+  --paper-deep:#E3E8DA;
+  --stripe:#DEE6D4;
+  --rule:#BAC3AE;
+  --ink:#1E2A38;
+  --ink-soft:#4B5A63;
+  --pos:#356B49;
+  --neg:#A6392C;
+  --stamp:#48599C;
+  --paper-white:#FAFAF6;
+  --shadow: 0 10px 30px rgba(30,42,56,0.10);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:
+    repeating-linear-gradient(180deg, transparent 0 35px, rgba(186,195,174,0.35) 35px 36px),
+    var(--paper);
+  color:var(--ink);
+  font-family:'IBM Plex Sans', sans-serif;
+  font-size:15.5px;
+  line-height:1.55;
+}
+::selection{ background: var(--stamp); color:var(--paper-white); }
+h1,h2,h3,h4{ font-family:'Fraunces', serif; font-weight:600; letter-spacing:-0.01em; margin:0 0 .4em; color:var(--ink); }
+p{margin:0 0 .9em;}
+.mono, .tnum{ font-family:'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; }
+.eyebrow{
+  font-family:'IBM Plex Mono', monospace;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  font-size:11.5px;
+  color:var(--ink-soft);
+  margin-bottom:.5em;
+}
+a{ color:var(--stamp); }
+
+/* ============ HEADER ============ */
+header.sheet{
+  position:relative;
+  max-width:1180px;
+  margin:0 auto;
+  padding:38px 28px 26px;
+  border-bottom:3px double var(--rule);
+}
+header.sheet .titles{ max-width:760px; }
+header.sheet h1{ font-size:clamp(28px,4vw,42px); line-height:1.05; }
+header.sheet .sub{ color:var(--ink-soft); font-size:15px; max-width:640px;}
+.stamp{
+  position:absolute;
+  top:30px; right:28px;
+  width:128px; height:128px;
+  border:3px double var(--stamp);
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  transform:rotate(-9deg);
+  color:var(--stamp);
+  mix-blend-mode:multiply;
+  opacity:.88;
+  text-align:center;
+  font-family:'IBM Plex Mono', monospace;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  font-size:11px;
+  font-weight:700;
+  line-height:1.35;
+  padding:10px;
+}
+.stamp span{ display:block; }
+.stamp .big{ font-size:15px; margin:3px 0; }
+@media (max-width:680px){
+  .stamp{ position:static; margin-top:18px; transform:rotate(-4deg); width:108px;height:108px; font-size:10px;}
+}
+
+/* ============ LAYOUT ============ */
+.wrap{ max-width:1180px; margin:0 auto; display:flex; align-items:flex-start; gap:0; }
+nav.tabs{
+  position:sticky; top:0;
+  width:220px; flex:none;
+  padding:26px 10px 26px 28px;
+  display:flex; flex-direction:column; gap:4px;
+}
+nav.tabs button{
+  text-align:left;
+  background:none; border:none;
+  font-family:'IBM Plex Sans',sans-serif;
+  font-size:14px; font-weight:600;
+  color:var(--ink-soft);
+  padding:10px 14px;
+  border-left:3px solid transparent;
+  cursor:pointer;
+  border-radius:2px;
+}
+nav.tabs button .num{
+  font-family:'IBM Plex Mono',monospace;
+  font-weight:400;
+  margin-right:8px;
+  color:var(--rule);
+}
+nav.tabs button:hover{ background:rgba(72,89,156,0.08); color:var(--ink); }
+nav.tabs button.active{
+  color:var(--ink);
+  border-left-color:var(--stamp);
+  background:var(--paper-white);
+  box-shadow:var(--shadow);
+}
+nav.tabs button.active .num{ color:var(--stamp); }
+
+main{ flex:1; min-width:0; padding:26px 28px 80px; }
+section.panel{ display:none; animation:fade .35s ease; }
+section.panel.active{ display:block; }
+@keyframes fade{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;} }
+
+@media (max-width:900px){
+  .wrap{ flex-direction:column; }
+  nav.tabs{
+    position:sticky; top:0; z-index:5;
+    width:100%; flex-direction:row; overflow-x:auto;
+    padding:12px 16px; gap:6px;
+    background:var(--paper); border-bottom:1px solid var(--rule);
+  }
+  nav.tabs button{ white-space:nowrap; border-left:none; border-bottom:3px solid transparent; }
+  nav.tabs button.active{ border-bottom-color:var(--stamp); box-shadow:none; }
+  main{ padding:20px 16px 64px; }
+}
+
+/* ============ CARD / SHEET BLOCKS ============ */
+.card{
+  background:var(--paper-white);
+  border:1px solid var(--rule);
+  border-radius:3px;
+  padding:22px 24px;
+  margin-bottom:20px;
+  box-shadow:var(--shadow);
+}
+.card.tight{ padding:16px 18px; }
+.grid2{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.grid3{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+@media (max-width:760px){ .grid2,.grid3{ grid-template-columns:1fr; } }
+
+.formula{
+  background:var(--paper-deep);
+  border-left:4px solid var(--stamp);
+  padding:14px 16px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:14.5px;
+  border-radius:2px;
+  margin:12px 0;
+  overflow-x:auto;
+}
+.formula .label{ color:var(--ink-soft); font-size:11px; text-transform:uppercase; letter-spacing:.08em; display:block; margin-bottom:4px;}
+
+.pill{
+  display:inline-block;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px; text-transform:uppercase; letter-spacing:.07em;
+  padding:3px 9px; border-radius:20px;
+  border:1px solid var(--rule); color:var(--ink-soft);
+  margin:0 6px 6px 0;
+}
+.pill.pos{ border-color:var(--pos); color:var(--pos); }
+.pill.neg{ border-color:var(--neg); color:var(--neg); }
+
+.steps{ counter-reset:step; list-style:none; padding:0; margin:14px 0; }
+.steps li{
+  counter-increment:step;
+  position:relative;
+  padding:6px 0 6px 38px;
+  border-bottom:1px dashed var(--rule);
+}
+.steps li:last-child{ border-bottom:none; }
+.steps li::before{
+  content:counter(step);
+  position:absolute; left:0; top:6px;
+  width:24px; height:24px; border-radius:50%;
+  background:var(--ink); color:var(--paper-white);
+  font-family:'IBM Plex Mono',monospace; font-size:12px;
+  display:flex; align-items:center; justify-content:center;
+}
+
+/* ============ TABLES ============ */
+.table-wrap{ overflow-x:auto; border:1px solid var(--rule); border-radius:3px; }
+table.ledger{ width:100%; border-collapse:collapse; font-size:13.5px; min-width:560px; }
+table.ledger th, table.ledger td{ padding:7px 10px; text-align:right; white-space:nowrap; }
+table.ledger th:first-child, table.ledger td:first-child{ text-align:left; white-space:normal; min-width:180px;}
+table.ledger thead th{ background:var(--ink); color:var(--paper-white); font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:11.5px; text-transform:uppercase; letter-spacing:.04em; position:sticky; top:0;}
+table.ledger tbody tr:nth-child(even){ background:var(--stripe); }
+table.ledger tbody tr:hover{ background:#D6E2CB; }
+table.ledger td.num{ font-family:'IBM Plex Mono',monospace; }
+table.ledger td.pos{ color:var(--pos); }
+table.ledger td.neg{ color:var(--neg); }
+table.ledger tr.total td{ font-weight:700; border-top:2px solid var(--ink); }
+
+/* ============ FLASHCARDS ============ */
+.flash-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin:14px 0; }
+.flashcard{ perspective:1000px; height:148px; cursor:pointer; }
+.flashcard .inner{ position:relative; width:100%; height:100%; transition:transform .5s; transform-style:preserve-3d; }
+.flashcard.flipped .inner{ transform:rotateY(180deg); }
+.flashcard .face{
+  position:absolute; inset:0; backface-visibility:hidden;
+  border-radius:4px; padding:16px; display:flex; align-items:center; justify-content:center; text-align:center;
+  border:1px solid var(--rule);
+}
+.flashcard .front{ background:var(--ink); color:var(--paper-white); font-family:'Fraunces',serif; font-size:17px; font-weight:600;}
+.flashcard .back{ background:var(--paper-white); transform:rotateY(180deg); font-size:13px; color:var(--ink-soft); }
+.flashcard .hint{ position:absolute; bottom:6px; right:9px; font-size:10px; color:var(--rule); font-family:'IBM Plex Mono',monospace;}
+.flashcard .front .hint{ color:rgba(255,255,255,.4); }
+
+/* ============ TAPE CALCULATOR ============ */
+.calc-grid{ display:grid; grid-template-columns:1fr 280px; gap:20px; align-items:start; }
+@media (max-width:820px){ .calc-grid{ grid-template-columns:1fr; } }
+.field{ margin-bottom:12px; }
+.field label{ display:block; font-size:11.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft); margin-bottom:4px; font-family:'IBM Plex Mono',monospace;}
+.field select, .field input[type=number], .field input[type=text]{
+  width:100%; padding:9px 10px; border:1px solid var(--rule); border-radius:3px;
+  font-family:'IBM Plex Mono',monospace; font-size:14px; background:var(--paper-white); color:var(--ink);
+}
+.field select:focus, .field input:focus{ outline:2px solid var(--stamp); outline-offset:1px; }
+.row2{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.btn{
+  font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:13px; text-transform:uppercase; letter-spacing:.05em;
+  background:var(--ink); color:var(--paper-white); border:none; border-radius:3px; padding:11px 16px; cursor:pointer;
+}
+.btn:hover{ background:var(--stamp); }
+.btn.ghost{ background:none; color:var(--ink-soft); border:1px solid var(--rule); }
+.btn.ghost:hover{ color:var(--ink); border-color:var(--ink); }
+
+.tape-frame{
+  background:linear-gradient(180deg, var(--rule) 0 8px, transparent 8px);
+  padding-top:8px;
+}
+.tape{
+  background:var(--paper-white);
+  min-height:260px; max-height:420px; overflow-y:auto;
+  padding:16px 16px 22px;
+  font-family:'IBM Plex Mono',monospace; font-size:12px;
+  box-shadow:var(--shadow);
+  transform:rotate(.6deg);
+  clip-path:polygon(0 0,100% 0,100% 97%,97% 100%,94% 96%,91% 100%,88% 96%,85% 100%,82% 96%,79% 100%,76% 96%,73% 100%,70% 96%,67% 100%,64% 96%,61% 100%,58% 96%,55% 100%,52% 96%,49% 100%,46% 96%,43% 100%,40% 96%,37% 100%,34% 96%,31% 100%,28% 96%,25% 100%,22% 96%,19% 100%,16% 96%,13% 100%,10% 96%,7% 100%,4% 96%,1% 100%,0 97%);
+}
+.tape .empty{ color:var(--rule); font-style:italic; text-align:center; padding:30px 0; }
+.tape-line{ border-bottom:1px dashed var(--rule); padding:9px 0; }
+.tape-line .ti-head{ display:flex; justify-content:space-between; font-weight:700; color:var(--ink); margin-bottom:3px;}
+.tape-line .ti-row{ display:flex; justify-content:space-between; color:var(--ink-soft); }
+.tape-line .ti-row span:last-child{ color:var(--ink); }
+.tape-line .delta.pos{ color:var(--pos); font-weight:700; }
+.tape-line .delta.neg{ color:var(--neg); font-weight:700; }
+
+/* ============ ACCORDION ============ */
+.acc-item{ border:1px solid var(--rule); border-radius:3px; margin-bottom:10px; overflow:hidden; background:var(--paper-white); }
+.acc-q{
+  width:100%; text-align:left; background:none; border:none; padding:14px 16px; cursor:pointer;
+  display:flex; justify-content:space-between; align-items:center; gap:10px;
+  font-family:'IBM Plex Sans',sans-serif; font-weight:600; font-size:14.5px; color:var(--ink);
+}
+.acc-q .arrow{ font-family:'IBM Plex Mono',monospace; color:var(--stamp); transition:transform .25s; flex:none;}
+.acc-item.open .acc-q .arrow{ transform:rotate(90deg); }
+.acc-a{ max-height:0; overflow:hidden; transition:max-height .35s ease; padding:0 16px; }
+.acc-item.open .acc-a{ max-height:900px; padding:0 16px 16px; }
+.acc-a .tag{ display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; background:var(--paper-deep); padding:2px 8px; border-radius:10px; margin:2px 4px 2px 0; color:var(--ink-soft);}
+
+/* ============ QUIZ ============ */
+.quiz-q{ border:1px solid var(--rule); border-radius:3px; padding:16px; margin-bottom:14px; background:var(--paper-white);}
+.quiz-q .qtext{ font-weight:600; margin-bottom:10px; }
+.quiz-opts{ display:flex; flex-direction:column; gap:7px; }
+.quiz-opt{
+  text-align:left; padding:9px 12px; border:1px solid var(--rule); border-radius:3px; background:var(--paper);
+  cursor:pointer; font-family:'IBM Plex Sans',sans-serif; font-size:13.5px;
+}
+.quiz-opt:hover{ border-color:var(--stamp); }
+.quiz-opt.correct{ background:#DCEFE0; border-color:var(--pos); color:var(--pos); font-weight:600; }
+.quiz-opt.incorrect{ background:#F4DCD8; border-color:var(--neg); color:var(--neg); font-weight:600; }
+.quiz-opt[disabled]{ cursor:default; }
+.quiz-feedback{ font-size:12.5px; margin-top:8px; color:var(--ink-soft); }
+.quiz-num{ display:flex; gap:8px; }
+.quiz-num input{ flex:1; padding:9px 10px; border:1px solid var(--rule); border-radius:3px; font-family:'IBM Plex Mono',monospace; }
+#scoreBar{
+  position:sticky; top:0; z-index:3; background:var(--ink); color:var(--paper-white);
+  padding:10px 16px; border-radius:3px; margin-bottom:16px; font-family:'IBM Plex Mono',monospace; font-size:13px;
+  display:flex; justify-content:space-between; align-items:center;
+}
+#scoreBar button{ background:var(--stamp); color:#fff; border:none; padding:6px 12px; border-radius:3px; font-family:'IBM Plex Mono',monospace; cursor:pointer; font-size:11.5px; }
+
+.bar-row{ display:grid; grid-template-columns:170px 1fr 70px; align-items:center; gap:10px; margin-bottom:7px; font-size:12.5px;}
+.bar-row .track{ background:var(--paper-deep); height:14px; border-radius:3px; overflow:hidden; position:relative; }
+.bar-row .fill{ height:100%; }
+.bar-row .fill.pos{ background:var(--pos); }
+.bar-row .fill.neg{ background:var(--neg); }
+.bar-row .val{ text-align:right; font-family:'IBM Plex Mono',monospace; }
+
+.callout{
+  border:1px dashed var(--stamp); background:rgba(72,89,156,0.06);
+  padding:14px 16px; border-radius:3px; font-size:13.5px; margin:14px 0;
+}
+.callout .eyebrow{ color:var(--stamp); }
+
+footer.sheet{ max-width:1180px; margin:0 auto; padding:30px 28px 60px; color:var(--ink-soft); font-size:12px; border-top:1px solid var(--rule);}
+</style>
+</head>
+<body>
+
+<header class="sheet">
+  <div class="titles">
+    <div class="eyebrow">Working Paper No. 3 · FIN713 — Corporate Finance Analysis</div>
+    <h1>Analysis of Business Performance</h1>
+    <p class="sub">A self-study companion for the essay exam — horizontal &amp; vertical analysis of the income statement, worked with HP Company's 2022–2024 figures. Built to read alongside Chapter 3 of your course outline.</p>
+  </div>
+  <div class="stamp"><span>Ho Chi Minh</span><span class="big">FIN713</span><span>University of Banking</span></div>
+</header>
+
+<div class="wrap">
+  <nav class="tabs" id="tabNav">
+    <button class="tab-btn active" data-tab="overview"><span class="num">00</span>Overview</button>
+    <button class="tab-btn" data-tab="horizontal"><span class="num">3.1</span>Horizontal Analysis</button>
+    <button class="tab-btn" data-tab="vertical"><span class="num">3.2</span>Vertical Analysis</button>
+    <button class="tab-btn" data-tab="example"><span class="num">3.3</span>HP Co. Worked Example</button>
+    <button class="tab-btn" data-tab="ros"><span class="num">3.4</span>Reading ROS Changes</button>
+    <button class="tab-btn" data-tab="practice"><span class="num">3.5</span>Essay Bank &amp; Quiz</button>
+  </nav>
+
+  <main>
+
+    <!-- ============ OVERVIEW ============ -->
+    <section class="panel active" id="panel-overview">
+      <h2>Why this chapter exists</h2>
+      <p>A single year's income statement tells you <em>what</em> a company earned. It can't tell you whether that's good, improving, or about to fall apart. Chapter 3 gives you the two simplest, most exam-relevant tools for adding that missing dimension — <strong>time</strong> and <strong>proportion</strong> — to the income statement.</p>
+
+      <div class="grid2">
+        <div class="card tight">
+          <div class="eyebrow">3.1 in one line</div>
+          <h3 style="font-size:18px;">Horizontal analysis</h3>
+          <p style="margin:0;">Lines up the <em>same item</em> across <em>different periods</em> and asks: how much did it move, in money and in percent?</p>
+        </div>
+        <div class="card tight">
+          <div class="eyebrow">3.2 in one line</div>
+          <h3 style="font-size:18px;">Vertical analysis</h3>
+          <p style="margin:0;">Lines up <em>every item</em> within <em>one period</em> against net revenue and asks: what share of every revenue dong does this item eat or keep?</p>
+        </div>
+      </div>
+
+      <h3>Learning outcomes (restated)</h3>
+      <ul>
+        <li>Give an overview of a company's business performance from its income statement.</li>
+        <li>Analyse the scale and composition of different profit components.</li>
+        <li>Analyse the scale and fluctuation of revenue.</li>
+        <li>Analyse the scale and fluctuation of costs.</li>
+      </ul>
+
+      <h3>Flip the cards — key vocabulary</h3>
+      <p style="font-size:13px;color:var(--ink-soft);">Click a card to reveal the definition. Read the front, try to answer in your head, then flip.</p>
+      <div class="flash-grid" id="flashGrid"></div>
+
+      <div class="callout">
+        <div class="eyebrow">Exam format reminder</div>
+        Your end-of-chapter assessment is a <strong>short-essay (tự luận)</strong> paper. Examiners are not just checking whether you can compute a percentage — they're checking whether you can <strong>state the formula, compute it correctly, read the direction and size of the change, and explain what it implies about the business.</strong> Every section below is built around that four-step habit.
+      </div>
+    </section>
+
+    <!-- ============ HORIZONTAL ============ -->
+    <section class="panel" id="panel-horizontal">
+      <h2>3.1 — Horizontal Analysis</h2>
+
+      <div class="card">
+        <div class="eyebrow">Purpose</div>
+        <p>To observe how financial indicators trend <strong>over time</strong> — the amount and percentage by which each item rose or fell — so you can judge the company's growth momentum and where it sits in its development cycle.</p>
+        <div class="eyebrow">Method</div>
+        <p style="margin:0;">The horizontal comparative method: place the same line item from consecutive (or otherwise related) periods side by side.</p>
+      </div>
+
+      <h3>What gets compared</h3>
+      <p>Income-statement items are compared across periods — monthly, quarterly, or annually — by looking at the change between the start and end of a period, or across several time points in sequence. The <strong>base period</strong> you compare against can be:</p>
+      <p>
+        <span class="pill">historical data (last year)</span>
+        <span class="pill">planned / budgeted targets</span>
+        <span class="pill">industry averages</span>
+      </p>
+
+      <h3>The two-step process</h3>
+      <ol class="steps">
+        <li><strong>Calculate the change.</strong> For every item (revenue, expenses, profit), find both the absolute change and the relative (%) change between the analysis period and the base period.</li>
+        <li><strong>Interpret the trend.</strong> Read what the direction and size of each change says about the business, then propose appropriate explanations or recommendations — this is the step essay questions actually grade you on.</li>
+      </ol>
+
+      <div class="formula">
+        <span class="label">Step 1 — Formulas</span>
+        Absolute change&nbsp; = &nbsp;Item<sub>analysis period</sub>&nbsp; − &nbsp;Item<sub>base period</sub><br>
+        Relative change&nbsp; = &nbsp;( Absolute change &nbsp;÷&nbsp; Item<sub>base period</sub> )&nbsp; × 100%
+      </div>
+
+      <div class="callout">
+        <div class="eyebrow">Common slip</div>
+        The denominator is always the <strong>base period</strong> value — never the analysis-period value, and never net revenue. Horizontal analysis is item-against-itself, across time. (That's vertical analysis's job — see 3.2.)
+      </div>
+
+      <h3>Try it — the calculation tape</h3>
+      <p style="font-size:13px;color:var(--ink-soft);">Pick a line item and two years from HP Company's statement (or switch to "custom" and type your own figures). Each calculation prints a new line on the tape.</p>
+
+      <div class="calc-grid">
+        <div class="card tight">
+          <div class="field">
+            <label for="hItem">Line item</label>
+            <select id="hItem"></select>
+          </div>
+          <div class="field" id="hCustomWrap" style="display:none;">
+            <label for="hCustomLabel">Custom item name</label>
+            <input type="text" id="hCustomLabel" placeholder="e.g. Marketing expense">
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="hFromYear">Base period</label>
+              <select id="hFromYear"></select>
+            </div>
+            <div class="field">
+              <label for="hToYear">Analysis period</label>
+              <select id="hToYear"></select>
+            </div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="hBaseVal">Base value (VND mn)</label>
+              <input type="number" id="hBaseVal" step="any">
+            </div>
+            <div class="field">
+              <label for="hAnalysisVal">Analysis value (VND mn)</label>
+              <input type="number" id="hAnalysisVal" step="any">
+            </div>
+          </div>
+          <button class="btn" id="hPrint">Print line on tape →</button>
+          <button class="btn ghost" id="hClear" style="margin-left:8px;">Clear tape</button>
+        </div>
+
+        <div class="tape-frame">
+          <div class="tape" id="hTape"><div class="empty">— tape is empty —<br>print your first calculation</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ VERTICAL ============ -->
+    <section class="panel" id="panel-vertical">
+      <h2>3.2 — Vertical Analysis</h2>
+
+      <div class="card">
+        <div class="eyebrow">Purpose</div>
+        <p>To judge cost efficiency and see how each profit component contributes to the company's net profit margin — by expressing every line as a <strong>share of one common base</strong>, within a <strong>single period</strong>.</p>
+        <div class="eyebrow">Method</div>
+        <p style="margin:0;">The vertical comparison method: every item is divided by the same base figure, then those ratios are compared across periods (month, quarter, half-year, year) or against each other.</p>
+      </div>
+
+      <h3>Choosing the base — it depends on the statement</h3>
+      <div class="grid3">
+        <div class="card tight"><div class="eyebrow">Income statement</div><strong>Net Revenue</strong> = 100%</div>
+        <div class="card tight"><div class="eyebrow">Balance sheet</div><strong>Total Assets</strong> = 100%</div>
+        <div class="card tight"><div class="eyebrow">Cash flow statement</div><strong>Net Cash Flow</strong> = 100%</div>
+      </div>
+      <p style="font-size:13px;color:var(--ink-soft);">This chapter focuses on the income statement, so Net Revenue is your base unless a question says otherwise. Comparison data can again be historical, planned, or industry-average figures.</p>
+
+      <h3>The three-step process</h3>
+      <ol class="steps">
+        <li><strong>Rearrange</strong> the income statement by profit component (gross profit, operating profit, profit before tax, net profit after tax) so each layer is visible.</li>
+        <li><strong>Divide</strong> every item by net revenue to get its percentage share.</li>
+        <li><strong>Analyse the trend</strong> of those ratios across periods and propose recommendations.</li>
+      </ol>
+
+      <div class="formula">
+        <span class="label">Core formula</span>
+        Item as % of revenue&nbsp; = &nbsp;( Item ÷ Net Revenue )&nbsp; × 100%
+      </div>
+
+      <div class="callout">
+        <div class="eyebrow">Horizontal vs. vertical, in one sentence</div>
+        Horizontal asks <em>"how did this item change against itself over time?"</em> Vertical asks <em>"how big is this item next to revenue, right now — and is that share growing or shrinking?"</em> A complete essay answer almost always uses both.
+      </div>
+
+      <h3>Try it — the proportion tape</h3>
+      <p style="font-size:13px;color:var(--ink-soft);">Pick a line item and a year. The base defaults to that year's Net Revenue, but you can switch the base type to match a balance sheet or cash-flow question.</p>
+
+      <div class="calc-grid">
+        <div class="card tight">
+          <div class="field">
+            <label for="vItem">Line item</label>
+            <select id="vItem"></select>
+          </div>
+          <div class="field" id="vCustomWrap" style="display:none;">
+            <label for="vCustomLabel">Custom item name</label>
+            <input type="text" id="vCustomLabel" placeholder="e.g. Marketing expense">
+          </div>
+          <div class="field">
+            <label for="vYear">Period</label>
+            <select id="vYear"></select>
+          </div>
+          <div class="field">
+            <label for="vBaseType">Base (denominator)</label>
+            <select id="vBaseType">
+              <option value="revenue">Net Revenue (income statement)</option>
+              <option value="assets">Total Assets (balance sheet)</option>
+              <option value="cash">Net Cash Flow (cash flow statement)</option>
+              <option value="custom">Custom base value</option>
+            </select>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="vItemVal">Item value (VND mn)</label>
+              <input type="number" id="vItemVal" step="any">
+            </div>
+            <div class="field">
+              <label for="vBaseVal">Base value (VND mn)</label>
+              <input type="number" id="vBaseVal" step="any">
+            </div>
+          </div>
+          <button class="btn" id="vPrint">Print line on tape →</button>
+          <button class="btn ghost" id="vClear" style="margin-left:8px;">Clear tape</button>
+        </div>
+
+        <div class="tape-frame">
+          <div class="tape" id="vTape"><div class="empty">— tape is empty —<br>print your first calculation</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WORKED EXAMPLE ============ -->
+    <section class="panel" id="panel-example">
+      <h2>3.3 — HP Company, fully worked (2022–2024, VND million)</h2>
+      <p>This is the dataset your lecture slides build their example around. Study it once here, and both tape calculators above can pull straight from it.</p>
+
+      <h3>Horizontal analysis of HP Company</h3>
+      <div class="table-wrap">
+        <table class="ledger" id="hTable"></table>
+      </div>
+
+      <h3 style="margin-top:24px;">Vertical analysis of HP Company <span style="font-weight:400;color:var(--ink-soft);font-size:13px;">(% of Net Revenue)</span></h3>
+      <div class="table-wrap">
+        <table class="ledger" id="vTable"></table>
+      </div>
+
+      <div class="callout">
+        <div class="eyebrow">How to narrate this table in an essay</div>
+        <p style="margin-bottom:6px;">"Net revenue fell 8.4% in 2023 before rebounding 27.3% in 2024, but gross profit grew in <em>both</em> years (+41.2%, then +34.3%) — meaning HP protected its margin even while revenue was shrinking. The vertical view confirms this: COGS fell from 91.8% to 86.7% of revenue across the period, so gross margin expanded from 8.2% to 13.3%. Net profit after tax grew far faster than revenue in percentage terms (+333.3% in 2023) because it started from a very small base — a reminder to always check both the percentage <em>and</em> the absolute VND figure before calling a number 'huge'."</p>
+        <p style="margin:0;font-size:12.5px;color:var(--ink-soft);">Notice the shape: state the number → name the direction → connect two metrics → flag a caveat. That's a complete short-essay paragraph.</p>
+      </div>
+    </section>
+
+    <!-- ============ ROS ============ -->
+    <section class="panel" id="panel-ros">
+      <h2>3.4 — Reading what moved ROS</h2>
+      <p>Your slides ask questions like <em>"How did selling expenses affect ROS in 2023 vs 2022?"</em> This is the single most common essay question type for this chapter, so it deserves its own walkthrough.</p>
+
+      <div class="formula">
+        <span class="label">Return on Sales (net profit margin)</span>
+        ROS&nbsp; = &nbsp;Net Profit After Tax (EAT) ÷ Net Revenue&nbsp; × 100%
+      </div>
+
+      <p>Because vertical analysis already expresses <em>every</em> item — including EAT — as a % of net revenue, the EAT row of your vertical table <strong>is</strong> ROS. That means the point-change of any other row tells you exactly how much that item pulled ROS up or down.</p>
+
+      <div class="callout">
+        <div class="eyebrow">The one rule to memorise</div>
+        If a line is an <strong>expense</strong>, a rising % of revenue <em>drags ROS down</em> by that many points; a falling % <em>lifts ROS up</em> by that many points. If a line is <strong>income</strong>, it works the other way round.
+      </div>
+
+      <h3>HP Company: what moved ROS from 0.5% (2022) to 2.4% (2023)?</h3>
+      <p style="font-size:13px;color:var(--ink-soft);">Bar length = size of the point-change in each item's share of revenue. Green = lifts ROS, red = drags ROS down.</p>
+
+      <div class="card" id="rosBars"></div>
+
+      <div class="table-wrap" style="margin-top:18px;">
+        <table class="ledger">
+          <thead><tr><th>Slide question</th><th>Driver</th><th>Effect on ROS</th></tr></thead>
+          <tbody>
+            <tr><td>How did direct cost-saving efficiency affect ROS, 2023 vs 2022?</td><td class="num">COGS ratio fell 91.8% → 87.4%</td><td class="num pos">+4.4 pts</td></tr>
+            <tr><td>How did corporate income tax expense affect ROS, 2023 vs 2022?</td><td class="num">Current tax ratio rose 0.6% → 0.7%</td><td class="num neg">−0.1 pt</td></tr>
+            <tr><td>How did selling expenses affect ROS, 2023 vs 2022?</td><td class="num">Selling-expense ratio rose 3.4% → 4.1%</td><td class="num neg">−0.8 pt</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:12.5px;color:var(--ink-soft);">These three drivers, plus smaller moves in financial expenses, G&amp;A and other income/expense, sum to the overall +1.9-point swing in ROS — small rounding gaps are normal.</p>
+    </section>
+
+    <!-- ============ PRACTICE ============ -->
+    <section class="panel" id="panel-practice">
+      <h2>3.5 — Essay Question Bank &amp; Self-Check Quiz</h2>
+
+      <h3>Sentence starters for the written exam</h3>
+      <div class="grid2">
+        <div class="card tight">
+          <div class="eyebrow">Horizontal-analysis sentence</div>
+          <p style="margin:0;font-style:italic;">"[Item] [increased/decreased] by VND [X] million ([Y]%) in [year] compared with [base year], mainly driven by ___."</p>
+        </div>
+        <div class="card tight">
+          <div class="eyebrow">Vertical-analysis sentence</div>
+          <p style="margin:0;font-style:italic;">"[Item] accounted for [X]% of net revenue in [year], [up/down] from [Y]% in [base year], which indicates ___."</p>
+        </div>
+        <div class="card tight">
+          <div class="eyebrow">ROS-bridge sentence</div>
+          <p style="margin:0;font-style:italic;">"ROS moved by [X] percentage points between [year] and [year]; [item]'s ratio change of [Y] points was the [largest/a minor] contributor because ___."</p>
+        </div>
+        <div class="card tight">
+          <div class="eyebrow">Caveat sentence (use when % looks extreme)</div>
+          <p style="margin:0;font-style:italic;">"Although the percentage change looks large ([Y]%), the absolute amount (VND [X] million) is modest because the base-period figure was small."</p>
+        </div>
+      </div>
+
+      <h3>Practice essay prompts</h3>
+      <div id="accWrap"></div>
+
+      <h3 style="margin-top:30px;">Quick self-check quiz</h3>
+      <div id="scoreBar">
+        <span id="scoreText">Score: 0 / 8</span>
+        <button id="resetQuiz">Reset quiz</button>
+      </div>
+      <div id="quizWrap"></div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="sheet">
+  Self-study companion built from FIN713 Chapter 3 lecture material (Ho Chi Minh University of Banking) and the course outline (đề cương) for Corporate Finance Analysis. Figures: HP Company, illustrative, VND million. For revision use only — always cross-check with your official lecture slides before the exam.
+</footer>
+
+<script>
+/* ============ SHARED DATA ============ */
+const years = [2022, 2023, 2024];
+const hpData = {
+  "Revenue":                       {2022:12000, 2023:11000, 2024:14000},
+  "Revenue deductions":             {2022:130,   2023:130,   2024:160},
+  "Net Revenue":                    {2022:11870, 2023:10870, 2024:13840},
+  "Cost of Goods Sold":             {2022:10900, 2023:9500,  2024:12000},
+  "Gross profit":                   {2022:970,   2023:1370,  2024:1840},
+  "Financial income":               {2022:30,    2023:35,    2024:40},
+  "Financial expenses":             {2022:200,   2023:280,   2024:270},
+  "  of which: Interest expense":   {2022:180,   2023:260,   2024:250},
+  "Selling expenses":               {2022:400,   2023:450,   2024:470},
+  "G&A expenses":                   {2022:300,   2023:350,   2024:400},
+  "Net operating profit":           {2022:100,   2023:325,   2024:740},
+  "Other income":                   {2022:40,    2023:20,    2024:30},
+  "Other expenses":                 {2022:10,    2023:5,     2024:10},
+  "Other profit":                   {2022:30,    2023:15,    2024:20},
+  "Profit before tax (EBT)":        {2022:130,   2023:340,   2024:760},
+  "Income tax – current":           {2022:70,    2023:80,    2024:100},
+  "Income tax – deferred":          {2022:0,     2023:0,     2024:-20},
+  "Net profit after tax (EAT)":     {2022:60,    2023:260,   2024:680}
+};
+const itemKeys = Object.keys(hpData);
+const totalRows = new Set(["Gross profit","Net operating profit","Profit before tax (EBT)","Net profit after tax (EAT)"]);
+
+function fmt(n){
+  if (n === null || n === undefined || isNaN(n)) return "—";
+  const sign = n < 0 ? "-" : "";
+  return sign + Math.abs(n).toLocaleString("en-US", {maximumFractionDigits:1}).replace(/\.0$/,'');
+}
+function fmtPct(n, dp=1){
+  if (n === null || n === undefined || isNaN(n)) return "—";
+  const sign = n>0 ? "+" : "";
+  return sign + n.toFixed(dp) + "%";
+}
+
+/* ============ TAB NAV ============ */
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+
+/* ============ FLASHCARDS ============ */
+const flashTerms = [
+  {f:"Horizontal analysis", b:"Comparing the same line item across different time periods to find the absolute and relative change. Answers: 'how did this move over time?'"},
+  {f:"Vertical analysis", b:"Expressing every line item as a percentage of one common base (e.g. net revenue) within a single period. Answers: 'how big is this relative to revenue, right now?'"},
+  {f:"Absolute change", b:"Item in analysis period − item in base period. Measured in the same currency unit as the item (e.g. VND million)."},
+  {f:"Relative change", b:"Absolute change ÷ item in base period × 100%. A percentage — always read together with the absolute amount."},
+  {f:"Base period", b:"The period (or benchmark) you compare against: historical data, a planned/budget target, or an industry average."},
+  {f:"ROS (Return on Sales)", b:"Net profit after tax ÷ net revenue × 100%. Equals the EAT row of a vertical-analysis table."},
+];
+const flashGrid = document.getElementById('flashGrid');
+flashTerms.forEach(t=>{
+  const card = document.createElement('div');
+  card.className = 'flashcard';
+  card.innerHTML = `<div class="inner">
+      <div class="face front">${t.f}<span class="hint">tap to flip</span></div>
+      <div class="face back">${t.b}<span class="hint">tap to flip back</span></div>
+    </div>`;
+  card.addEventListener('click', ()=> card.classList.toggle('flipped'));
+  flashGrid.appendChild(card);
+});
+
+/* ============ HORIZONTAL TAPE ============ */
+const hItemSel = document.getElementById('hItem');
+const hCustomWrap = document.getElementById('hCustomWrap');
+const hCustomLabel = document.getElementById('hCustomLabel');
+const hFromYear = document.getElementById('hFromYear');
+const hToYear = document.getElementById('hToYear');
+const hBaseVal = document.getElementById('hBaseVal');
+const hAnalysisVal = document.getElementById('hAnalysisVal');
+const hTape = document.getElementById('hTape');
+
+itemKeys.forEach(k=>{ const o=document.createElement('option'); o.value=k; o.textContent=k.trim(); hItemSel.appendChild(o); });
+const hCustomOpt = document.createElement('option'); hCustomOpt.value="__custom__"; hCustomOpt.textContent="— Custom item —";
+hItemSel.appendChild(hCustomOpt);
+
+hFromYear.innerHTML=""; hToYear.innerHTML="";
+years.forEach(y=>{
+  hFromYear.appendChild(new Option(y,y));
+  hToYear.appendChild(new Option(y,y));
+});
+hFromYear.value=2022; hToYear.value=2023;
+
+function refreshHFields(){
+  const item = hItemSel.value;
+  if(item === "__custom__"){
+    hCustomWrap.style.display='block';
+    return;
+  }
+  hCustomWrap.style.display='none';
+  const fy = +hFromYear.value, ty = +hToYear.value;
+  hBaseVal.value = hpData[item][fy];
+  hAnalysisVal.value = hpData[item][ty];
+}
+hItemSel.addEventListener('change', refreshHFields);
+hFromYear.addEventListener('change', refreshHFields);
+hToYear.addEventListener('change', refreshHFields);
+refreshHFields();
+
+document.getElementById('hPrint').addEventListener('click', ()=>{
+  const base = parseFloat(hBaseVal.value), analysis = parseFloat(hAnalysisVal.value);
+  if(isNaN(base) || isNaN(analysis)){ alert('Enter both a base and analysis value first.'); return; }
+  const label = hItemSel.value === "__custom__" ? (hCustomLabel.value.trim() || "Custom item") : hItemSel.value.trim();
+  const abs = analysis - base;
+  const rel = base !== 0 ? (abs/base*100) : NaN;
+  const cls = abs>=0 ? 'pos' : 'neg';
+  const arrow = abs>=0 ? '▲' : '▼';
+  if(hTape.querySelector('.empty')) hTape.innerHTML = '';
+  const line = document.createElement('div');
+  line.className = 'tape-line';
+  line.innerHTML = `
+    <div class="ti-head"><span>${label}</span><span>${hFromYear.value} → ${hToYear.value}</span></div>
+    <div class="ti-row"><span>Base (${hFromYear.value})</span><span>${fmt(base)}</span></div>
+    <div class="ti-row"><span>Analysis (${hToYear.value})</span><span>${fmt(analysis)}</span></div>
+    <div class="ti-row"><span>Δ Absolute</span><span class="delta ${cls}">${arrow} ${fmt(abs)}</span></div>
+    <div class="ti-row"><span>Δ Relative</span><span class="delta ${cls}">${arrow} ${fmtPct(rel)}</span></div>
+  `;
+  hTape.appendChild(line);
+  hTape.scrollTop = hTape.scrollHeight;
+});
+document.getElementById('hClear').addEventListener('click', ()=>{
+  hTape.innerHTML = '<div class="empty">— tape is empty —<br>print your first calculation</div>';
+});
+
+/* ============ VERTICAL TAPE ============ */
+const vItemSel = document.getElementById('vItem');
+const vCustomWrap = document.getElementById('vCustomWrap');
+const vCustomLabel = document.getElementById('vCustomLabel');
+const vYear = document.getElementById('vYear');
+const vBaseType = document.getElementById('vBaseType');
+const vItemVal = document.getElementById('vItemVal');
+const vBaseVal = document.getElementById('vBaseVal');
+const vTape = document.getElementById('vTape');
+
+itemKeys.forEach(k=>{ const o=document.createElement('option'); o.value=k; o.textContent=k.trim(); vItemSel.appendChild(o); });
+const vCustomOpt = document.createElement('option'); vCustomOpt.value="__custom__"; vCustomOpt.textContent="— Custom item —";
+vItemSel.appendChild(vCustomOpt);
+years.forEach(y=> vYear.appendChild(new Option(y,y)) );
+
+function refreshVFields(){
+  const item = vItemSel.value;
+  const y = +vYear.value;
+  if(item === "__custom__"){
+    vCustomWrap.style.display='block';
+  } else {
+    vCustomWrap.style.display='none';
+    vItemVal.value = hpData[item][y];
+  }
+  if(vBaseType.value === 'revenue'){ vBaseVal.value = hpData["Net Revenue"][y]; vBaseVal.disabled=true; }
+  else if(vBaseType.value === 'custom'){ vBaseVal.disabled=false; }
+  else { vBaseVal.value=''; vBaseVal.disabled=false; vBaseVal.placeholder='enter base figure'; }
+}
+vItemSel.addEventListener('change', refreshVFields);
+vYear.addEventListener('change', refreshVFields);
+vBaseType.addEventListener('change', refreshVFields);
+refreshVFields();
+
+document.getElementById('vPrint').addEventListener('click', ()=>{
+  const itemVal = parseFloat(vItemVal.value), baseVal = parseFloat(vBaseVal.value);
+  if(isNaN(itemVal) || isNaN(baseVal) || baseVal===0){ alert('Enter a valid item value and a non-zero base value.'); return; }
+  const label = vItemSel.value === "__custom__" ? (vCustomLabel.value.trim() || "Custom item") : vItemSel.value.trim();
+  const baseLabel = {revenue:'Net Revenue', assets:'Total Assets', cash:'Net Cash Flow', custom:'Custom base'}[vBaseType.value];
+  const pct = itemVal/baseVal*100;
+  if(vTape.querySelector('.empty')) vTape.innerHTML = '';
+  const line = document.createElement('div');
+  line.className = 'tape-line';
+  line.innerHTML = `
+    <div class="ti-head"><span>${label}</span><span>${vYear.value}</span></div>
+    <div class="ti-row"><span>Item value</span><span>${fmt(itemVal)}</span></div>
+    <div class="ti-row"><span>${baseLabel}</span><span>${fmt(baseVal)}</span></div>
+    <div class="ti-row"><span>Share of base</span><span class="delta pos">${pct.toFixed(1)}%</span></div>
+  `;
+  vTape.appendChild(line);
+  vTape.scrollTop = vTape.scrollHeight;
+});
+document.getElementById('vClear').addEventListener('click', ()=>{
+  vTape.innerHTML = '<div class="empty">— tape is empty —<br>print your first calculation</div>';
+});
+
+/* ============ WORKED EXAMPLE TABLES ============ */
+function buildHTable(){
+  let thead = `<thead><tr><th>Indicator</th><th>2022</th><th>2023</th><th>2024</th><th>Δ 23/22</th><th>Δ 24/23</th><th>% 23/22</th><th>% 24/23</th></tr></thead>`;
+  let rows = '';
+  itemKeys.forEach(k=>{
+    const d = hpData[k];
+    const a1 = d[2023]-d[2022], a2 = d[2024]-d[2023];
+    const r1 = d[2022]!==0 ? a1/d[2022]*100 : NaN;
+    const r2 = d[2023]!==0 ? a2/d[2023]*100 : NaN;
+    const cls1 = a1>=0?'pos':'neg', cls2 = a2>=0?'pos':'neg';
+    const rowCls = totalRows.has(k.trim()) ? ' class="total"' : '';
+    rows += `<tr${rowCls}>
+      <td>${k.trim()}</td>
+      <td class="num">${fmt(d[2022])}</td><td class="num">${fmt(d[2023])}</td><td class="num">${fmt(d[2024])}</td>
+      <td class="num ${cls1}">${fmt(a1)}</td><td class="num ${cls2}">${fmt(a2)}</td>
+      <td class="num ${cls1}">${fmtPct(r1)}</td><td class="num ${cls2}">${fmtPct(r2)}</td>
+    </tr>`;
+  });
+  document.getElementById('hTable').innerHTML = thead + '<tbody>' + rows + '</tbody>';
+}
+function buildVTable(){
+  let thead = `<thead><tr><th>Indicator</th><th>2022</th><th>2023</th><th>2024</th><th>pts 23/22</th><th>pts 24/23</th></tr></thead>`;
+  let rows = '';
+  itemKeys.forEach(k=>{
+    const d = hpData[k];
+    const rev = hpData["Net Revenue"];
+    const p22 = d[2022]/rev[2022]*100, p23 = d[2023]/rev[2023]*100, p24 = d[2024]/rev[2024]*100;
+    const c1 = p23-p22, c2 = p24-p23;
+    const cls1 = c1>=0?'pos':'neg', cls2 = c2>=0?'pos':'neg';
+    const rowCls = totalRows.has(k.trim()) ? ' class="total"' : '';
+    rows += `<tr${rowCls}>
+      <td>${k.trim()}</td>
+      <td class="num">${p22.toFixed(1)}%</td><td class="num">${p23.toFixed(1)}%</td><td class="num">${p24.toFixed(1)}%</td>
+      <td class="num ${cls1}">${fmtPct(c1)}</td><td class="num ${cls2}">${fmtPct(c2)}</td>
+    </tr>`;
+  });
+  document.getElementById('vTable').innerHTML = thead + '<tbody>' + rows + '</tbody>';
+}
+buildHTable();
+buildVTable();
+
+/* ============ ROS BARS ============ */
+const rosDrivers = [
+  {label:"COGS", k:"Cost of Goods Sold", incomeType:false},
+  {label:"Financial expenses", k:"Financial expenses", incomeType:false},
+  {label:"Selling expenses", k:"Selling expenses", incomeType:false},
+  {label:"G&A expenses", k:"G&A expenses", incomeType:false},
+  {label:"Financial income", k:"Financial income", incomeType:true},
+  {label:"Other income", k:"Other income", incomeType:true},
+  {label:"Other expenses", k:"Other expenses", incomeType:false},
+  {label:"Income tax – current", k:"Income tax – current", incomeType:false},
+];
+const rosBox = document.getElementById('rosBars');
+const rev22 = hpData["Net Revenue"][2022], rev23 = hpData["Net Revenue"][2023];
+let maxAbs = 0;
+const computed = rosDrivers.map(d=>{
+  const p22 = hpData[d.k][2022]/rev22*100;
+  const p23 = hpData[d.k][2023]/rev23*100;
+  const ptChange = p23 - p22;
+  const effect = d.incomeType ? ptChange : -ptChange; // expense rising hurts ROS
+  maxAbs = Math.max(maxAbs, Math.abs(effect));
+  return {label:d.label, effect};
+});
+computed.forEach(c=>{
+  const pct = (Math.abs(c.effect)/maxAbs*100).toFixed(0);
+  const cls = c.effect>=0 ? 'pos' : 'neg';
+  const row = document.createElement('div');
+  row.className = 'bar-row';
+  row.innerHTML = `<span>${c.label}</span><div class="track"><div class="fill ${cls}" style="width:${pct}%"></div></div><span class="val ${cls}">${fmtPct(c.effect)}</span>`;
+  rosBox.appendChild(row);
+});
+
+/* ============ ACCORDION ============ */
+const essayQs = [
+  {
+    q:"Revenue fell 8.4% in 2023 but gross profit rose 41.2%. Explain how this is possible and what it tells you about HP Company's cost management.",
+    a:`<span class="tag">Horizontal</span><span class="tag">Vertical</span>
+      <p>It's possible because COGS fell faster than revenue: COGS dropped 12.8% (vs. revenue's −8.4%), so even on lower sales, less was spent producing each unit of revenue. Vertical analysis confirms it: COGS fell from 91.8% to 87.4% of revenue, lifting gross margin from 8.2% to 13.3%. Conclusion: the gross-profit jump reflects genuine cost efficiency, not just a favourable base-period effect — production or procurement costs were better controlled in 2023.</p>`
+  },
+  {
+    q:"Using both horizontal and vertical analysis, evaluate the change in selling expenses between 2022 and 2023.",
+    a:`<span class="tag">Horizontal</span><span class="tag">Vertical</span>
+      <p><strong>Horizontal:</strong> selling expenses rose VND 50 million (+12.5%) from 2022 to 2023. <strong>Vertical:</strong> as a share of net revenue they rose from 3.4% to 4.1% (+0.8 point) — meaning selling expenses grew not just in absolute terms but also relative to a shrinking revenue base, which is a stronger efficiency warning than the horizontal number alone would suggest. This combination is exactly why an essay answer should never present only one type of analysis.</p>`
+  },
+  {
+    q:"Net profit after tax grew 333.3% in 2023. Should management celebrate this figure at face value? Explain.",
+    a:`<span class="tag">Caveat / base-effect</span>
+      <p>Not without context. The 2022 base (VND 60 million) was very small, so even a modest absolute gain produces a large percentage. The absolute change was VND 200 million — meaningful, but the 333.3% figure exaggerates the perceived improvement. A complete answer reports both numbers and notes that percentage changes from a small base should be read cautiously.</p>`
+  },
+  {
+    q:"How did corporate income tax expense affect ROS in 2023 compared with 2022? Show your reasoning, not just the final number.",
+    a:`<span class="tag">ROS bridge</span>
+      <p>Current income tax expense as a share of net revenue rose from 0.6% to 0.7% (+0.1 point). Because tax is an expense, a rising ratio pulls ROS down. So the tax line's effect on ROS between 2022 and 2023 is −0.1 percentage point — a small drag compared with the +4.4-point lift from improved COGS efficiency.</p>`
+  },
+  {
+    q:"Compare the usefulness of horizontal analysis versus vertical analysis for a company whose revenue is highly seasonal.",
+    a:`<span class="tag">Conceptual</span>
+      <p>Horizontal analysis comparing adjacent quarters can be misleading for a seasonal business (a strong Q4 vs. a weak Q1 looks like huge "growth" that isn't real growth). Vertical analysis is less distorted by seasonality because each period is judged against its own revenue base, but it still can't reveal the seasonal pattern itself. Best practice: use horizontal analysis on the same period year-over-year (Q4-this-year vs. Q4-last-year) rather than period-over-period, and pair it with vertical analysis to check cost-structure stability.</p>`
+  },
+];
+const accWrap = document.getElementById('accWrap');
+essayQs.forEach((item,i)=>{
+  const el = document.createElement('div');
+  el.className='acc-item';
+  el.innerHTML = `<button class="acc-q"><span>Q${i+1}. ${item.q}</span><span class="arrow">▶</span></button>
+    <div class="acc-a">${item.a}</div>`;
+  el.querySelector('.acc-q').addEventListener('click', ()=> el.classList.toggle('open'));
+  accWrap.appendChild(el);
+});
+
+/* ============ QUIZ ============ */
+const quizQuestions = [
+  { type:'mcq', q:"What is the main purpose of horizontal analysis?",
+    options:["Compare each item to net revenue","Observe the trend of an item's change over time","Compare the company only to industry peers","Calculate the corporate income tax payable"], correct:1 },
+  { type:'mcq', q:"Which formula correctly defines the relative change in horizontal analysis?",
+    options:["(Analysis − Base) ÷ Analysis × 100%","(Analysis − Base) ÷ Base × 100%","Base ÷ Analysis × 100%","Analysis ÷ Base"], correct:1 },
+  { type:'mcq', q:"In vertical analysis of the income statement, what is the base (100%) item?",
+    options:["Total assets","Net cash flow","Net Revenue","Gross profit"], correct:2 },
+  { type:'mcq', q:"In vertical analysis of the balance sheet, what is the base item?",
+    options:["Net Revenue","Total Assets","Net cash flow","Owner's equity"], correct:1 },
+  { type:'mcq', q:"In vertical analysis of the cash flow statement, what is the base item?",
+    options:["Net Revenue","Total Assets","Net cash flow","Operating cash flow only"], correct:2 },
+  { type:'mcq', q:"True or False: an increase in the COGS-to-revenue ratio improves ROS.",
+    options:["True","False"], correct:1 },
+  { type:'numeric', q:"HP Company's net operating profit grew from VND 100 million (2022) to VND 740 million (2024). What is the relative (%) change? (enter a number, e.g. 50)", correct:640, tolerance:15 },
+  { type:'mcq', q:"True or False: in the vertical-analysis process, you divide each item by net revenue before rearranging the income statement by profit component.",
+    options:["True","False"], correct:1 },
+];
+let score = 0;
+const answered = new Array(quizQuestions.length).fill(false);
+function updateScore(){ document.getElementById('scoreText').textContent = `Score: ${score} / ${quizQuestions.length}`; }
+
+const quizWrap = document.getElementById('quizWrap');
+function renderQuiz(){
+  quizWrap.innerHTML = '';
+  score = 0; answered.fill(false); updateScore();
+  quizQuestions.forEach((item, idx)=>{
+    const box = document.createElement('div');
+    box.className = 'quiz-q';
+    if(item.type === 'mcq'){
+      box.innerHTML = `<div class="qtext">${idx+1}. ${item.q}</div>
+        <div class="quiz-opts">${item.options.map((o,oi)=>`<button class="quiz-opt" data-i="${oi}">${o}</button>`).join('')}</div>
+        <div class="quiz-feedback"></div>`;
+      box.querySelectorAll('.quiz-opt').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          if(answered[idx]) return;
+          answered[idx] = true;
+          const chosen = +btn.dataset.i;
+          box.querySelectorAll('.quiz-opt').forEach(b=>b.disabled=true);
+          if(chosen === item.correct){
+            btn.classList.add('correct'); score++;
+            box.querySelector('.quiz-feedback').textContent = '✓ Correct.';
+          } else {
+            btn.classList.add('incorrect');
+            box.querySelectorAll('.quiz-opt')[item.correct].classList.add('correct');
+            box.querySelector('.quiz-feedback').textContent = '✗ Not quite — correct answer highlighted.';
+          }
+          updateScore();
+        });
+      });
+    } else if(item.type === 'numeric'){
+      box.innerHTML = `<div class="qtext">${idx+1}. ${item.q}</div>
+        <div class="quiz-num"><input type="number" placeholder="%"><button class="btn">Check</button></div>
+        <div class="quiz-feedback"></div>`;
+      const input = box.querySelector('input');
+      const checkBtn = box.querySelector('button.btn');
+      checkBtn.addEventListener('click', ()=>{
+        if(answered[idx]) return;
+        const val = parseFloat(input.value);
+        if(isNaN(val)) return;
+        answered[idx] = true;
+        input.disabled = true; checkBtn.disabled = true;
+        if(Math.abs(val - item.correct) <= item.tolerance){
+          score++;
+          box.querySelector('.quiz-feedback').textContent = `✓ Correct (≈ ${item.correct}%).`;
+        } else {
+          box.querySelector('.quiz-feedback').textContent = `✗ Expected ≈ ${item.correct}%. Formula: (740−100)/100 × 100%.`;
+        }
+        updateScore();
+      });
+    }
+    quizWrap.appendChild(box);
+  });
+}
+renderQuiz();
+document.getElementById('resetQuiz').addEventListener('click', renderQuiz);
+</script>
+</body>
+</html>
