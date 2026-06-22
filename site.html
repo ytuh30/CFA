@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 4 — The Logic of Assets &amp; Capital Sources | HUB Finance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===================================================================
+   DESIGN TOKENS — "The Ledger" : a working balance-sheet aesthetic
+   =================================================================== */
+:root{
+  --ink:#16213F;
+  --ink-soft:#48527A;
+  --ink-faint:#8088A8;
+  --parchment:#FBF7EE;
+  --parchment-deep:#F2EBD8;
+  --paper-white:#FFFEFA;
+  --rule:#DCD2B6;
+  --rule-strong:#C9BC92;
+  --credit:#2E6B4F;        /* source of funds / safe / increase-good */
+  --credit-soft:#E3EEE3;
+  --credit-deep:#1F4D38;
+  --debit:#9B3A33;         /* use of funds / risk / red-ink */
+  --debit-soft:#F4E4DF;
+  --debit-deep:#742A25;
+  --gold:#B07F1E;          /* fulcrum / balance / highlight */
+  --gold-soft:#F3E6C2;
+  --gold-deep:#8A6314;
+  --shadow-card: 0 1px 2px rgba(22,33,63,.06), 0 6px 18px -10px rgba(22,33,63,.18);
+  --shadow-card-hover: 0 2px 4px rgba(22,33,63,.08), 0 14px 28px -12px rgba(22,33,63,.26);
+  --serif:'Fraunces', Georgia, 'Times New Roman', serif;
+  --sans:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --mono:'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  --radius: 3px;
+  --maxw: 980px;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  font-family:var(--sans);
+  color:var(--ink);
+  background:var(--parchment);
+  -webkit-font-smoothing:antialiased;
+  line-height:1.6;
+}
+img,svg{max-width:100%;display:block;}
+a{color:var(--credit-deep);}
+h1,h2,h3,h4{font-family:var(--serif);color:var(--ink);margin:0 0 .4em;line-height:1.15;}
+p{margin:0 0 1em;}
+.mono{font-family:var(--mono);}
+.container{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);}
+
+/* ---------- ledger paper texture ---------- */
+.ledger-rules{
+  background-image:repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 35px,
+    rgba(176,127,30,.08) 35px,
+    rgba(176,127,30,.08) 36px
+  );
+}
+.margin-rule{position:relative;}
+.margin-rule::before{
+  content:"";
+  position:absolute;
+  left:46px; top:0; bottom:0;
+  width:1px;
+  background:rgba(155,58,51,.28);
+  display:none;
+}
+@media(min-width:860px){ .margin-rule::before{display:block;} }
+
+/* ---------- top progress + nav ---------- */
+#progressBar{
+  position:fixed; top:0; left:0; height:3px; width:0%;
+  background:linear-gradient(90deg,var(--gold),var(--credit));
+  z-index:9999; transition:width .15s ease;
+}
+header.topnav{
+  position:sticky; top:0; z-index:500;
+  background:rgba(251,247,238,.92);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--rule);
+}
+.nav-inner{
+  display:flex; align-items:center; gap:18px;
+  max-width:var(--maxw); margin:0 auto; padding:10px 24px;
+}
+.brand{
+  font-family:var(--serif); font-weight:600; font-size:15px; color:var(--ink);
+  white-space:nowrap; display:flex; align-items:baseline; gap:6px;
+}
+.brand .acct-no{font-family:var(--mono); font-size:11px; color:var(--gold-deep); background:var(--gold-soft); padding:1px 6px; border-radius:2px;}
+.navlinks{display:flex; gap:2px; overflow-x:auto; scrollbar-width:none; flex:1;}
+.navlinks::-webkit-scrollbar{display:none;}
+.navlinks a{
+  font-size:12.5px; font-weight:600; color:var(--ink-soft); text-decoration:none;
+  padding:7px 11px; border-radius:20px; white-space:nowrap; letter-spacing:.2px;
+  border:1px solid transparent; transition:all .15s;
+}
+.navlinks a:hover{background:var(--parchment-deep); color:var(--ink);}
+.navlinks a.active{background:var(--ink); color:var(--parchment); border-color:var(--ink);}
+.nav-dash-btn{
+  font-size:12px; font-weight:700; color:var(--paper-white); background:var(--credit-deep);
+  padding:7px 13px; border-radius:20px; white-space:nowrap; text-decoration:none; flex-shrink:0;
+}
+
+/* ---------- hero ---------- */
+.hero{
+  position:relative; overflow:hidden;
+  padding:64px 0 56px;
+  background:
+    radial-gradient(900px 420px at 78% -10%, rgba(46,107,79,.10), transparent 60%),
+    radial-gradient(700px 380px at 8% 110%, rgba(176,127,30,.14), transparent 60%),
+    var(--parchment);
+  border-bottom:1px solid var(--rule);
+}
+.hero .container{display:grid; grid-template-columns:1.15fr .85fr; gap:48px; align-items:center;}
+@media(max-width:860px){ .hero .container{grid-template-columns:1fr;} }
+.eyebrow{
+  font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--credit-deep); display:flex; align-items:center; gap:8px; margin-bottom:14px; font-weight:600;
+}
+.eyebrow::before{content:"";width:22px;height:1px;background:var(--credit-deep);}
+.hero h1{font-size:clamp(30px,4.4vw,46px); font-weight:600; letter-spacing:-.01em;}
+.hero h1 em{font-style:italic; color:var(--credit-deep);}
+.hero .lede{font-size:17px; color:var(--ink-soft); max-width:54ch;}
+.hero .cta-row{display:flex; gap:12px; margin-top:22px; flex-wrap:wrap;}
+.btn{
+  font-family:var(--sans); font-weight:700; font-size:14px; cursor:pointer;
+  padding:11px 20px; border-radius:3px; border:1px solid var(--ink); text-decoration:none;
+  display:inline-flex; align-items:center; gap:8px; transition:transform .12s, box-shadow .12s;
+}
+.btn:hover{transform:translateY(-1px); box-shadow:var(--shadow-card-hover);}
+.btn-primary{background:var(--ink); color:var(--parchment);}
+.btn-ghost{background:transparent; color:var(--ink); border-color:var(--rule-strong);}
+.hero-card{
+  background:var(--paper-white); border:1px solid var(--rule); border-radius:6px;
+  box-shadow:var(--shadow-card); padding:22px;
+}
+.hero-card .label{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-faint); margin-bottom:10px;}
+
+/* ---------- generic section chrome ---------- */
+.section{padding:74px 0; border-bottom:1px solid var(--rule);}
+.section:nth-of-type(even){background:var(--parchment-deep);}
+.section-head{margin-bottom:36px; max-width:760px;}
+.section-tag{
+  display:inline-flex; align-items:center; gap:10px;
+  font-family:var(--mono); font-size:12px; color:var(--gold-deep); background:var(--gold-soft);
+  padding:4px 10px; border-radius:20px; margin-bottom:16px; font-weight:600; letter-spacing:.03em;
+}
+.section-num{
+  font-family:var(--serif); font-size:13px; font-weight:600; color:var(--ink-faint);
+  letter-spacing:.05em; margin-bottom:6px; text-transform:uppercase;
+}
+.section h2{font-size:clamp(24px,3vw,32px);}
+.section .deck{font-size:16px; color:var(--ink-soft); max-width:64ch;}
+
+.subhead{
+  display:flex; align-items:baseline; gap:10px; margin:46px 0 16px;
+  border-top:1px solid var(--rule-strong); padding-top:18px;
+}
+.subhead:first-of-type{border-top:none; margin-top:0; padding-top:0;}
+.subhead .num{font-family:var(--mono); font-size:13px; color:var(--gold-deep); font-weight:700;}
+.subhead h3{font-size:20px; margin:0;}
+
+/* ---------- A-G teaching framework accordion ---------- */
+.framework{border:1px solid var(--rule); border-radius:6px; overflow:hidden; background:var(--paper-white); box-shadow:var(--shadow-card);}
+.f-item{border-bottom:1px solid var(--rule);}
+.f-item:last-child{border-bottom:none;}
+.f-toggle{
+  width:100%; text-align:left; background:none; border:none; cursor:pointer;
+  display:flex; align-items:center; gap:14px; padding:16px 18px; font-family:var(--sans);
+}
+.f-toggle:hover{background:var(--parchment-deep);}
+.f-letter{
+  width:30px; height:30px; flex-shrink:0; border-radius:50%; background:var(--ink); color:var(--parchment);
+  font-family:var(--serif); font-weight:600; font-size:14px; display:flex; align-items:center; justify-content:center;
+}
+.f-q{font-weight:700; font-size:14.5px; color:var(--ink); flex:1;}
+.f-chevron{width:18px;height:18px;color:var(--ink-faint); transition:transform .2s; flex-shrink:0;}
+.f-item.open .f-chevron{transform:rotate(180deg);}
+.f-body{max-height:0; overflow:hidden; transition:max-height .28s ease;}
+.f-body-inner{padding:0 18px 20px 62px; font-size:14.5px; color:var(--ink-soft);}
+.f-body-inner ul{margin:8px 0; padding-left:20px;}
+.f-body-inner li{margin-bottom:6px;}
+.f-body-inner strong{color:var(--ink);}
+
+/* ---------- formula block ---------- */
+.formula{
+  background:var(--ink); color:var(--parchment); border-radius:6px; padding:22px 24px;
+  font-family:var(--mono); font-size:15px; line-height:1.9; margin:18px 0; overflow-x:auto;
+  box-shadow:var(--shadow-card);
+}
+.formula .fl{color:var(--gold-soft); opacity:.7; font-size:12px; display:block; text-transform:uppercase; letter-spacing:.08em; margin-bottom:4px;}
+.formula .eq{color:#fff;}
+.formula .credit-term{color:#8FD1A8;}
+.formula .debit-term{color:#E89B92;}
+
+/* ---------- data tables ---------- */
+.table-wrap{overflow-x:auto; margin:18px 0; border:1px solid var(--rule); border-radius:6px; box-shadow:var(--shadow-card);}
+table{width:100%; border-collapse:collapse; font-size:13.5px; background:var(--paper-white); min-width:560px;}
+thead th{
+  background:var(--ink); color:var(--parchment); font-family:var(--sans); font-weight:700;
+  text-align:left; padding:10px 14px; font-size:12px; text-transform:uppercase; letter-spacing:.04em;
+  position:sticky; top:0;
+}
+tbody td{padding:9px 14px; border-bottom:1px solid var(--rule); font-family:var(--mono); font-size:13px;}
+tbody td:first-child{font-family:var(--sans); font-weight:600; color:var(--ink);}
+tbody tr:nth-child(even){background:var(--parchment);}
+tbody tr:hover{background:var(--gold-soft);}
+.num-pos{color:var(--credit-deep); font-weight:600;}
+.num-neg{color:var(--debit-deep); font-weight:600;}
+.table-note{font-size:12px; color:var(--ink-faint); padding:8px 14px; font-style:italic; border-top:1px solid var(--rule); background:var(--parchment);}
+
+/* ---------- callouts ---------- */
+.callout{border-radius:6px; padding:18px 20px; margin:20px 0; border:1px solid; display:flex; gap:14px;}
+.callout-icon{flex-shrink:0; width:22px; height:22px; margin-top:2px;}
+.callout-title{font-weight:800; font-size:13px; text-transform:uppercase; letter-spacing:.04em; margin-bottom:4px;}
+.callout p:last-child{margin-bottom:0;}
+.callout.mistake{background:var(--debit-soft); border-color:#e3c4bd; color:var(--debit-deep);}
+.callout.mistake .callout-icon{color:var(--debit);}
+.callout.insight{background:var(--credit-soft); border-color:#c4dbc8; color:var(--credit-deep);}
+.callout.insight .callout-icon{color:var(--credit);}
+.callout.exam{background:var(--gold-soft); border-color:#e2cd96; color:var(--gold-deep);}
+.callout.exam .callout-icon{color:var(--gold);}
+
+/* ---------- example / case card ---------- */
+.case-card{
+  background:var(--paper-white); border:1px solid var(--rule); border-radius:8px; padding:24px;
+  margin:22px 0; box-shadow:var(--shadow-card); position:relative;
+}
+.case-tag{
+  position:absolute; top:-11px; left:20px; background:var(--ink); color:var(--parchment);
+  font-family:var(--mono); font-size:11px; padding:3px 10px; border-radius:3px; letter-spacing:.04em;
+}
+.case-card h4{font-size:17px; margin-bottom:10px; margin-top:6px;}
+.case-card .step{display:flex; gap:12px; margin:12px 0; align-items:flex-start;}
+.step-num{
+  flex-shrink:0; width:24px; height:24px; border-radius:50%; background:var(--gold-soft); color:var(--gold-deep);
+  font-family:var(--mono); font-weight:700; font-size:12px; display:flex; align-items:center; justify-content:center;
+}
+
+/* ---------- two-col grid ---------- */
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+@media(max-width:760px){.grid2{grid-template-columns:1fr;}}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+@media(max-width:760px){.grid3{grid-template-columns:1fr;}}
+
+.pillar{background:var(--paper-white); border:1px solid var(--rule); border-radius:6px; padding:18px 20px; box-shadow:var(--shadow-card);}
+.pillar .pillar-h{display:flex; align-items:center; gap:8px; font-weight:700; font-size:13.5px; margin-bottom:8px; color:var(--ink);}
+.pillar.good{border-top:3px solid var(--credit);}
+.pillar.bad{border-top:3px solid var(--debit);}
+.pillar.neutral{border-top:3px solid var(--gold);}
+
+/* ---------- balance scale (signature interactive) ---------- */
+.scale-widget{background:var(--paper-white); border:1px solid var(--rule); border-radius:8px; padding:24px; box-shadow:var(--shadow-card); margin:24px 0;}
+.scale-controls{display:flex; flex-direction:column; gap:14px; margin-top:18px;}
+.scale-controls label{font-size:12.5px; font-weight:700; display:flex; justify-content:space-between; color:var(--ink-soft);}
+.scale-controls input[type=range]{width:100%; accent-color:var(--gold-deep);}
+.scale-readout{
+  font-family:var(--mono); text-align:center; margin-top:14px; padding:12px; border-radius:6px;
+  font-size:14px; font-weight:600; transition:all .25s;
+}
+.scale-readout .nwc-val{font-size:20px; display:block; margin-top:2px;}
+
+/* ---------- flashcards ---------- */
+.fc-toolbar{display:flex; gap:10px; align-items:center; margin-bottom:18px; flex-wrap:wrap;}
+.fc-count{font-family:var(--mono); font-size:13px; color:var(--ink-soft); margin-left:auto;}
+.flash-stage{perspective:1400px; max-width:520px; margin:0 auto;}
+.flashcard{
+  position:relative; width:100%; height:240px; cursor:pointer;
+  transform-style:preserve-3d; transition:transform .5s cubic-bezier(.4,.2,.2,1);
+}
+.flashcard.flipped{transform:rotateY(180deg);}
+.fc-face{
+  position:absolute; inset:0; backface-visibility:hidden; border-radius:10px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+  padding:28px; box-shadow:var(--shadow-card);
+}
+.fc-front{background:var(--ink); color:var(--parchment); border:1px solid var(--ink);}
+.fc-front .fc-term{font-family:var(--serif); font-size:24px; font-weight:600;}
+.fc-front .fc-hint{font-family:var(--mono); font-size:11px; color:var(--gold-soft); margin-top:14px; opacity:.75;}
+.fc-back{background:var(--gold-soft); color:var(--ink); transform:rotateY(180deg); border:1px solid var(--gold);}
+.fc-back p{font-size:14.5px; margin:0;}
+.fc-nav{display:flex; justify-content:center; gap:12px; margin-top:18px;}
+.icon-btn{
+  background:var(--paper-white); border:1px solid var(--rule-strong); border-radius:20px; padding:9px 18px;
+  font-family:var(--sans); font-weight:700; font-size:13px; cursor:pointer; color:var(--ink);
+}
+.icon-btn:hover{background:var(--parchment-deep);}
+
+/* ---------- quiz ---------- */
+.quiz-box{background:var(--paper-white); border:1px solid var(--rule); border-radius:8px; padding:26px; box-shadow:var(--shadow-card);}
+.quiz-progress{display:flex; gap:5px; margin-bottom:20px;}
+.quiz-progress .dot{height:5px; flex:1; background:var(--rule); border-radius:3px; transition:background .2s;}
+.quiz-progress .dot.done{background:var(--credit);}
+.quiz-progress .dot.current{background:var(--gold);}
+.quiz-q{font-size:16px; font-weight:700; margin-bottom:6px;}
+.quiz-meta{font-family:var(--mono); font-size:11px; color:var(--ink-faint); text-transform:uppercase; margin-bottom:16px;}
+.quiz-opts{display:flex; flex-direction:column; gap:9px;}
+.quiz-opt{
+  text-align:left; border:1px solid var(--rule-strong); background:var(--parchment); border-radius:6px;
+  padding:12px 16px; cursor:pointer; font-family:var(--sans); font-size:14px; color:var(--ink); transition:all .15s;
+}
+.quiz-opt:hover{border-color:var(--ink);}
+.quiz-opt.correct{background:var(--credit-soft); border-color:var(--credit);}
+.quiz-opt.incorrect{background:var(--debit-soft); border-color:var(--debit);}
+.quiz-opt:disabled{cursor:default;}
+.quiz-explain{margin-top:16px; padding:14px 16px; background:var(--gold-soft); border-radius:6px; font-size:13.5px; display:none;}
+.quiz-explain.show{display:block;}
+.quiz-footer{display:flex; justify-content:space-between; align-items:center; margin-top:22px;}
+.quiz-score-ring{font-family:var(--mono); font-weight:700;}
+
+/* ---------- sort / classification exercise ---------- */
+.sort-wrap{display:flex; flex-direction:column; gap:20px;}
+.chip-pool{display:flex; flex-wrap:wrap; gap:10px; padding:18px; background:var(--paper-white); border:1px dashed var(--rule-strong); border-radius:8px; min-height:60px;}
+.chip{
+  background:var(--ink); color:var(--parchment); font-size:13px; font-weight:600; padding:9px 14px;
+  border-radius:20px; cursor:grab; user-select:none; font-family:var(--sans); transition:all .15s; border:1px solid var(--ink);
+}
+.chip:hover{transform:translateY(-1px); box-shadow:var(--shadow-card-hover);}
+.chip.placed{opacity:.45; cursor:default;}
+.bins{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+@media(max-width:700px){.bins{grid-template-columns:1fr;}}
+.bin{
+  border-radius:8px; padding:16px; min-height:160px; border:2px dashed var(--rule-strong); transition:all .15s;
+}
+.bin.use{background:var(--debit-soft);}
+.bin.source{background:var(--credit-soft);}
+.bin.dragover{border-color:var(--gold); background:var(--gold-soft);}
+.bin h5{margin:0 0 10px; font-family:var(--sans); font-size:13px; text-transform:uppercase; letter-spacing:.04em;}
+.bin.use h5{color:var(--debit-deep);}
+.bin.source h5{color:var(--credit-deep);}
+.bin-items{display:flex; flex-wrap:wrap; gap:8px; min-height:40px;}
+.bin-items .chip{cursor:default;}
+.sort-feedback{font-family:var(--mono); font-size:13px; padding:10px 14px; border-radius:6px; display:none;}
+.sort-feedback.show{display:block;}
+
+/* ---------- essay prep ---------- */
+.essay-q{background:var(--paper-white); border:1px solid var(--rule); border-radius:8px; padding:20px 22px; margin:16px 0; box-shadow:var(--shadow-card);}
+.essay-q .qtext{font-weight:700; font-size:15px; margin-bottom:10px; display:flex; gap:10px;}
+.essay-q .qtext .qmark{color:var(--gold-deep); font-family:var(--serif); font-style:italic; font-size:18px;}
+.reveal-btn{
+  font-family:var(--sans); font-size:12.5px; font-weight:700; color:var(--credit-deep); background:var(--credit-soft);
+  border:1px solid #c4dbc8; padding:7px 14px; border-radius:18px; cursor:pointer;
+}
+.model-answer{margin-top:14px; padding-top:14px; border-top:1px dashed var(--rule-strong); font-size:14px; color:var(--ink-soft); display:none;}
+.model-answer.show{display:block;}
+.model-answer .tag{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; color:var(--gold-deep); font-weight:700; letter-spacing:.05em; display:block; margin-bottom:6px;}
+
+.vocab-pills{display:flex; flex-wrap:wrap; gap:8px; margin:14px 0;}
+.vpill{
+  background:var(--paper-white); border:1px solid var(--rule-strong); border-radius:5px; padding:6px 11px;
+  font-family:var(--mono); font-size:12.5px; color:var(--ink); position:relative; cursor:default;
+}
+.vpill b{color:var(--gold-deep);}
+
+/* ---------- progress dashboard ---------- */
+.dash-grid{display:grid; grid-template-columns:1.3fr 1fr; gap:24px;}
+@media(max-width:820px){.dash-grid{grid-template-columns:1fr;}}
+.checklist{display:flex; flex-direction:column; gap:8px;}
+.cl-item{display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--paper-white); border:1px solid var(--rule); border-radius:6px; font-size:14px; cursor:pointer;}
+.cl-item input{width:17px; height:17px; accent-color:var(--credit-deep);}
+.cl-item.checked{background:var(--credit-soft); border-color:#c4dbc8;}
+.cl-item.checked label{text-decoration:line-through; color:var(--ink-faint);}
+.ring-card{background:var(--ink); color:var(--parchment); border-radius:10px; padding:28px; text-align:center;}
+.ring-num{font-family:var(--serif); font-size:54px; font-weight:600; color:var(--gold-soft);}
+.ring-label{font-family:var(--mono); font-size:12px; text-transform:uppercase; letter-spacing:.06em; opacity:.75; margin-top:6px;}
+
+footer{padding:40px 0 60px; text-align:center; color:var(--ink-faint); font-size:13px;}
+footer .container{border-top:1px solid var(--rule); padding-top:28px;}
+
+::selection{background:var(--gold-soft); color:var(--ink);}
+@media(max-width:600px){
+  .section{padding:50px 0;}
+  .container{padding:0 16px;}
+}
+</style>
+</head>
+<body>
+
+<div id="progressBar"></div>
+
+<header class="topnav">
+  <div class="nav-inner">
+    <div class="brand">LEDGER<span class="acct-no">CH.04</span></div>
+    <nav class="navlinks" id="navlinks">
+      <a href="#hero" data-sec="hero">Intro</a>
+      <a href="#assets" data-sec="assets">4.1 Assets</a>
+      <a href="#capital" data-sec="capital">4.2 Capital</a>
+      <a href="#funds" data-sec="funds">4.3 Sources&amp;Uses</a>
+      <a href="#balance" data-sec="balance">4.4 Balance</a>
+      <a href="#wcr" data-sec="wcr">4.5 WCR</a>
+      <a href="#practice" data-sec="practice">Practice</a>
+    </nav>
+    <a href="#dashboard" class="nav-dash-btn">My Progress</a>
+  </div>
+</header>
+
+<!-- ============================================================ HERO -->
+<section class="hero" id="hero">
+  <div class="container">
+    <div>
+      <div class="eyebrow">Ho Chi Minh University of Banking · Financial Statement Analysis</div>
+      <h1>Why must a balance sheet <em>balance</em> — and what happens the moment it stops?</h1>
+      <p class="lede">Chapter 4 is not a list of formulas to memorise. It is a single question asked five different ways: <strong>is the money this company raised being matched, in time and in risk, to the way it is being spent?</strong> Master that question and every ratio in this chapter — NWC, WCR, asset structure, capital structure — becomes obvious rather than arbitrary.</p>
+      <div class="cta-row">
+        <a href="#assets" class="btn btn-primary">Start with 4.1 Asset Analysis →</a>
+        <a href="#practice" class="btn btn-ghost">Jump to practice &amp; quizzes</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="label">Signature concept · drag the sliders</div>
+      <div id="heroScale"></div>
+      <div class="scale-controls">
+        <label>Long-term Capital (LTC) <span id="heroLtcVal" class="mono">600</span></label>
+        <input type="range" id="heroLtc" min="200" max="1000" value="600" step="10">
+        <label>Long-term Assets (LTA) <span id="heroLtaVal" class="mono">600</span></label>
+        <input type="range" id="heroLta" min="200" max="1000" value="600" step="10">
+      </div>
+      <div class="scale-readout" id="heroReadout"></div>
+<!-- ============================================================ 4.1 ASSETS -->
+<section class="section margin-rule" id="assets">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">§ 4.1 — The Asset Side</div>
+      <h2>Asset Analysis: Where Did the Money Go?</h2>
+      <p class="deck">Every dollar on the asset side of the balance sheet represents a decision someone already made — to hold cash, to let customers buy on credit, to stock inventory, to buy a machine. Asset analysis is the act of reading those decisions back out of the numbers.</p>
+    </div>
+
+    <div class="subhead"><span class="num">4.1.1</span><h3>Asset Fluctuation Analysis (Horizontal Analysis)</h3></div>
+    <div class="framework" data-group="a1">
+      <div class="f-item open">
+        <button class="f-toggle"><span class="f-letter">A</span><span class="f-q">What is it?</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner">
+          <p>Horizontal analysis tracks one asset item <strong>across time</strong> — month to month, year to year — and computes how much it changed in absolute terms (e.g. +16,860 million VND) and in relative terms (e.g. +8.4%). It answers "how is this number moving?", not "how big is it right now?"</p>
+        </div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">B</span><span class="f-q">Why does it matter?</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner">
+          <ul>
+            <li><strong>Managers</strong> use it to check whether investment decisions (buying equipment, building inventory, extending credit) are happening as planned and at the right pace.</li>
+            <li><strong>Creditors</strong> watch it to see whether the assets backing their loan are growing, shrinking, or quietly being converted into something less liquid (e.g. cash turning into receivables that may not be collected).</li>
+            <li><strong>Investors</strong> read fluctuation as a proxy for strategy in motion — expansion, contraction, or a pivot in business model.</li>
+          </ul>
+        </div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">C</span><span class="f-q">What is the financial logic?</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner">
+          <p>An asset cannot grow on its own — every increase in assets had to be financed by something (more debt, more equity, retained profit, or a decrease somewhere else). This is the seed of §4.3: <em>asset fluctuation is simply "uses of funds" viewed item-by-item.</em> So before judging an increase as good or bad, always ask the matching question: <strong>what financed it, and is that financing appropriate for that asset's time horizon?</strong></p>
+        </div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">D</span><span class="f-q">How should we interpret increases / decreases?</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner">
+          <p>No item is "good up, bad down" by itself — direction only becomes meaningful with context:</p>
+          <div class="table-wrap"><table><thead><tr><th>Item</th><th>↑ Increase usually means</th><th>↓ Decrease usually means</th></tr></thead><tbody>
+            <tr><td>Cash &amp; equivalents</td><td>Liquidity improves — but idle cash earns little; may signal underinvestment</td><td>Tighter liquidity — but could mean cash is being put to work</td></tr>
+            <tr><td>Receivables</td><td>Looser credit terms can drive sales, but capital gets tied up and bad-debt risk rises</td><td>Faster collection / stricter policy — good for liquidity, but could also mean lost sales</td></tr>
+            <tr><td>Inventories</td><td>Expecting demand growth, or early signs of overstocking / obsolescence</td><td>Leaner operations, or risk of stock-outs that disappoint customers</td></tr>
+            <tr><td>Fixed assets</td><td>Capacity expansion, rising operating leverage, a bet on future demand</td><td>Divestment, depreciation outpacing capex, or a shrinking operating base</td></tr>
+          </tbody></table></div>
+        </div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">E</span><span class="f-q">What are the implications?</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner">
+          <p>Sustained, consistent asset growth funded by stable sources usually signals a healthy, expanding business. Erratic swings — large one-year jumps followed by reversals — usually signal weak forecasting, opportunistic cash management, or instability worth investigating before forming a conclusion about performance.</p>
+        </div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">F</span><span class="f-q">Real-life example</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner">
+          <p>See the full worked case below — <strong>TAN Company, 2022–2024</strong>.</p>
+        </div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">G</span><span class="f-q">Common student mistakes</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner">
+          <ul>
+            <li>Reporting only the <strong>%</strong> change and ignoring the absolute amount (a 783% increase on a tiny base may be financially trivial).</li>
+            <li>Reporting only the <strong>absolute</strong> change and ignoring %, which hides how large the shift was relative to the item's own size.</li>
+            <li>Calling every increase "growth" and every decrease "decline" without asking which item moved and why.</li>
+            <li>Forgetting to connect the fluctuation back to its financing source (the §4.3 link).</li>
+          </ul>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="case-card">
+      <span class="case-tag">WORKED CASE · TAN COMPANY</span>
+      <h4>Reading the horizontal-analysis table like an examiner would</h4>
+      <p style="font-size:14px;color:var(--ink-soft)">Unit: million VND. This is the type of table Step 4.1.1 asks you to build: end-of-period vs beginning-of-period, absolute Δ and % Δ.</p>
+      <div class="table-wrap"><table><thead><tr><th>Item</th><th>2022</th><th>2023</th><th>2024</th><th>Δ 23/22</th><th>Δ 24/23</th></tr></thead><tbody>
+        <tr><td>I. Current Assets</td><td>171,300</td><td>161,100</td><td>178,300</td><td class="num-neg">−6.0%</td><td class="num-pos">+10.7%</td></tr>
+        <tr><td>1. Cash &amp; equivalents</td><td>26,000</td><td>61,000</td><td>10,000</td><td class="num-pos">+134.6%</td><td class="num-neg">−83.6%</td></tr>
+        <tr><td>2. ST financial investments</td><td>5,600</td><td>6,000</td><td>53,000</td><td class="num-pos">+7.1%</td><td class="num-pos">+783.3%</td></tr>
+        <tr><td>3. Accounts receivable</td><td>17,000</td><td>7,700</td><td>12,000</td><td class="num-neg">−54.7%</td><td class="num-pos">+55.8%</td></tr>
+        <tr><td>4. Inventories</td><td>120,000</td><td>84,000</td><td>100,000</td><td class="num-neg">−30.0%</td><td class="num-pos">+19.0%</td></tr>
+        <tr><td>II. Non-current Assets</td><td>39,020</td><td>40,040</td><td>39,700</td><td class="num-pos">+2.6%</td><td class="num-neg">−0.8%</td></tr>
+        <tr><td><strong>Total Assets</strong></td><td><strong>210,320</strong></td><td><strong>201,140</strong></td><td><strong>218,000</strong></td><td class="num-neg">−4.4%</td><td class="num-pos">+8.4%</td></tr>
+      </tbody></table>
+      <div class="table-note">Source: company balance sheet, condensed for teaching purposes.</div></div>
+
+      <div class="step"><span class="step-num">1</span><div><strong>Read the total first.</strong> Total assets fell 4.4% in 2023, then recovered 8.4% in 2024 — a non-linear path, which already tells you something happened beneath the surface in both years.</div></div>
+      <div class="step"><span class="step-num">2</span><div><strong>Find what actually drove the total.</strong> 2024's current-asset growth (+10.7%) was not driven by operations getting bigger across the board — it was concentrated almost entirely in <strong>short-term financial investments (+783%)</strong>, while cash collapsed (−83.6%). This is not "the company grew"; it is "the company reallocated idle cash into short-term investments," probably chasing a higher yield on temporarily idle funds.</div></div>
+      <div class="step"><span class="step-num">3</span><div><strong>Check the riskier items.</strong> Receivables jumped 55.8% in 2024 after falling 54.7% in 2023 — a swing that large warrants asking whether credit policy loosened to drive sales, and whether collection risk is rising as a result.</div></div>
+      <div class="step"><span class="step-num">4</span><div><strong>Conclude with a judgement, not just a description.</strong> A strong answer says: "TAN's 2024 asset growth was driven by treasury reallocation (cash → short-term investments) and looser receivables, not by core operating expansion — this growth is lower quality than a similar increase driven by inventory and fixed assets in support of higher sales."</div></div>
+    </div>
+
+    <div class="subhead"><span class="num">4.1.2</span><h3>Asset Structure Analysis (Vertical Analysis)</h3></div>
+    <div class="framework" data-group="a2">
+      <div class="f-item open">
+        <button class="f-toggle"><span class="f-letter">A</span><span class="f-q">What is it?</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner"><p>Vertical analysis expresses every asset item as a <strong>% of total assets</strong> at one point in time. Instead of "how did it change?", it answers "how is the pie sliced right now — and is the company over-concentrated in one slice?"</p></div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">B</span><span class="f-q">Why does it matter?</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner"><p>Structure reveals <strong>diversification and concentration risk</strong>. A company with 80% of its assets in a single receivable from one customer carries very different risk from one spread across cash, inventory, and equipment, even if both have the same total assets.</p></div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">C</span><span class="f-q">What is the financial logic?</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner"><p>Asset structure is a fingerprint of the <strong>business model</strong>. A trading/distribution company will naturally carry high inventory and receivables and low fixed assets. A manufacturer or utility will carry heavy fixed assets. A bank will carry almost no inventory at all. There is no universally "correct" structure — only a structure that is, or is not, consistent with how the company actually earns revenue.</p></div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">D</span><span class="f-q">How should we interpret it?</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner"><p>Combine the % weight (vertical) with how that weight is moving (horizontal). A current-assets share climbing from 80% to 82% while inventory's own share also climbs tells a more complete story than either number alone — together they suggest the company is becoming more working-capital intensive over time.</p></div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">E</span><span class="f-q">What are the implications?</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner"><p>A current-asset-heavy structure usually means more liquidity and flexibility but lower long-run returns on capital. A fixed-asset-heavy structure usually means higher operating leverage — profit is more sensitive to revenue swings in both directions — and less flexibility to scale down quickly in a downturn.</p></div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">F</span><span class="f-q">Real-life example</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner"><p>TAN Company carries roughly <strong>80–82% of total assets in current assets</strong> and only ~13% in fixed assets across 2022–2024 (see table below) — a structure typical of a trading or light-manufacturing business, not a capital-intensive one like a utility or heavy industrial firm.</p></div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">G</span><span class="f-q">Common student mistakes</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner"><ul>
+          <li>Treating a high current-asset % as automatically "safe" — it can also mean capital is parked unproductively in receivables or excess inventory.</li>
+          <li>Comparing structure across two unrelated industries and calling one "better" without adjusting for business model.</li>
+          <li>Quoting only one year's % and forgetting to discuss the trend across the period.</li>
+        </ul></div></div>
+      </div>
+    </div>
+
+    <div class="case-card">
+      <span class="case-tag">WORKED CASE · TAN COMPANY</span>
+      <h4>Vertical (structure) table</h4>
+      <div class="table-wrap"><table><thead><tr><th>Item</th><th>2022</th><th>2023</th><th>2024</th></tr></thead><tbody>
+        <tr><td>I. Current Assets</td><td>81.45%</td><td>80.09%</td><td>81.79%</td></tr>
+        <tr><td>— Cash &amp; equivalents</td><td>12.36%</td><td>30.33%</td><td>4.59%</td></tr>
+        <tr><td>— ST financial investments</td><td>2.66%</td><td>2.98%</td><td>24.31%</td></tr>
+        <tr><td>— Inventories</td><td>57.06%</td><td>41.76%</td><td>45.87%</td></tr>
+        <tr><td>II. Non-current Assets</td><td>18.55%</td><td>19.91%</td><td>18.21%</td></tr>
+        <tr><td>— Fixed assets</td><td>13.31%</td><td>14.02%</td><td>12.71%</td></tr>
+        <tr><td><strong>Total Assets</strong></td><td>100%</td><td>100%</td><td>100%</td></tr>
+      </tbody></table></div>
+      <p style="margin-top:14px;font-size:14px;color:var(--ink-soft)"><strong>Reading it:</strong> inventories alone make up 42–57% of total assets every year — TAN's single biggest exposure by far. A vertical analysis essay answer should flag this concentration explicitly and connect it forward to inventory-related risk (obsolescence, holding cost, demand forecasting) discussed in 4.1.1.</p>
+    </div>
+
+    <div class="subhead"><span class="num">Focus</span><h3>Special emphasis: reading asset structure as strategy</h3></div>
+    <div class="grid3">
+      <div class="pillar neutral">
+        <div class="pillar-h">⚖ Current vs. Non-current</div>
+        <p style="font-size:13.5px;margin:0">Current assets are the company's liquidity reserve and operating fuel; non-current assets are its productive capacity. The balance between them is a direct trade-off between <strong>flexibility</strong> and <strong>scale of operation</strong> — and it sets up §4.4, where the time-matching of assets to capital determines financial stability.</p>
+      </div>
+      <div class="pillar bad">
+        <div class="pillar-h">🏭 Rising Fixed Assets</div>
+        <p style="font-size:13.5px;margin:0">An increasing fixed-asset share signals capacity expansion and a strategic bet on future demand. It raises <strong>operating leverage</strong>: fixed costs (depreciation) stay constant regardless of sales volume, so profit becomes more volatile — a powerful upside in growth years, a painful downside in slow years.</p>
+      </div>
+      <div class="pillar good">
+        <div class="pillar-h">📦 Rising Inventories</div>
+        <p style="font-size:13.5px;margin:0">Can mean the company is positioning for expected demand growth (positive), <em>or</em> that goods aren't selling as planned and are piling up (negative). The differentiator is whether inventory growth is proportional to — or faster than — revenue growth, and whether it's matched by appropriate financing.</p>
+      </div>
+    </div>
+
+    <div class="callout exam">
+      <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      <div><div class="callout-title">Exam tip</div><p>Examiners reward students who explicitly separate <strong>horizontal</strong> ("how is it changing?") from <strong>vertical</strong> ("how big a slice is it?") and then recombine them into one judgement. Never present the two tables without a synthesizing sentence.</p></div>
+    </div>
+
+    <!-- ESSAY PREP 4.1 -->
+    <div class="subhead"><span class="num">Exam Prep</span><h3>Essay questions on Asset Analysis</h3></div>
+    <div class="essay-q">
+      <div class="qtext"><span class="qmark">“</span>Explain the purpose and method of asset structure analysis. Using a hypothetical company, discuss what a rising share of fixed assets in total assets might indicate about its strategy and risk.</div>
+      <button class="reveal-btn">Show model answer</button>
+      <div class="model-answer">
+        <span class="tag">Model answer outline</span>
+        <p><strong>Purpose/Method (2–3 sentences):</strong> State that asset structure analysis uses vertical analysis to measure each asset's % of total assets, aiming to assess diversification and risk exposure; horizontal analysis is layered on to track how that structure evolves.</p>
+        <p><strong>Application:</strong> If Company X's fixed-asset share rises from 20% to 35% over three years, this indicates a capacity-expansion strategy — likely investment in production lines, equipment, or facilities to support anticipated demand growth.</p>
+        <p><strong>Risk discussion:</strong> Explain operating leverage — higher fixed costs (depreciation) mean profit becomes more sensitive to revenue changes. Link to financing: ask whether this fixed-asset growth was financed with long-term capital (appropriate, per §4.4) or short-term capital (a financing-mismatch risk).</p>
+        <p><strong>Conclusion:</strong> A reasoned judgement, not a verdict — e.g. "the strategy is reasonable if demand forecasts hold and financing is long-term; otherwise it raises both operating and financial risk simultaneously."</p>
+      </div>
+    </div>
+    <div class="essay-q">
+      <div class="qtext"><span class="qmark">“</span>A company's inventories increased by 30% while sales grew only 8%. Is this a positive or negative signal? Justify your answer.</div>
+      <button class="reveal-btn">Show model answer</button>
+      <div class="model-answer">
+        <span class="tag">Model answer outline</span>
+        <p>Lead with the mismatch: inventory growth (30%) outpacing sales growth (8%) is a <strong>warning sign</strong>, not automatically negative, but it should be investigated. Possible explanations: (1) deliberate stock-build ahead of an expected demand surge — defensible if supported by forward orders; (2) slowing sell-through / overstocking — a sign of inefficient capital use and rising obsolescence/holding-cost risk. The correct exam answer evaluates both possibilities and states what further evidence (inventory turnover ratio, order backlog) would resolve the ambiguity, rather than picking one side without justification.</p>
+      </div>
+    </div>
+    <div class="vocab-pills">
+      <span class="vpill"><b>horizontal analysis</b> — trend over time</span>
+      <span class="vpill"><b>vertical analysis</b> — % of total (common-size)</span>
+      <span class="vpill"><b>asset diversification</b></span>
+      <span class="vpill"><b>concentration risk</b></span>
+      <span class="vpill"><b>operating leverage</b></span>
+      <span class="vpill"><b>capacity expansion</b></span>
+      <span class="vpill"><b>obsolescence risk</b></span>
+      <span class="vpill"><b>liquidity reserve</b></span>
+<!-- ============================================================ 4.2 CAPITAL -->
+<section class="section margin-rule" id="capital">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">§ 4.2 — The Capital Side</div>
+      <h2>Capital Analysis: Whose Money Is It, and What Does That Cost?</h2>
+      <p class="deck">If asset analysis asks "where did the money go?", capital analysis asks the mirror question: <strong>where did the money come from, and what claim does that source hold over the company?</strong> Every source — supplier credit, a bank loan, a shareholder's investment — comes with a different price, a different deadline, and a different amount of control surrendered.</p>
+    </div>
+
+    <div class="subhead"><span class="num">4.2.1</span><h3>Capital Fluctuation Analysis (Horizontal)</h3></div>
+    <div class="framework" data-group="c1">
+      <div class="f-item open">
+        <button class="f-toggle"><span class="f-letter">A</span><span class="f-q">What is it?</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner"><p>The same horizontal logic as 4.1.1, applied to liabilities and equity: track each capital item's absolute and % change across periods to assess the company's <strong>capacity to mobilise financial resources</strong>.</p></div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">B</span><span class="f-q">Why does it matter?</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner"><p>Lenders care whether a company can keep attracting financing on reasonable terms. Shareholders care whether growth in equity comes from new share issues (dilution) or retained profit (value creation). A sudden spike in short-term borrowing, for instance, can foreshadow a liquidity squeeze well before it appears anywhere else.</p></div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">C</span><span class="f-q">What is the financial logic?</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner"><p>Just as every asset increase needs financing, every capital increase needs a destination — it either funded new assets or replaced another capital source that shrank. Capital fluctuation is "sources of funds" viewed item-by-item, the other half of §4.3.</p></div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">D</span><span class="f-q">How should we interpret it?</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner">
+          <div class="table-wrap"><table><thead><tr><th>Item</th><th>↑ Increase usually means</th><th>↓ Decrease usually means</th></tr></thead><tbody>
+            <tr><td>Accounts payable</td><td>Greater reliance on supplier credit — can be efficient financing, or a sign of cash strain</td><td>Paying suppliers faster — builds trust, but uses cash sooner</td></tr>
+            <tr><td>Short-term borrowings</td><td>Financing a short-term need, or covering a liquidity gap</td><td>Deleveraging — improves safety, frees future cash flow</td></tr>
+            <tr><td>Retained earnings</td><td>The company is profitable and reinvesting — strengthens internal financing</td><td>Losses, or heavy dividend/reserve allocation — weakens reinvestment capacity</td></tr>
+            <tr><td>Shareholders' equity</td><td>New shares issued — more permanent capital, but ownership is diluted</td><td>Share buybacks or losses — concentrates ownership but may signal distress if loss-driven</td></tr>
+          </tbody></table></div>
+        </div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">E</span><span class="f-q">What are the implications?</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner"><p>Capital fluctuation patterns reveal financing strategy and resilience: a company that funds growth mainly through retained earnings is building durable, low-risk capacity; one that funds growth mainly through fresh short-term debt each year is building fragility.</p></div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">F</span><span class="f-q">Real-life example</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner"><p>See the TAN Company liabilities &amp; equity table below.</p></div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">G</span><span class="f-q">Common student mistakes</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner"><ul>
+          <li>Assuming all debt growth is bad and all equity growth is good — both depend on cost, terms, and use.</li>
+          <li>Forgetting retained earnings is itself a capital source — it doesn't "just sit there", it finances assets like any other source.</li>
+          <li>Ignoring the sign of retained earnings (negative accumulated losses look structurally different from positive retained profit) when computing % changes.</li>
+        </ul></div></div>
+      </div>
+    </div>
+
+    <div class="case-card">
+      <span class="case-tag">WORKED CASE · TAN COMPANY</span>
+      <h4>Liabilities &amp; Equity, 2022–2024</h4>
+      <div class="table-wrap"><table><thead><tr><th>Item</th><th>2022</th><th>2023</th><th>2024</th><th>Δ23/22</th><th>Δ24/23</th></tr></thead><tbody>
+        <tr><td>I. Liabilities</td><td>16,320</td><td>6,840</td><td>9,000</td><td class="num-neg">−58.1%</td><td class="num-pos">+31.6%</td></tr>
+        <tr><td>— Short-term borrowings</td><td>7,500</td><td>–</td><td>–</td><td class="num-neg">−100%</td><td>–</td></tr>
+        <tr><td>II. Shareholders' Equity</td><td>194,000</td><td>194,300</td><td>209,000</td><td class="num-pos">+0.2%</td><td class="num-pos">+7.6%</td></tr>
+        <tr><td>— Retained earnings</td><td>(2,000)</td><td>(1,700)</td><td>13,000</td><td>↑</td><td>↑ turned positive</td></tr>
+        <tr><td><strong>Total Liabilities &amp; Equity</strong></td><td><strong>210,320</strong></td><td><strong>201,140</strong></td><td><strong>218,000</strong></td><td class="num-neg">−4.4%</td><td class="num-pos">+8.4%</td></tr>
+      </tbody></table></div>
+      <p style="margin-top:14px;font-size:14px;color:var(--ink-soft)"><strong>Reading it:</strong> TAN paid off 100% of its short-term borrowings by 2023 and has relied almost entirely on equity since (94–97% of total financing — see vertical table below). Retained earnings flipped from negative to +13,000 in 2024, meaning the company moved from accumulated losses into genuine profitability — arguably the single most important line in the whole statement for an essay answer, since it signals an improving ability to self-finance.</p>
+    </div>
+
+    <div class="subhead"><span class="num">4.2.2</span><h3>Capital Structure Analysis (Vertical)</h3></div>
+    <div class="framework" data-group="c2">
+      <div class="f-item open">
+        <button class="f-toggle"><span class="f-letter">A</span><span class="f-q">What is it?</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner"><p>Each liability and equity item expressed as a % of total capital. It is the classic <strong>debt-vs-equity</strong> question: how much of the company belongs, financially, to creditors versus owners?</p></div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">B</span><span class="f-q">Why does it matter?</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner"><p>It tells you (1) <strong>financial autonomy</strong> — how independent the company is from external financiers, (2) <strong>accountability</strong> — who has a legal claim if things go wrong and in what order, and (3) <strong>financial risk</strong> — how much fixed obligation (interest, principal) the company must service regardless of how business performs.</p></div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">C</span><span class="f-q">What is the financial logic? — risk, autonomy &amp; cost of capital</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner">
+          <p><strong>Debt</strong> is cheaper than equity (interest is tax-deductible and creditors take less risk than owners, so they demand a lower return) but it is a fixed, contractual obligation — missed interest or principal payments can trigger default regardless of how the year actually went. <strong>Equity</strong> is more expensive (owners bear residual risk and demand a higher return) but it is flexible — there is no contractual obligation to pay a dividend in a bad year.</p>
+          <p>This is the <strong>risk–return trade-off of financing</strong>: more debt lowers the average cost of capital (cheap debt pulls down the blended rate) and can amplify returns to equity holders in good years (financial leverage), but it raises the probability and severity of financial distress in bad years. More equity raises the average cost of capital but buys safety and independence.</p>
+        </div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">D</span><span class="f-q">How should we interpret it?</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner">
+          <div class="table-wrap"><table><thead><tr><th>Ratio</th><th>Higher value implies</th><th>Lower value implies</th></tr></thead><tbody>
+            <tr><td>Liabilities / Total Capital</td><td>Greater financial leverage — can lift ROE, but raises financial risk and debt-service burden</td><td>Lower financial risk, but possibly under-using the tax shield and leverage benefits of debt</td></tr>
+            <tr><td>Equity / Total Capital</td><td>Strong financial autonomy and stability; less exposure to refinancing risk</td><td>Weaker independence, more vulnerable to interest-rate and refinancing risk</td></tr>
+            <tr><td>Retained Earnings / Total Capital</td><td>Strong internal financing capacity — growth doesn't depend on outside capital</td><td>May indicate recurring losses or heavy payouts limiting reinvestment</td></tr>
+          </tbody></table></div>
+        </div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">E</span><span class="f-q">What are the implications?</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner"><p>Capital structure is a statement about <strong>who bears the risk</strong> of the business not working out as planned. A heavily-equity-financed firm is more resilient to shocks but may be forgoing the return-amplifying power of leverage; a heavily-debt-financed firm can grow faster and reward equity holders more, but a single bad year can threaten its survival.</p></div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">F</span><span class="f-q">Real-life example</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner"><p>TAN's equity ratio rose from <strong>92.24% (2022) to 96.60% (2023)</strong> — an Equity Multiplier (Total Assets / Total Equity) falling from 1.08 to 1.04. TAN is financed almost entirely by its owners, with virtually no leverage. This is extremely safe, but it also means TAN is not using debt's tax shield or leverage to boost returns to shareholders — a textbook talking point for the risk-return trade-off.</p></div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">G</span><span class="f-q">Common student mistakes</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner"><ul>
+          <li>Stating "more equity is always better" — it is safer, not strictly better; it also raises the cost of capital and can dilute returns.</li>
+          <li>Confusing <strong>financial risk</strong> (from capital structure / leverage) with <strong>business risk</strong> (from the nature of operations) — they are different, additive sources of total risk.</li>
+          <li>Forgetting that the cost of debt is usually lower than the cost of equity, which is why moderate leverage can be efficient, not just risky.</li>
+        </ul></div></div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="pillar bad">
+        <div class="pillar-h">🏦 More Debt</div>
+        <p style="font-size:13.5px;margin:0 0 8px"><strong>Pros:</strong> cheaper cost of capital, interest tax shield, can amplify ROE through leverage, no ownership dilution.</p>
+        <p style="font-size:13.5px;margin:0"><strong>Cons:</strong> fixed obligation regardless of performance, higher financial risk, possible covenants restricting management, refinancing risk.</p>
+      </div>
+      <div class="pillar good">
+        <div class="pillar-h">🧾 More Equity</div>
+        <p style="font-size:13.5px;margin:0 0 8px"><strong>Pros:</strong> no obligatory repayment, greater financial autonomy and stability, more resilience to downturns.</p>
+        <p style="font-size:13.5px;margin:0"><strong>Cons:</strong> higher cost of capital, ownership dilution for new shareholders, may under-utilise leverage's return-boosting effect.</p>
+      </div>
+    </div>
+
+    <div class="callout insight">
+      <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+      <div><div class="callout-title">The core trade-off, in one sentence</div><p><strong>Financial autonomy and financial risk move in opposite directions:</strong> the more a company finances itself with equity, the more independent and stable it is, but the more it gives up the cheaper cost and leverage benefits that debt provides — and vice versa.</p></div>
+    </div>
+
+    <!-- ESSAY PREP 4.2 -->
+    <div class="subhead"><span class="num">Exam Prep</span><h3>Essay questions on Capital Analysis</h3></div>
+    <div class="essay-q">
+      <div class="qtext"><span class="qmark">“</span>Discuss the trade-off between debt and equity financing. Why might two equally profitable companies choose very different capital structures?</div>
+      <button class="reveal-btn">Show model answer</button>
+      <div class="model-answer">
+        <span class="tag">Model answer outline</span>
+        <p>Open with the cost-vs-risk framing: debt is cheaper (tax-deductible interest, lower required return for lower-risk creditors) but contractually fixed; equity is more expensive but flexible and loss-absorbing.</p>
+        <p>Explain financial leverage: moderate debt can raise ROE when operating returns exceed the cost of debt, but it raises the variance of returns to equity holders and the probability of distress.</p>
+        <p>Address the "two equally profitable firms" prompt directly: differences can come from industry volatility (a stable-cash-flow utility can safely carry more debt than a cyclical manufacturer), management risk appetite, access to capital markets, growth-stage (young firms often favour equity to preserve flexibility), and existing covenant constraints.</p>
+        <p>Close by stating there is no single optimal structure — only one that is appropriate to the company's risk profile, growth needs, and cash-flow stability.</p>
+      </div>
+    </div>
+    <div class="essay-q">
+      <div class="qtext"><span class="qmark">“</span>A company's equity ratio rose from 70% to 95% over three years entirely because it repaid all its debt. Is this necessarily a sign of improving financial health?</div>
+      <button class="reveal-btn">Show model answer</button>
+      <div class="model-answer">
+        <span class="tag">Model answer outline</span>
+        <p>Acknowledge the surface positive: lower financial risk, stronger autonomy, no debt-service burden.</p>
+        <p>Then complicate it (this is what earns marks): a 95% equity ratio may also indicate the company is <strong>not using leverage efficiently</strong> — forgoing cheap financing and the tax shield, potentially leaving growth opportunities unfunded, and possibly producing a lower ROE than a moderately-levered peer with the same operating performance. Financial health requires assessing this alongside profitability and growth, not capital structure in isolation.</p>
+      </div>
+    </div>
+    <div class="vocab-pills">
+      <span class="vpill"><b>financial autonomy</b></span>
+      <span class="vpill"><b>financial leverage</b></span>
+      <span class="vpill"><b>cost of capital</b></span>
+      <span class="vpill"><b>tax shield</b></span>
+      <span class="vpill"><b>equity dilution</b></span>
+      <span class="vpill"><b>financial risk vs business risk</b></span>
+      <span class="vpill"><b>internal vs external financing</b></span>
+<!-- ============================================================ 4.3 SOURCES & USES -->
+<section class="section margin-rule" id="funds">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">§ 4.3 — Connecting the Two Sides</div>
+      <h2>Analysis of Sources and Uses of Funds</h2>
+      <p class="deck">Asset analysis and capital analysis each look at one side of the balance sheet in isolation. Sources-and-uses analysis is where you put them back together and trace the <strong>flow of money</strong> between them during the period — literally double-entry bookkeeping logic turned into a diagnostic tool.</p>
+    </div>
+
+    <div class="framework" data-group="f3">
+      <div class="f-item open">
+        <button class="f-toggle"><span class="f-letter">A</span><span class="f-q">What is it?</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner"><p>A statement that reclassifies every balance-sheet change between two dates into one of two buckets: a <strong>Use of Funds</strong> (money was deployed) or a <strong>Source of Funds</strong> (money was raised/released). Because the balance sheet must balance, total uses always equal total sources — a useful self-check on your own workings.</p></div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">B</span><span class="f-q">Why does it matter?</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner"><p>It is the single best tool for answering "what did this company actually <em>do</em> financially this year?" in one page — did it raise new debt to fund expansion? Did it sell off inventory to pay down loans? Did profit alone fund growth? Lenders use it to judge whether financing requests are being used as proposed; managers use it to audit their own capital allocation.</p></div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">C</span><span class="f-q">Why are increases in assets a "use" and increases in liabilities/equity a "source"?</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner">
+          <p>This is the logic students most often memorise without understanding — so reason it through instead:</p>
+          <ul>
+            <li><strong>Assets are where cash goes when it is spent or deployed.</strong> Buying more inventory, letting receivables grow, purchasing equipment — every one of these <em>consumes</em> cash. So an asset increase is a use of funds. Conversely, an asset decrease (selling inventory, collecting receivables, selling equipment) <em>releases</em> cash back to the company — a source of funds.</li>
+            <li><strong>Liabilities and equity are where cash comes from.</strong> Borrowing more, or issuing more shares, brings cash <em>into</em> the company — a source of funds. Repaying a loan or buying back shares sends cash <em>out</em> — a use of funds.</li>
+          </ul>
+          <p>The whole table is really just the accounting equation (Assets = Liabilities + Equity) read as a story of cash flowing in and out.</p>
+        </div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">D / E</span><span class="f-q">How to interpret it &amp; what are the implications?</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner"><p>Look at the <strong>composition</strong> of sources, not just the total. Funding growth mainly from operating cash flow / retained earnings is the highest-quality source. Funding growth mainly from new short-term debt is the lowest-quality and riskiest. On the uses side, check whether spending matched stated strategy (e.g. genuine capex for expansion vs. funds quietly absorbed by a receivables build-up).</p></div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">G</span><span class="f-q">Common student mistakes</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner"><ul>
+          <li>Flipping the rule for liabilities/equity — remember it is the <em>opposite</em> direction from assets (increase = source, not use).</li>
+          <li>Forgetting that total uses must equal total sources; if your table doesn't balance, you have a classification error.</li>
+          <li>Stopping at the table without Step 4's interpretation — examiners want the "so what", not just the arithmetic.</li>
+        </ul></div></div>
+      </div>
+    </div>
+
+    <div class="formula">
+      <span class="fl">The classification rule</span>
+      <div class="eq">↑ Assets → <span class="debit-term">USE</span> of Funds &nbsp;|&nbsp; ↓ Assets → <span class="credit-term">SOURCE</span> of Funds</div>
+      <div class="eq">↑ Liabilities or Equity → <span class="credit-term">SOURCE</span> of Funds &nbsp;|&nbsp; ↓ Liabilities or Equity → <span class="debit-term">USE</span> of Funds</div>
+    </div>
+
+    <div class="subhead"><span class="num">Method</span><h3>The four-step procedure</h3></div>
+    <div class="grid2">
+      <div class="pillar"><div class="pillar-h">① Condense the balance sheet</div><p style="font-size:13.5px;margin:0">Group minor or similar-natured items so the statement highlights what matters for this analysis' purpose, instead of drowning in line-items.</p></div>
+      <div class="pillar"><div class="pillar-h">② Build the statement of changes</div><p style="font-size:13.5px;margin:0">List every item's change between two balance-sheet dates and sort it into the Use / Source column using the rule above.</p></div>
+      <div class="pillar"><div class="pillar-h">③ Summarise into the uses/sources table</div><p style="font-size:13.5px;margin:0">Aggregate into Increase Assets / Decrease Liabilities / Decrease Equity (Uses) versus Decrease Assets / Increase Liabilities / Increase Equity (Sources), each as value and %.</p></div>
+      <div class="pillar"><div class="pillar-h">④ Interpret</div><p style="font-size:13.5px;margin:0">Answer three questions: what was the primary capital need? what were the main sources, and their character? do sources and uses match appropriately in time-horizon and risk?</p></div>
+    </div>
+
+    <div class="case-card">
+      <span class="case-tag">FULLY WORKED CASE · TAN COMPANY, 2022 → 2023</span>
+      <h4>Step 3 result — the Uses &amp; Sources summary table</h4>
+      <p style="font-size:14px;color:var(--ink-soft)">Built directly from TAN's balance-sheet changes (cash +35,000; receivables −9,300; inventories −36,000; short-term borrowings −7,500; retained earnings +300, etc. — million VND).</p>
+      <div class="grid2">
+        <div class="table-wrap"><table><thead><tr><th>Capital Uses</th><th>Value</th><th>%</th></tr></thead><tbody>
+          <tr><td>I. Increase Assets</td><td>36,520</td><td>78.2%</td></tr>
+          <tr><td>II. Decrease Liabilities</td><td>10,200</td><td>21.8%</td></tr>
+          <tr><td>III. Decrease Equity</td><td>0</td><td>0.0%</td></tr>
+          <tr><td><strong>Total Capital Uses</strong></td><td><strong>46,720</strong></td><td><strong>100%</strong></td></tr>
+        </tbody></table></div>
+        <div class="table-wrap"><table><thead><tr><th>Capital Sources</th><th>Value</th><th>%</th></tr></thead><tbody>
+          <tr><td>I. Decrease Assets</td><td>45,700</td><td>97.8%</td></tr>
+          <tr><td>II. Increase Liabilities</td><td>720</td><td>1.5%</td></tr>
+          <tr><td>III. Increase Equity</td><td>300</td><td>0.6%</td></tr>
+          <tr><td><strong>Total Capital Sources</strong></td><td><strong>46,720</strong></td><td><strong>100%</strong></td></tr>
+        </tbody></table></div>
+      </div>
+      <div class="step" style="margin-top:18px"><span class="step-num">★</span><div><strong>Step 4 — interpretation, written the way an exam answer should be:</strong> "In 2023, 97.8% of TAN's financing came from <em>running down its own assets</em> — chiefly a 36,000 fall in inventory and a 9,300 fall in receivables — rather than from raising new capital. This released cash was used almost entirely (78.2%) to build the asset base elsewhere, principally cash itself (+35,000), and to repay short-term borrowings in full (21.8% of total uses). The picture is a company <strong>deleveraging by liquidating working capital</strong>, not by raising fresh financing — a conservative, balance-sheet-strengthening move, though it raises a follow-up question of whether the inventory drawdown reflects efficient working-capital management or a slowdown in purchasing/production."</div></div>
+    </div>
+
+    <div class="callout mistake">
+      <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+      <div><div class="callout-title">Common mistake</div><p>Students often write "the company sourced 97.8% of its funds from asset decreases" as if that were automatically good news. It isn't inherently positive or negative — a forced fire-sale of inventory under demand pressure and a deliberate, planned working-capital release look identical in this table. The table tells you <em>what happened</em>; only the surrounding context (sales trend, industry conditions) tells you whether it was <em>healthy</em>.</p></div>
+    </div>
+
+    <div class="subhead"><span class="num">Practice</span><h3>Classify each change: Use of Funds or Source of Funds?</h3></div>
+    <p style="max-width:64ch;color:var(--ink-soft)">Tap a chip to select it, then tap the bin where it belongs. (Desktop users can also drag and drop.)</p>
+    <div class="sort-wrap">
+      <div class="chip-pool" id="sortPool">
+        <div class="chip" draggable="true" data-answer="use">Inventories increase by 16,000</div>
+        <div class="chip" draggable="true" data-answer="source">Cash decreases by 51,000</div>
+        <div class="chip" draggable="true" data-answer="source">Long-term borrowings increase by 5,000</div>
+        <div class="chip" draggable="true" data-answer="use">Accounts payable decreases by 300</div>
+        <div class="chip" draggable="true" data-answer="source">Common shares issued, +10,000</div>
+        <div class="chip" draggable="true" data-answer="source">Accounts receivable decreases by 2,000</div>
+        <div class="chip" draggable="true" data-answer="use">Fixed assets purchased, +8,000</div>
+        <div class="chip" draggable="true" data-answer="use">Dividend paid, retained earnings −1,500</div>
+      </div>
+      <div class="bins">
+        <div class="bin use" data-bin="use" id="binUse"><h5>↑ Use of Funds</h5><div class="bin-items"></div></div>
+        <div class="bin source" data-bin="source" id="binSource"><h5>↓ Source of Funds</h5><div class="bin-items"></div></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center;">
+        <button class="icon-btn" id="sortCheck">Check my answers</button>
+        <button class="icon-btn" id="sortReset">Reset</button>
+        <div class="sort-feedback" id="sortFeedback"></div>
+      </div>
+    </div>
+
+    <!-- ESSAY PREP 4.3 -->
+    <div class="subhead"><span class="num">Exam Prep</span><h3>Essay questions on Sources &amp; Uses of Funds</h3></div>
+    <div class="essay-q">
+      <div class="qtext"><span class="qmark">“</span>Explain why an increase in accounts receivable is classified as a use of funds while an increase in accounts payable is classified as a source of funds.</div>
+      <button class="reveal-btn">Show model answer</button>
+      <div class="model-answer">
+        <span class="tag">Model answer outline</span>
+        <p>Receivables are an asset representing cash the company is <em>owed but has not yet collected</em> — letting this balance grow means the company is effectively financing its customers, tying up cash that would otherwise be available, hence a use of funds. Payables are a liability representing cash the company <em>owes but has not yet paid</em> — letting this balance grow means suppliers are effectively financing the company, freeing up cash for other purposes, hence a source of funds. Both illustrate the same underlying idea: an asset increase consumes cash; a liability increase provides cash.</p>
+      </div>
+    </div>
+    <div class="vocab-pills">
+      <span class="vpill"><b>use of funds</b></span>
+      <span class="vpill"><b>source of funds</b></span>
+      <span class="vpill"><b>condensed balance sheet</b></span>
+      <span class="vpill"><b>capital mobilisation</b></span>
+      <span class="vpill"><b>capital utilisation</b></span>
+      <span class="vpill"><b>matching of sources and uses</b></span>
+<!-- ============================================================ 4.4 FINANCIAL BALANCE -->
+<section class="section margin-rule" id="balance">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">§ 4.4 — The Time-Matching Principle</div>
+      <h2>Financial Balance Analysis &amp; Net Working Capital</h2>
+      <p class="deck">This is the conceptual heart of the chapter. Every other tool in §4.1–4.3 describes <em>what</em> a company holds and <em>how</em> it's financed. Financial balance analysis asks the question that actually determines survival: <strong>is the timing of financing matched to the timing of the assets it funds?</strong></p>
+    </div>
+
+    <div class="framework" data-group="b1">
+      <div class="f-item open">
+        <button class="f-toggle"><span class="f-letter">A</span><span class="f-q">What is Net Working Capital?</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner"><p>NWC is the cushion of long-term capital left over after funding all long-term assets — equivalently, the portion of current assets financed by long-term (stable) capital rather than short-term capital.</p></div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">C</span><span class="f-q">What is the financial logic — why should long-term assets be financed long-term?</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner">
+          <p>This is the <strong>golden rule of financing</strong>: the maturity of a financing source should match the time horizon of what it funds. A factory takes years to generate the cash flow that repays its cost — it should be financed with capital that won't be called back for years (long-term debt, equity). If a factory is financed with a 90-day loan, the company will need to refinance that loan again and again for the asset's entire life, and any single failed refinancing (a credit crunch, a bank's change of heart) can force a fire-sale of a productive asset just to survive. Short-term assets like inventory, by contrast, naturally convert to cash quickly and so can safely be financed with short-term capital.</p>
+        </div></div>
+      </div>
+      <div class="f-item">
+        <button class="f-toggle"><span class="f-letter">B / E</span><span class="f-q">Why does it matter / implications?</span><svg class="f-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="f-body"><div class="f-body-inner"><p>NWC is the single number creditors and analysts check first when assessing <strong>structural</strong> (as opposed to day-to-day) liquidity risk. A company can be profitable and still collapse if its financial structure is mismatched — this is why "profitable companies going bankrupt" is a real and recurring phenomenon, almost always traceable to a financing mismatch like negative NWC combined with a sudden inability to roll over short-term debt.</p></div></div>
+      </div>
+    </div>
+
+    <div class="formula">
+      <span class="fl">Deriving the formula — two equivalent views of the same number</span>
+      <div class="eq">NWC = Long-term Capital (LTC) − Long-term Assets (LTA) &nbsp;<span style="opacity:.6">// the financing view</span></div>
+      <div class="eq">NWC = Current Assets (CA) − Current Liabilities (CL) &nbsp;<span style="opacity:.6">// the liquidity view</span></div>
+      <div class="eq" style="opacity:.85">(They're identical because Assets ≡ Capital: LTA+CA = LTC+CL, so LTC−LTA = CA−CL, always.)</div>
+    </div>
+
+    <div class="callout insight">
+      <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+      <div><div class="callout-title">Why two formulas for one concept?</div><p>The first formula tells you <strong>where the surplus came from</strong> (financing decisions). The second tells you <strong>what it's available for</strong> (covering current assets / day-to-day liquidity). A strong essay answer uses whichever framing fits the question — and ideally shows you know they're the same number viewed from two sides of the balance sheet.</p></div>
+    </div>
+
+    <div class="subhead"><span class="num">Explore</span><h3>Interactive: build the balance-sheet diagram yourself</h3></div>
+    <div class="scale-widget">
+      <div class="label" style="font-family:var(--mono);font-size:11px;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px;">Drag to set Long-term Capital — watch the structure tip between the three cases</div>
+      <div id="diagramStage"></div>
+      <div class="scale-controls">
+        <label>Long-term Capital (LTC) <span id="d_ltcVal" class="mono">700</span></label>
+        <input type="range" id="d_ltc" min="300" max="1100" value="700" step="10">
+      </div>
+      <div class="scale-readout" id="diagramReadout"></div>
+    </div>
+
+    <div class="grid3">
+      <div class="pillar good">
+        <div class="pillar-h">Case 1 · NWC &gt; 0</div>
+        <p style="font-size:13px;margin:0 0 8px"><strong>LTC &gt; LTA.</strong> All long-term assets are covered by long-term capital, with a surplus left over to help fund current assets.</p>
+        <p style="font-size:13px;margin:0"><strong>Advantage:</strong> structurally safe, low refinancing risk.<br><strong>Disadvantage:</strong> if the surplus is excessive, long-term (more expensive) capital is being used to fund assets that didn't need it — raising the cost of capital unnecessarily.</p>
+      </div>
+      <div class="pillar neutral">
+        <div class="pillar-h">Case 2 · NWC = 0</div>
+        <p style="font-size:13px;margin:0 0 8px"><strong>LTC = LTA exactly.</strong> Long-term capital covers long-term assets with nothing left over; current assets are funded entirely by current liabilities.</p>
+        <p style="font-size:13px;margin:0">Structurally "balanced" on paper, but <strong>fragile</strong>: there is zero cushion. Any disruption to short-term financing (a supplier tightening terms, a bank recalling a credit line) leaves current assets under-funded immediately.</p>
+      </div>
+      <div class="pillar bad">
+        <div class="pillar-h">Case 3 · NWC &lt; 0</div>
+        <p style="font-size:13px;margin:0 0 8px"><strong>LTC &lt; LTA.</strong> Long-term capital cannot even cover long-term assets — part of the company's fixed, illiquid asset base is being financed with short-term capital.</p>
+        <p style="font-size:13px;margin:0"><strong>Why this is dangerous:</strong> short-term capital must be renewed every few months, but the long-term asset it's funding won't generate cash for years. The company is structurally dependent on continuously refinancing short-term debt just to keep operating — a single refusal to roll it over can force distress.</p>
+      </div>
+    </div>
+
+    <div class="subhead"><span class="num">4.4.2</span><h3>Quantifying "how reasonable" or "how severe" the structure is</h3></div>
+    <p style="max-width:68ch;color:var(--ink-soft)">Knowing the sign of NWC isn't the end of the analysis — within Case 1, a company can still be financed inefficiently; within Case 3, the degree of imbalance matters enormously.</p>
+    <div class="grid2">
+      <div class="pillar">
+        <div class="pillar-h">If NWC &gt; 0 — how is current-asset financing split?</div>
+        <div class="formula" style="margin:10px 0;font-size:13px;padding:14px 16px;">
+          <div class="eq">LT capital financing CA % = <span class="credit-term">(LTC − LTA)</span> / CA = NWC / CA</div>
+          <div class="eq">ST capital financing CA % = <span class="debit-term">CL</span> / CA</div>
+        </div>
+        <p style="font-size:13px;margin:0">The higher the long-term share, the lower the refinancing risk — but the higher the average cost of capital, since long-term financing is generally pricier than short-term.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-h">If NWC &lt; 0 — how severe is the shortfall?</div>
+        <div class="formula" style="margin:10px 0;font-size:13px;padding:14px 16px;">
+          <div class="eq">ST capital financing LTA % = <span class="debit-term">(LTA − LTC)</span> / LTA = −NWC / LTA</div>
+        </div>
+        <p style="font-size:13px;margin:0">This is the share of fixed/long-term assets propped up by capital that could be recalled within a year. The higher this percentage, the more severe and urgent the financing mismatch.</p>
+      </div>
+    </div>
+
+    <div class="case-card">
+      <span class="case-tag">WORKED CASE · TAN COMPANY — Case 1 in practice</span>
+      <h4>TAN's financial structure is comfortably balanced — and getting safer</h4>
+      <div class="table-wrap"><table><thead><tr><th>Indicator (million VND)</th><th>2022</th><th>2023</th><th>2024</th></tr></thead><tbody>
+        <tr><td>LT capital (LTC)</td><td>195,320</td><td>195,640</td><td>210,100</td></tr>
+        <tr><td>LT assets (LTA)</td><td>39,020</td><td>40,040</td><td>39,700</td></tr>
+        <tr><td><strong>NWC = LTC − LTA</strong></td><td class="num-pos"><strong>156,300</strong></td><td class="num-pos"><strong>155,600</strong></td><td class="num-pos"><strong>170,400</strong></td></tr>
+        <tr><td>Current assets (CA)</td><td>171,300</td><td>161,100</td><td>178,300</td></tr>
+        <tr><td>Proportion of LT capital / CA</td><td>91.2%</td><td>96.6%</td><td>95.6%</td></tr>
+        <tr><td>Proportion of ST capital / CA</td><td>8.8%</td><td>3.4%</td><td>4.4%</td></tr>
+      </tbody></table></div>
+      <p style="margin-top:14px;font-size:14px;color:var(--ink-soft)"><strong>Interpretation:</strong> TAN sits firmly in Case 1 throughout — its long-term capital not only covers its (modest) long-term assets several times over, but also finances 91–97% of current assets as well. This is consistent with the capital structure finding from §4.2 (TAN is financed almost entirely by equity, with essentially no debt): the company is extremely conservatively financed. A complete essay answer would note this is very safe but raises the question of whether TAN's cost of capital is higher than necessary, since equity is the most expensive financing source, and so little of its asset base is supported by cheaper short-term liabilities like supplier credit.</p>
+    </div>
+
+    <div class="case-card">
+      <span class="case-tag">CONTRAST CASE · A NEGATIVE-NWC COMPANY</span>
+      <h4>Bình Minh Construction Co. — Case 3 in practice (illustrative)</h4>
+      <div class="table-wrap"><table><thead><tr><th>Indicator (billion VND)</th><th>Year N</th><th>Year N+1</th></tr></thead><tbody>
+        <tr><td>LT capital (LTC)</td><td>420</td><td>410</td></tr>
+        <tr><td>LT assets (LTA)</td><td>480</td><td>520</td></tr>
+        <tr><td><strong>NWC = LTC − LTA</strong></td><td class="num-neg"><strong>−60</strong></td><td class="num-neg"><strong>−110</strong></td></tr>
+        <tr><td>Current liabilities (CL)</td><td>310</td><td>365</td></tr>
+        <tr><td>Current assets (CA)</td><td>250</td><td>255</td></tr>
+        <tr><td>ST capital financing LTA</td><td>12.5%</td><td>21.2%</td></tr>
+      </tbody></table></div>
+      <p style="margin-top:14px;font-size:14px;color:var(--ink-soft)"><strong>Interpretation:</strong> the imbalance is not only present but <strong>worsening</strong> — the share of fixed assets financed by short-term capital nearly doubled, from 12.5% to 21.2%, while NWC fell further into negative territory. This pattern (heavy capex financed by short-term loans, common in construction and real-estate firms mid-project) is a textbook red flag: the company is racing against its own short-term creditors' willingness to keep renewing financing for a building that won't generate cash until completion.</p>
+    </div>
+
+    <!-- ESSAY PREP 4.4 -->
+    <div class="subhead"><span class="num">Exam Prep</span><h3>Essay questions on Financial Balance Analysis</h3></div>
+    <div class="essay-q">
+      <div class="qtext"><span class="qmark">“</span>"A company can be profitable yet still face the risk of bankruptcy." Use the concept of Net Working Capital to explain how this is possible.</div>
+      <button class="reveal-btn">Show model answer</button>
+      <div class="model-answer">
+        <span class="tag">Model answer outline</span>
+        <p>Open by separating two distinct dimensions of financial health: <strong>profitability</strong> (income-statement performance) and <strong>financial structure / balance</strong> (balance-sheet time-matching). They are not the same thing.</p>
+        <p>Explain the mechanism: if NWC &lt; 0, part of the company's long-term assets is financed by short-term capital that must be continually renewed. Even a highly profitable company generates most of its cash slowly, over the life of its fixed assets — it cannot suddenly produce enough cash to repay a short-term loan on demand. If a lender refuses to roll over that short-term financing (due to a credit crunch, a change in risk appetite, or a covenant breach unrelated to profitability), the company faces a genuine liquidity crisis despite healthy operating profit.</p>
+        <p>Conclude: this is precisely why financial balance analysis is treated as a structural risk indicator independent of profitability — a firm must be analysed on both dimensions, not profitability alone.</p>
+      </div>
+    </div>
+    <div class="essay-q">
+      <div class="qtext"><span class="qmark">“</span>Is NWC = 0 a healthy financial position? Explain why this case is often described as "balanced but fragile."</div>
+      <button class="reveal-btn">Show model answer</button>
+      <div class="model-answer">
+        <span class="tag">Model answer outline</span>
+        <p>Yes, technically balanced — long-term capital exactly covers long-term assets, satisfying the basic time-matching rule, so it is not classified as imbalanced. However, it provides <strong>zero margin of safety</strong>: 100% of current assets depend on current liabilities being continuously available. Any shock — a supplier shortening payment terms, a bank reducing a credit line, a slow sales month delaying collections — immediately threatens the company's ability to fund its current assets, with no cushion to absorb it. "Fragile" captures that the structure works only as long as nothing goes wrong.</p>
+      </div>
+    </div>
+    <div class="vocab-pills">
+      <span class="vpill"><b>net working capital (NWC)</b></span>
+      <span class="vpill"><b>financial structure</b></span>
+      <span class="vpill"><b>time-matching / golden rule of financing</b></span>
+      <span class="vpill"><b>refinancing risk</b></span>
+      <span class="vpill"><b>structural liquidity</b></span>
+      <span class="vpill"><b>margin of safety</b></span>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
