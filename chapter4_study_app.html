@@ -494,6 +494,37 @@
 
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   @media (max-width: 680px) { .two-col { grid-template-columns: 1fr; } }
+/* ===== Global Chapter Navigation ===== */
+
+.chapter-nav{
+background:#16213F;
+display:flex;
+justify-content:center;
+gap:8px;
+padding:8px;
+flex-wrap:wrap;
+}
+
+.chapter-nav a{
+color:#fff;
+text-decoration:none;
+padding:7px 14px;
+border-radius:20px;
+background:rgba(255,255,255,.12);
+font-size:13px;
+font-weight:600;
+transition:.2s;
+}
+
+.chapter-nav a:hover{
+background:#F0A500;
+color:#16213F;
+}
+
+.chapter-nav a.active{
+background:#F0A500;
+color:#16213F;
+}
 </style>
 </head>
 <body>
@@ -508,7 +539,27 @@
   </div>
   <div class="header-right">Study Guide · English</div>
 </header>
+<div class="chapter-nav">
 
+<a href="index.html">📘 Chapter 1</a>
+
+<a href="chapter2_financial_statements.html">📗 Chapter 2</a>
+
+<a href="chapter3_business_performance_analysis.html">📙 Chapter 3</a>
+
+<a href="chapter4_hub_finance.html">📕 Chapter 4 Hub</a>
+
+<a href="chapter4_analysis_of_assets_and_capital_sources.html">
+📖 Chapter 4 Notes
+</a>
+
+<a class="active" href="chapter4_study_app.html">
+📝 Study App
+</a>
+
+<a href="chapter5_cashflow.html">📒 Chapter 5</a>
+
+</div>
 <nav class="tab-bar">
   <button class="tab-btn active" onclick="switchTab('overview')">📋 Overview</button>
   <button class="tab-btn" onclick="switchTab('asset')">🏭 4.1 Asset Analysis</button>
