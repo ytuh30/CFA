@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 5 — Analysis of Corporate Cash Flow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0E1620;
+  --ink-2:#162230;
+  --ink-3:#1C2B3A;
+  --ink-line: rgba(255,255,255,.08);
+  --paper:#F6F1E7;
+  --paper-2:#EFE6D2;
+  --rule:#D9CCA9;
+  --ocf:#3FA796;
+  --ocf-soft:#B9DFD8;
+  --icf:#D98E3F;
+  --icf-soft:#F0D2AC;
+  --fcf:#B5536B;
+  --fcf-soft:#E9C0CB;
+  --gold:#E3B23C;
+  --text-on-dark:#DCE6EC;
+  --text-soft:#8FA6B5;
+  --text-dark:#241F14;
+  --text-dark-soft:#665D49;
+  --radius:10px;
+  --display:'Fraunces', serif;
+  --body:'IBM Plex Sans', sans-serif;
+  --mono:'IBM Plex Mono', monospace;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--ink);
+  color:var(--text-on-dark);
+  font-family:var(--body);
+  line-height:1.6;
+  font-size:16px;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--display); margin:0 0 .4em 0; color:var(--text-dark); font-weight:700;}
+.dark h1,.dark h2,.dark h3,.dark h4{color:var(--text-on-dark);}
+p{margin:0 0 1em 0;}
+.mono{font-family:var(--mono);}
+.num{font-family:var(--mono); font-weight:600; font-variant-numeric:tabular-nums;}
+.num-ocf{color:var(--ocf);}
+.num-icf{color:var(--icf);}
+.num-fcf{color:var(--fcf);}
+a{color:var(--gold);}
+button{font-family:var(--body); cursor:pointer;}
+:focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
+
+/* ===== layout ===== */
+.app{display:flex; min-height:100vh;}
+.sidebar{
+  position:fixed; top:0; left:0; width:248px; height:100vh;
+  background:var(--ink-2); border-right:1px solid var(--ink-line);
+  padding:26px 16px; overflow-y:auto; z-index:20;
+}
+.brand{padding:0 8px 18px; border-bottom:1px solid var(--ink-line); margin-bottom:14px;}
+.brand .eyebrow{font-family:var(--mono); font-size:11px; letter-spacing:.08em; color:var(--text-soft); text-transform:uppercase;}
+.brand .title{font-family:var(--display); font-size:19px; color:var(--text-on-dark); margin-top:6px; line-height:1.25;}
+.nav-list{display:flex; flex-direction:column; gap:2px;}
+.nav-item{
+  display:flex; align-items:center; gap:10px; width:100%; text-align:left;
+  background:transparent; border:none; border-left:3px solid transparent;
+  color:var(--text-soft); padding:10px 10px; border-radius:0 6px 6px 0;
+  font-size:14.5px; transition:background .15s, color .15s, border-color .15s;
+}
+.nav-item:hover{background:rgba(255,255,255,.04); color:var(--text-on-dark);}
+.nav-item.active{background:rgba(227,178,60,.1); color:var(--text-on-dark); border-left-color:var(--gold);}
+.nav-code{font-family:var(--mono); font-size:11.5px; color:var(--text-soft); min-width:30px;}
+.nav-item.active .nav-code{color:var(--gold);}
+.sidebar-foot{margin-top:18px; padding-top:14px; border-top:1px solid var(--ink-line); font-size:12px; color:var(--text-soft);}
+
+.main{margin-left:248px; padding:48px 54px 110px; max-width:980px;}
+.panel{display:none;}
+.panel.active{display:block; animation:fadein .35s ease;}
+@keyframes fadein{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+.eyebrow-tag{font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--gold); margin-bottom:8px; display:block;}
+.lede{color:var(--text-soft); font-size:17px; max-width:640px;}
+
+/* ===== ledger card (paper) ===== */
+.card{
+  background:var(--paper); color:var(--text-dark);
+  border:1px solid var(--rule); border-radius:var(--radius);
+  padding:30px 34px; margin:28px 0; box-shadow:0 16px 34px -18px rgba(0,0,0,.65);
+}
+.card h3{font-size:21px; margin-bottom:.5em;}
+.card .sub{font-family:var(--mono); font-size:12px; color:var(--text-dark-soft); text-transform:uppercase; letter-spacing:.06em; margin-bottom:10px; display:block;}
+.card p, .card li{color:var(--text-dark-soft); font-size:15px;}
+.card strong{color:var(--text-dark);}
+.card-dark{background:var(--ink-3); color:var(--text-on-dark); border:1px solid var(--ink-line);}
+.card-dark p, .card-dark li{color:var(--text-on-dark);}
+.card-dark .sub{color:var(--text-soft);}
+.card-dark h3, .card-dark h4{color:var(--text-on-dark);}
+.card-dark strong{color:var(--gold);}
+
+.callout{
+  border-left:4px solid var(--gold); background:rgba(227,178,60,.08);
+  padding:16px 20px; border-radius:6px; margin:18px 0; font-size:14.5px;
+}
+.callout.dark-card{color:var(--text-on-dark);}
+.callout strong{color:inherit;}
+
+/* outcome checklist */
+.outcomes{list-style:none; padding:0; margin:0; display:grid; gap:10px;}
+.outcomes li{display:flex; gap:10px; align-items:flex-start; font-size:14.5px;}
+.outcomes li::before{content:"✓"; color:var(--ocf); font-weight:700; flex:0 0 auto; margin-top:1px;}
+
+/* ===== Rite Aid hook ===== */
+.case-box{
+  background:var(--ink-3); border:1px solid var(--ink-line); border-radius:var(--radius);
+  padding:24px 28px; margin:24px 0;
+}
+.case-box .case-tag{font-family:var(--mono); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--fcf-soft);}
+.case-box h4{margin-top:6px; color:var(--text-on-dark); font-size:20px;}
+.reveal-btn{
+  background:none; border:1px solid var(--text-soft); color:var(--text-on-dark);
+  padding:8px 16px; border-radius:20px; font-size:13px; margin-top:6px;
+}
+.reveal-btn:hover{border-color:var(--gold); color:var(--gold);}
+.case-detail{display:none; margin-top:14px; padding-top:14px; border-top:1px dashed var(--ink-line); font-size:14.5px; color:var(--text-on-dark);}
+.case-detail.show{display:block;}
+
+/* ===== Three rivers diagram ===== */
+.rivers-wrap{display:flex; gap:28px; align-items:center; flex-wrap:wrap; margin:18px 0;}
+.rivers-svg-box{flex:1 1 460px; min-width:320px;}
+.river-info{
+  flex:1 1 280px; min-width:260px; background:var(--ink-2); border:1px solid var(--ink-line);
+  border-radius:var(--radius); padding:18px 20px; font-size:14.5px; min-height:150px; color:var(--text-on-dark);
+}
+.river-info .river-info-label{font-family:var(--mono); font-size:12px; text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px; display:block;}
+svg .river{cursor:pointer; transition:opacity .15s;}
+svg .river:hover{opacity:.75;}
+svg text{font-family:var(--mono); font-size:13px;}
+svg .pool-label{font-family:var(--display); font-weight:700; fill:var(--ink); font-size:14px;}
+
+/* ===== item interpreter ===== */
+.interp-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:14px; margin:18px 0;}
+.interp-card{background:var(--ink-3); border:1px solid var(--ink-line); border-radius:8px; padding:14px 16px; display:flex; flex-direction:column; gap:8px;}
+.interp-card .item-name{font-weight:600; font-size:14.5px; color:var(--text-on-dark);}
+.interp-btns{display:flex; gap:8px;}
+.interp-btn{
+  flex:1; border:1px solid var(--ink-line); background:var(--ink-2); color:var(--text-soft);
+  border-radius:6px; padding:6px 0; font-size:13px; font-family:var(--mono);
+}
+.interp-btn.up.active{background:rgba(63,167,150,.18); border-color:var(--ocf); color:var(--ocf-soft);}
+.interp-btn.down.active{background:rgba(181,83,107,.18); border-color:var(--fcf); color:var(--fcf-soft);}
+.interp-text{font-size:13.5px; color:var(--text-soft); min-height:0; display:none; line-height:1.55; border-top:1px dashed var(--ink-line); padding-top:8px;}
+.interp-text.show{display:block;}
+
+/* ===== tables ===== */
+table.ledger{width:100%; border-collapse:collapse; font-size:13.5px; margin:14px 0;}
+table.ledger th, table.ledger td{padding:8px 10px; border-bottom:1px solid var(--rule); text-align:right;}
+table.ledger th:first-child, table.ledger td:first-child{text-align:left;}
+table.ledger thead th{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-dark-soft); border-bottom:2px solid var(--text-dark-soft);}
+table.ledger td{font-family:var(--mono); color:var(--text-dark);}
+table.ledger td:first-child{font-family:var(--body); color:var(--text-dark-soft);}
+table.ledger tr.total td{font-weight:700; border-top:2px solid var(--text-dark); border-bottom:2px solid var(--text-dark);}
+table.ledger tr.subtotal td{font-weight:700; background:rgba(0,0,0,.04);}
+.scroll-x{overflow-x:auto;}
+.neg{color:var(--fcf);}
+
+/* ===== bar charts (JS rendered) ===== */
+.chart-box{
+  height:260px; position:relative; margin:20px 0 4px; display:flex; align-items:stretch; gap:6px;
+  padding:30px 14px 10px; background:var(--ink-3); border:1px solid var(--ink-line); border-radius:10px;
+}
+.chart-box.diverging{align-items:center;}
+.cgroup-col{flex:1; display:flex; flex-direction:column; align-items:center; min-width:0;}
+.cgroup-bars{position:relative; width:100%; height:184px; display:flex; justify-content:center; gap:6px;}
+.cgroup-bars.full-h{align-items:flex-end;}
+.cbar{width:18px; border-radius:4px 4px 0 0; position:relative; min-height:2px;}
+.cbar .cbar-val{position:absolute; bottom:100%; left:50%; transform:translateX(-50%); font-family:var(--mono); font-size:10.5px; white-space:nowrap; color:var(--text-on-dark); margin-bottom:3px;}
+.cbar.neg{border-radius:0 0 4px 4px;}
+.cbar.neg .cbar-val{bottom:auto; top:100%; margin-bottom:0; margin-top:3px;}
+.cgroup-year{font-family:var(--mono); font-size:12px; color:var(--text-soft); margin-top:8px;}
+.diverging-area{position:relative; width:100%; height:200px;}
+.diverging-base{position:absolute; left:0; right:0; top:50%; height:1px; background:var(--ink-line);}
+.div-col{position:absolute; top:0; bottom:0; display:flex; justify-content:center; gap:5px;}
+.div-bar{position:absolute; width:16px; border-radius:3px;}
+.legend{
+  display:flex; gap:18px; flex-wrap:wrap; font-size:12.5px; color:var(--text-soft); margin-top:0;
+  background:var(--ink-2); border:1px solid var(--ink-line); border-top:none; border-radius:0 0 10px 10px;
+  padding:10px 16px 12px; margin-bottom:18px;
+}
+.legend span{display:inline-flex; align-items:center; gap:6px;}
+.swatch{width:10px; height:10px; border-radius:2px; display:inline-block;}
+
+/* waterfall */
+.wf-box{
+  height:300px; display:flex; align-items:flex-end; gap:4px; margin:18px 0 6px; overflow-x:auto;
+  padding:30px 14px 10px; background:var(--ink-3); border:1px solid var(--ink-line); border-radius:10px;
+}
+.wf-step{flex:0 0 auto; width:64px; display:flex; flex-direction:column; align-items:center;}
+.wf-bars-area{position:relative; width:64px; height:220px;}
+.wf-bar{position:absolute; width:48px; left:8px; border-radius:3px;}
+.wf-val{position:absolute; left:0; width:64px; text-align:center; font-family:var(--mono); font-size:10.5px; color:var(--text-on-dark);}
+.wf-label{font-family:var(--mono); font-size:10px; color:var(--text-soft); text-align:center; margin-top:6px; line-height:1.25; width:64px;}
+
+/* ===== accordion ===== */
+.accordion-item{border:1px solid var(--rule); border-radius:8px; margin-bottom:10px; overflow:hidden;}
+.accordion-header{
+  width:100%; background:var(--paper-2); border:none; text-align:left; padding:14px 18px;
+  display:flex; justify-content:space-between; align-items:center; font-weight:600; color:var(--text-dark); font-size:15px;
+}
+.accordion-header .chev{transition:transform .2s; color:var(--text-dark-soft);}
+.accordion-item.open .chev{transform:rotate(180deg);}
+.accordion-body{max-height:0; overflow:hidden; transition:max-height .25s ease; background:var(--paper);}
+.accordion-item.open .accordion-body{max-height:600px;}
+.accordion-body-inner{padding:14px 20px 18px; font-size:14.5px; color:var(--text-dark-soft);}
+
+/* ===== life-cycle matcher ===== */
+.lc-tabs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px;}
+.lc-tab{
+  padding:9px 16px; border-radius:20px; border:1px solid var(--ink-line); background:var(--ink-2);
+  color:var(--text-soft); font-size:13.5px; font-family:var(--mono);
+}
+.lc-tab.active{background:var(--gold); color:var(--ink); border-color:var(--gold); font-weight:600;}
+.lc-display{
+  display:grid; grid-template-columns:1fr 1fr; gap:24px; color:var(--text-on-dark);
+  background:var(--ink-3); border:1px solid var(--ink-line); border-radius:10px; padding:22px 24px;
+}
+@media (max-width:680px){.lc-display{grid-template-columns:1fr;}}
+.lc-pattern{display:grid; gap:8px;}
+.lc-row{display:flex; align-items:center; gap:10px; font-size:14px;}
+.lc-flow-label{width:46px; font-family:var(--mono); font-weight:700; flex:0 0 auto;}
+.lc-pill{padding:5px 12px; border-radius:14px; font-size:12.5px; font-family:var(--mono); flex:0 0 auto;}
+
+/* ===== ratio calculator ===== */
+.calc-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px; margin:18px 0;}
+.calc-field label{display:block; font-family:var(--mono); font-size:11.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-dark-soft); margin-bottom:6px;}
+.calc-field input{
+  width:100%; padding:10px 12px; border:1px solid var(--rule); border-radius:6px; font-family:var(--mono);
+  font-size:15px; background:#fff; color:var(--text-dark);
+}
+.ratio-results{display:grid; gap:12px; margin-top:8px;}
+.ratio-card{
+  display:flex; justify-content:space-between; align-items:center; gap:14px;
+  background:var(--ink-3); border:1px solid var(--ink-line); border-radius:8px; padding:14px 18px;
+}
+.ratio-card .rname{font-size:14px; color:var(--text-on-dark);}
+.ratio-card .rformula{font-family:var(--mono); font-size:11.5px; color:var(--text-soft);}
+.ratio-card .rvalue{font-family:var(--mono); font-size:22px; font-weight:600; color:var(--text-on-dark); min-width:70px; text-align:right;}
+.badge{padding:4px 12px; border-radius:14px; font-size:12px; font-family:var(--mono); white-space:nowrap;}
+.badge.good{background:rgba(63,167,150,.18); color:var(--ocf-soft); border:1px solid var(--ocf);}
+.badge.weak{background:rgba(181,83,107,.18); color:var(--fcf-soft); border:1px solid var(--fcf);}
+.ratio-interp{font-size:13px; color:var(--text-soft); grid-column:1/-1;}
+
+/* relationship diagram */
+.rel-wrap{display:flex; gap:26px; flex-wrap:wrap; align-items:flex-start;}
+.rel-svg-box{flex:1 1 480px; min-width:300px;}
+.rel-info{flex:1 1 260px; min-width:240px; background:var(--ink-2); border:1px solid var(--ink-line); border-radius:var(--radius); padding:18px 20px; font-size:14.5px; min-height:130px; color:var(--text-on-dark);}
+svg .rel-arrow{cursor:pointer;}
+svg .rel-num{font-family:var(--mono); font-weight:700; font-size:12px;}
+
+/* sources & uses */
+.su-toggle{display:flex; gap:8px; margin-bottom:14px;}
+.su-btn{padding:8px 18px; border-radius:20px; border:1px solid var(--rule); background:var(--paper-2); color:var(--text-dark-soft); font-size:13.5px;}
+.su-btn.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+.su-panel{display:none;}
+.su-panel.active{display:block;}
+
+/* formula sheet */
+.formula-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px;}
+.formula-card{background:var(--ink-3); border:1px solid var(--ink-line); border-radius:10px; padding:18px 20px;}
+.formula-card .fname{font-weight:600; color:var(--text-on-dark); margin-bottom:6px; font-size:14.5px;}
+.formula-card .fexpr{font-family:var(--mono); font-size:17px; color:var(--gold); margin-bottom:8px;}
+.formula-card .fthresh{font-size:13px; color:var(--text-soft); margin-bottom:6px;}
+.formula-card .fhook{font-size:12.5px; color:var(--ocf-soft); font-style:italic;}
+
+/* flashcards */
+.flashcard{
+  background:var(--paper); border:1px solid var(--rule); border-radius:10px; padding:22px 26px; margin-bottom:16px;
+  cursor:pointer;
+}
+.flashcard .fc-tag{font-family:var(--mono); font-size:11px; text-transform:uppercase; color:var(--text-dark-soft); letter-spacing:.05em;}
+.flashcard .fc-q{font-size:16px; font-weight:600; color:var(--text-dark); margin-top:6px;}
+.flashcard .fc-a{display:none; margin-top:14px; padding-top:14px; border-top:1px dashed var(--rule); font-size:14px; color:var(--text-dark-soft);}
+.flashcard.revealed .fc-a{display:block;}
+.flashcard .fc-hint{font-size:12px; color:var(--text-dark-soft); margin-top:10px; opacity:.7;}
+.flashcard ul{margin:6px 0 0 0; padding-left:20px;}
+
+/* mobile */
+@media (max-width:880px){
+  .sidebar{position:static; width:100%; height:auto; display:flex; flex-direction:column; padding:16px;}
+  .nav-list{flex-direction:row; overflow-x:auto; gap:6px; padding-bottom:4px;}
+  .nav-item{flex:0 0 auto; border-left:none; border-bottom:3px solid transparent; white-space:nowrap;}
+  .nav-item.active{border-left:none; border-bottom-color:var(--gold);}
+  .brand{border-bottom:none; margin-bottom:10px; padding-bottom:0;}
+  .sidebar-foot{display:none;}
+  .main{margin-left:0; padding:30px 20px 90px;}
+}
+@media (prefers-reduced-motion: reduce){
+  *{transition:none !important; animation:none !important;}
+}
+footer.app-foot{margin-left:248px; padding:20px 54px 50px; color:var(--text-soft); font-size:12.5px; border-top:1px solid var(--ink-line);}
+@media (max-width:880px){footer.app-foot{margin-left:0; padding:20px 20px 50px;}}
+</style>
+</head>
+<body>
+<div class="app">
+  <nav class="sidebar">
+    <div class="brand">
+      <span class="eyebrow">HUB · Corporate Finance</span>
+      <div class="title">Chapter 5<br>Analysis of Corporate<br>Cash Flow</div>
+    </div>
+    <div class="nav-list">
+      <button class="nav-item active" data-target="overview"><span class="nav-code">§0</span>Overview</button>
+      <button class="nav-item" data-target="s51"><span class="nav-code">§5.1</span>Operating Cash Flow</button>
+      <button class="nav-item" data-target="s52"><span class="nav-code">§5.2</span>NCF Fluctuations</button>
+      <button class="nav-item" data-target="s53"><span class="nav-code">§5.3</span>NCF Structure</button>
+      <button class="nav-item" data-target="s54"><span class="nav-code">§5.4</span>CF Relationships</button>
+      <button class="nav-item" data-target="formulas"><span class="nav-code">§F</span>Formula Sheet</button>
+      <button class="nav-item" data-target="practice"><span class="nav-code">§E</span>Essay Practice</button>
+    </div>
+    <div class="sidebar-foot">Click ↑/↓ buttons, tabs, and bars throughout — everything here is built to be poked at, not just read.</div>
+  </nav>
+
+  <main class="main">
+
+    <!-- ================= OVERVIEW ================= -->
+    <section class="panel active" id="overview">
+      <span class="eyebrow-tag">Chapter 5</span>
+      <h1 style="color:var(--text-on-dark); font-size:38px;">Analysis of Corporate Cash Flow</h1>
+      <p class="lede">Profit is an opinion. Cash is a fact. This chapter is about reading the statement of cash flows closely enough to tell which one a company is actually running on — and what that says about its liquidity, its investment direction, its financing habits, and how all three connect.</p>
+
+      <div class="case-box">
+        <span class="case-tag">Opening case · Rite Aid</span>
+        <h4>Profit looked survivable. The cash didn't.</h4>
+        <p style="color:var(--text-soft); margin-bottom:0;">Once the largest U.S. retail drugstore chain — and a cautionary tale in working capital management.</p>
+        <button class="reveal-btn" id="case-toggle">Read what happened →</button>
+        <div class="case-detail" id="case-detail">
+          <p>Starting in 2023, Rite Aid's financial trouble traced back to an aggressive expansion strategy: more than <strong>1,600 new stores</strong> and <strong>$2.9 billion</strong> spent on acquisitions. That spending drained the company's cash reserves and quietly eroded profitability long before the headlines caught up. The company filed for bankruptcy in <strong>October 2023</strong>, and by <strong>May 2025</strong> it was liquidating its remaining assets.</p>
+          <p style="margin-bottom:0;"><strong>The takeaway for this chapter:</strong> the statement of cash flows can flag financial risk early — particularly when investing cash outflows are significantly larger than operating cash inflows. That single comparison (CFI vs. CFO) is one of the fastest red-flag checks an analyst has.</p>
+        </div>
+      </div>
+
+      <div class="card card-dark">
+        <span class="sub">Learning outcomes</span>
+        <h3 style="margin-bottom:14px;">By the end of this chapter you should be able to</h3>
+        <ul class="outcomes">
+          <li>Read fluctuations in <strong>operating</strong> cash flow to judge debt-repayment capacity, profit-distribution capability, and room to expand investment.</li>
+          <li>Read changes in <strong>investing</strong> cash flow to identify a company's investment orientation.</li>
+          <li>Read changes in <strong>financing</strong> cash flow to evaluate how dependent a company is on external funding.</li>
+          <li>Explain <strong>why net operating cash flow and accounting profit diverge</strong> — and quantify that gap.</li>
+          <li>Analyze how the three cash flows <strong>interact</strong> to judge how well a company manages its financial resources overall.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <span class="sub">The big picture</span>
+        <h3>Three rivers, one pool</h3>
+        <p>Every cash flow statement splits a company's cash movements into three activities. Click each river below.</p>
+        <div class="rivers-wrap">
+          <div class="rivers-svg-box">
+            <svg viewBox="0 0 560 300" id="rivers-svg" style="width:100%; height:auto;">
+              <defs>
+                <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#E3B23C"/></marker>
+              </defs>
+              <path class="river river-ocf" data-river="ocf" d="M30,60 Q260,60 420,150" stroke="#3FA796" stroke-width="16" fill="none" stroke-linecap="round"/>
+              <path class="river river-icf" data-river="icf" d="M30,150 Q260,150 420,150" stroke="#D98E3F" stroke-width="14" fill="none" stroke-linecap="round"/>
+              <path class="river river-fcf" data-river="fcf" d="M30,240 Q260,240 420,150" stroke="#B5536B" stroke-width="14" fill="none" stroke-linecap="round"/>
+              <circle cx="455" cy="150" r="58" fill="#F6F1E7" stroke="#E3B23C" stroke-width="2"/>
+              <text x="455" y="146" text-anchor="middle" class="pool-label">Net Cash</text>
+              <text x="455" y="163" text-anchor="middle" class="pool-label">Flow</text>
+              <text x="34" y="48" fill="#3FA796" font-family="IBM Plex Mono" font-weight="600">Operating</text>
+              <text x="34" y="138" fill="#D98E3F" font-family="IBM Plex Mono" font-weight="600">Investing</text>
+              <text x="34" y="228" fill="#B5536B" font-family="IBM Plex Mono" font-weight="600">Financing</text>
+            </svg>
+          </div>
+          <div class="river-info" id="river-info">
+            <span class="river-info-label" style="color:var(--ocf-soft);">Operating · NCFO</span>
+            Cash generated (or used) by the company's core, day-to-day business — sales collected, suppliers and staff paid, taxes and interest settled. This is the cash a business should ultimately be able to live on.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="sub">Why analyze cash flow at all</span>
+        <h3>Four jobs this analysis does</h3>
+        <ul style="padding-left:20px;">
+          <li><strong>Assess liquidity</strong> — can the company meet short-term obligations? Strong accounting profit can still hide a cash shortage; "profit is not cash."</li>
+          <li><strong>Assess profit quality</strong> — how much of reported profit is backed by real, collectible cash rather than non-cash adjustments or one-off gains.</li>
+          <li><strong>Support financial decisions</strong> — internal management uses this to decide on investment, dividends, and borrowing.</li>
+          <li><strong>Understand interrelationships</strong> — how operating, investing, and financing activities lean on each other to keep the company funded.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= 5.1 ================= -->
+    <section class="panel" id="s51">
+      <span class="eyebrow-tag">§5.1</span>
+      <h1 style="color:var(--text-on-dark);">Analysis of Cash Flow from Operating Activities</h1>
+      <p class="lede">This is the section examiners love to test, because it forces you to explain the single most important idea in the chapter: <strong>why operating cash flow and accounting profit are not the same number.</strong></p>
+
+      <div class="card">
+        <span class="sub">5.1.1 · Trend analysis of OCF</span>
+        <h3>Method: horizontal (time-series) analysis</h3>
+        <p><strong>Purpose:</strong> examine how operating cash flow moves over time to judge whether the business is growing or shrinking.</p>
+        <p><strong>Method:</strong> horizontal analysis — compare operating cash flow figures across periods (monthly, quarterly, yearly). The comparison base can be the company's own history, its plan/budget, or an industry average, depending on what question you're asking.</p>
+        <p><strong>Data needed:</strong> operating cash flow figures from the cash flow statement, read alongside relevant macro- and micro-economic context for the period.</p>
+        <p style="margin-bottom:0;"><strong>What you actually do:</strong> build a multi-year table of every line item that feeds operating cash flow, then calculate the absolute change and % change for each item to spot the trend and explain it.</p>
+      </div>
+
+      <div class="card">
+        <span class="sub">Worked example · a real comparative OCF statement (Billion VND)</span>
+        <h3>2022 – 2024</h3>
+        <div class="scroll-x">
+        <table class="ledger">
+          <thead><tr><th>Item</th><th>2022</th><th>2023</th><th>2024</th><th>Δ 23/22</th><th>%</th><th>Δ 24/23</th><th>%</th></tr></thead>
+          <tbody>
+            <tr><td>Earnings Before Tax (EBT)</td><td>7,662</td><td>9,203</td><td>11,070</td><td>1,541</td><td>20%</td><td>1,867</td><td>20%</td></tr>
+            <tr><td>+ Depreciation &amp; Amortization</td><td>1,833</td><td>2,287</td><td>2,535</td><td>453</td><td>25%</td><td>249</td><td>11%</td></tr>
+            <tr><td>+ Provisions</td><td>880</td><td>678</td><td>1,149</td><td class="neg">(202)</td><td class="neg">-23%</td><td>471</td><td>69%</td></tr>
+            <tr><td>+ FX Loss / (Gain)</td><td>8</td><td>(34)</td><td>46</td><td class="neg">(42)</td><td class="neg">-545%</td><td>80</td><td>-236%</td></tr>
+            <tr><td>− Investment Income</td><td>(1,987)</td><td>(1,976)</td><td>(1,725)</td><td>10</td><td>-1%</td><td>251</td><td>-13%</td></tr>
+            <tr><td>+ Interest Expense</td><td>646</td><td>833</td><td>552</td><td>187</td><td>29%</td><td class="neg">(281)</td><td class="neg">-34%</td></tr>
+            <tr class="subtotal"><td>Operating Profit Before Δ Working Capital</td><td>9,042</td><td>10,990</td><td>13,627</td><td>1,947</td><td>22%</td><td>2,637</td><td>24%</td></tr>
+            <tr><td>− Δ Accounts Receivable</td><td>(1,949)</td><td>(1,163)</td><td>(1,914)</td><td>786</td><td>-40%</td><td class="neg">(750)</td><td class="neg">65%</td></tr>
+            <tr><td>± Δ Inventory</td><td>(498)</td><td>396</td><td>(265)</td><td>894</td><td>-180%</td><td class="neg">(661)</td><td class="neg">-167%</td></tr>
+            <tr><td>+ Δ Accounts Payable</td><td>1,300</td><td>1,380</td><td>2,876</td><td>80</td><td>6%</td><td>1,495</td><td>108%</td></tr>
+            <tr><td>± Δ Prepaid Expenses</td><td>(634)</td><td>65</td><td>(894)</td><td>699</td><td>-110%</td><td class="neg">(959)</td><td class="neg">-1470%</td></tr>
+            <tr><td>− Interest Paid</td><td>(636)</td><td>(832)</td><td>(607)</td><td class="neg">(196)</td><td class="neg">31%</td><td>225</td><td>-27%</td></tr>
+            <tr><td>− Corporate Income Tax Paid</td><td>(1,222)</td><td>(971)</td><td>(1,210)</td><td>251</td><td>-21%</td><td class="neg">(239)</td><td class="neg">25%</td></tr>
+            <tr><td>− Other Operating Payments</td><td>(350)</td><td>(348)</td><td>(409)</td><td>2</td><td>-1%</td><td class="neg">(61)</td><td class="neg">18%</td></tr>
+            <tr class="total"><td>Net Cash Flow from Operating Activities</td><td>5,054</td><td>9,517</td><td>11,204</td><td>4,463</td><td>88%</td><td>1,687</td><td>18%</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p style="margin-top:14px;"><strong>Reading the trend:</strong> EBT and NOCF both climb every year, but not in lockstep — NOCF jumped 88% in 2023 (far outpacing EBT's 20%) mostly because working-capital swung in the company's favor (inventory and prepaid expenses released cash that year). In 2024 the growth rate of NOCF (18%) slows relative to EBT (20%) because receivables and prepaid expenses absorbed more cash. This is exactly the kind of divergence an essay question wants you to notice and explain — not just restate.</p>
+      </div>
+
+      <div class="card">
+        <span class="sub">Interactive · the item interpreter</span>
+        <h3>What does an increase or decrease in each line actually mean?</h3>
+        <p>This is the table examiners draw essay questions from directly. Click ↑ or ↓ on any item to see how an analyst reads that movement.</p>
+        <div class="interp-grid" id="interp-grid"></div>
+      </div>
+
+      <div class="card">
+        <span class="sub">Visual · profit vs. cash, 2022–2024</span>
+        <h3>EBT and NOCF rarely move in the exact same line</h3>
+        <div class="chart-box" id="ebtNocfChart"></div>
+        <div class="legend">
+          <span><span class="swatch" style="background:var(--icf);"></span>EBT</span>
+          <span><span class="swatch" style="background:var(--ocf);"></span>NOCF</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="sub">5.1.2 · Why NOCF and EBT diverge</span>
+        <h3>The bridge: EBT → NOCF (2024 case data)</h3>
+        <p>Three blocks of adjustment carry you from accounting profit to operating cash: <strong>(1) non-cash items</strong> added back or removed (depreciation, provisions, FX, investment income, interest expense), <strong>(2) working-capital changes</strong> (receivables, inventory, payables, prepaid expenses), and <strong>(3) cash items EBT doesn't include yet</strong> (interest actually paid, tax actually paid, other operating cash items). Scroll the bridge below — it reconciles exactly to the case's 2024 NOCF of <span class="num num-ocf">11,204</span>.</p>
+        <div class="wf-box" id="waterfallChart"></div>
+        <p style="font-size:13px; color:var(--text-dark-soft);">Green bars add cash relative to the running total; rose bars subtract; the two gold bars are the start (EBT) and end (NOCF) totals.</p>
+      </div>
+
+      <div class="card">
+        <span class="sub">Same bridge, sorted by direction</span>
+        <h3>What pushes NOCF above EBT vs. below it</h3>
+        <div class="scroll-x">
+        <table class="ledger">
+          <thead><tr><th>Item</th><th>Pulls NOCF below EBT</th><th>Pushes NOCF above EBT</th></tr></thead>
+          <tbody>
+            <tr><td>Depreciation &amp; Amortization</td><td></td><td>2,535</td></tr>
+            <tr><td>Provisions</td><td></td><td>1,149</td></tr>
+            <tr><td>Unrealized FX Loss</td><td></td><td>46</td></tr>
+            <tr><td>Investment Income</td><td>(1,725)</td><td></td></tr>
+            <tr><td>Interest Expense (non-cash add-back)</td><td></td><td>552</td></tr>
+            <tr><td>Increase in Accounts Receivable</td><td>(1,914)</td><td></td></tr>
+            <tr><td>Increase in Inventory</td><td>(265)</td><td></td></tr>
+            <tr><td>Increase in Accounts Payable</td><td></td><td>2,876</td></tr>
+            <tr><td>Increase in Prepaid Expenses</td><td>(894)</td><td></td></tr>
+            <tr><td>Interest Paid (cash)</td><td>(607)</td><td></td></tr>
+            <tr><td>Corporate Income Tax Paid (cash)</td><td>(1,210)</td><td></td></tr>
+            <tr><td>Other Operating Payments</td><td>(409)</td><td></td></tr>
+            <tr class="subtotal"><td>Total</td><td>(7,024)</td><td>7,158</td></tr>
+            <tr class="total"><td>Net difference (NOCF − EBT)</td><td colspan="2" style="text-align:right;">134</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p style="margin-bottom:0;"><strong>Essay-ready phrasing:</strong> "NOCF exceeded EBT by 134 in 2024 because non-cash add-backs and the favorable swing in payables (+7,158 combined) outweighed the cash absorbed by investment income, receivables, inventory, prepaid expenses, interest paid, and tax paid (−7,024 combined)."</p>
+      </div>
+
+      <div class="card card-dark">
+        <span class="sub">5.1.3 – 5.1.5 · What NOCF tells you about debt and dividends</span>
+        <h3>Interactive ratio calculator</h3>
+        <p>Pre-filled with the case's 2024 figures (NOCF = 11,204; Average Total Debt = 7,505). Edit any field to test a different year or a different exam problem — the verdicts update live.</p>
+        <div class="calc-grid">
+          <div class="calc-field"><label>NOCF</label><input type="number" id="calc-nocf" value="11204"></div>
+          <div class="calc-field"><label>Average Total Debt</label><input type="number" id="calc-debt" value="7505"></div>
+          <div class="calc-field"><label>Interest Expense (I)</label><input type="number" id="calc-int" value="552"></div>
+          <div class="calc-field"><label>Earnings After Tax (EAT)</label><input type="number" id="calc-eat" value="8856"></div>
+          <div class="calc-field"><label>Due Long-Term Debt</label><input type="number" id="calc-ltdebt" value="3000"></div>
+        </div>
+        <div class="ratio-results" id="ratio-results"></div>
+        <p style="font-size:12.5px; color:var(--text-soft); margin-top:10px; margin-bottom:0;">EAT and Due LT Debt aren't given directly in the case slides, so they're pre-filled with reasonable illustrative figures — replace them with whatever an exam question gives you.</p>
+      </div>
+    </section>
+
+    <!-- ================= 5.2 ================= -->
+    <section class="panel" id="s52">
+      <span class="eyebrow-tag">§5.2</span>
+      <h1 style="color:var(--text-on-dark);">Analysis of Net Cash Flow Fluctuations</h1>
+      <p class="lede">Same horizontal-analysis method as 5.1, but applied to the three net cash flows (NCFO, NCFI, NCFF) together — the goal is to read a company's financial life-stage and recent strategy from the shape of its cash flows.</p>
+
+      <div class="card">
+        <span class="sub">Method</span>
+        <h3>Purpose &amp; method</h3>
+        <p><strong>Purpose:</strong> track how net cash flows change across periods (monthly, quarterly, yearly) to identify trends.</p>
+        <p style="margin-bottom:0;"><strong>Method:</strong> horizontal comparison against historical data, planned/budgeted figures, or industry averages — whichever fits the question.</p>
+      </div>
+
+      <div class="card">
+        <span class="sub">The four-step framework</span>
+        <h3>How to walk through any cash flow statement</h3>
+        <div id="accordion-steps"></div>
+      </div>
+
+      <div class="card">
+        <span class="sub">Interactive · business life-cycle matcher</span>
+        <h3>What "normal" cash flow signs look like by stage</h3>
+        <p>Click a stage. The expected sign pattern for NCFO / NCFI / NCFF and the reasoning behind it both update.</p>
+        <div class="lc-tabs" id="lc-tabs"></div>
+        <div class="lc-display" id="lc-display"></div>
+      </div>
+
+      <div class="card">
+        <span class="sub">Worked example · same case, 2022–2024 (Billion VND)</span>
+        <h3>Reading the actual fluctuation</h3>
+        <div class="scroll-x">
+        <table class="ledger">
+          <thead><tr><th>Item</th><th>2022</th><th>2023</th><th>2024</th><th>Δ 23/22</th><th>%</th><th>Δ 24/23</th><th>%</th></tr></thead>
+          <tbody>
+            <tr><td>NCFO</td><td>5,054</td><td>9,517</td><td>11,204</td><td>4,463</td><td>88%</td><td>1,687</td><td>18%</td></tr>
+            <tr><td>NCFI</td><td>5,757</td><td>(6,548)</td><td>(8,462)</td><td class="neg">(12,305)</td><td class="neg">-214%</td><td class="neg">(1,914)</td><td>29%</td></tr>
+            <tr><td>NCFF</td><td>(9,773)</td><td>(1,168)</td><td>(2,198)</td><td>8,605</td><td>-88%</td><td class="neg">(1,030)</td><td>88%</td></tr>
+            <tr class="total"><td>NCF</td><td>1,038</td><td>1,800</td><td>544</td><td>763</td><td>73%</td><td class="neg">(1,256)</td><td class="neg">-70%</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="chart-box diverging" id="ncfTrendChart"></div>
+        <div class="legend">
+          <span><span class="swatch" style="background:var(--ocf);"></span>NCFO</span>
+          <span><span class="swatch" style="background:var(--icf);"></span>NCFI</span>
+          <span><span class="swatch" style="background:var(--fcf);"></span>NCFF</span>
+          <span><span class="swatch" style="background:var(--gold);"></span>NCF (total)</span>
+        </div>
+        <div class="callout" style="margin-top:18px;">
+          <strong>Reading it as a story:</strong> NCFO climbs every year and roughly doubles by 2024 — the core business is generating more cash. NCFI flips from positive in 2022 (likely recovering/divesting investments) to increasingly negative through 2024 — the company pivots toward expansion, funded internally. NCFF stays negative throughout but shrinks from a heavy −9,773 in 2022 to a lighter −2,198 in 2024 — large debt repayment early on, then far less reliance on external financing later. Put together, this looks like a maturing company self-funding growth from operations rather than from new borrowing.
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 5.3 ================= -->
+    <section class="panel" id="s53">
+      <span class="eyebrow-tag">§5.3</span>
+      <h1 style="color:var(--text-on-dark);">Analysis of Net Cash Flow Structure</h1>
+      <p class="lede">Here the question changes from "how did it move" to "how much of the total does each activity make up." That's vertical analysis — and it has a sharp edge worth knowing for the exam.</p>
+
+      <div class="card">
+        <span class="sub">Method</span>
+        <h3>Purpose &amp; method</h3>
+        <p><strong>Purpose:</strong> see how much each activity (operating / investing / financing) contributes to total net cash flow, to judge which activity drives the company's overall cash position.</p>
+        <p style="margin-bottom:0;"><strong>Method:</strong> vertical analysis for the % structure in each period, combined with horizontal analysis to track how that structure shifts over time.</p>
+      </div>
+
+      <div class="card">
+        <span class="sub">Worked example · same case, % of total NCF</span>
+        <h3>2022 – 2024</h3>
+        <div class="scroll-x">
+        <table class="ledger">
+          <thead><tr><th>Item</th><th>2022</th><th>2023</th><th>2024</th><th>Δ 23/22 pp</th><th>Δ 24/23 pp</th></tr></thead>
+          <tbody>
+            <tr><td>NCFO</td><td>487%</td><td>529%</td><td>2,059%</td><td>42%</td><td>1,530%</td></tr>
+            <tr><td>NCFI</td><td>555%</td><td>(364%)</td><td>(1,555%)</td><td class="neg">(918%)</td><td class="neg">(1,191%)</td></tr>
+            <tr><td>NCFF</td><td>(942%)</td><td>(65%)</td><td>(404%)</td><td>877%</td><td class="neg">(339%)</td></tr>
+            <tr class="total"><td>NCF</td><td>100%</td><td>100%</td><td>100%</td><td>0%</td><td>0%</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="chart-box diverging" id="structureChart" style="margin-top:18px;"></div>
+        <div class="legend">
+          <span><span class="swatch" style="background:var(--ocf);"></span>NCFO %</span>
+          <span><span class="swatch" style="background:var(--icf);"></span>NCFI %</span>
+          <span><span class="swatch" style="background:var(--fcf);"></span>NCFF %</span>
+        </div>
+        <div class="callout" style="margin-top:18px;">
+          <strong>The trap hiding in this example:</strong> a 2,059% contribution from NCFO sounds absurd — until you notice <em>why</em> it's so large. Total NCF (the denominator) was only 544 in 2024, while gross operating cash flow was 11,204. When the bottom-line total is small relative to the gross flows, vertical % structure gets stretched into extreme numbers even though nothing unusual happened operationally. <strong>Exam-ready point:</strong> vertical analysis of cash flow structure should always be read together with the absolute figures (5.2), not on its own — otherwise a healthy company with a small net cash change can look statistically alarming.
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 5.4 ================= -->
+    <section class="panel" id="s54">
+      <span class="eyebrow-tag">§5.4</span>
+      <h1 style="color:var(--text-on-dark);">Analyzing the Relationship Between Cash Flows</h1>
+      <p class="lede">The final piece: examining how NCFO, NCFI, and NCFF actually fund and cover each other — the origin and circulation of cash inside the company.</p>
+
+      <div class="card">
+        <span class="sub">Interactive · the circulation map</span>
+        <h3>Five ways cash moves between activities</h3>
+        <p>Click a numbered arrow to see what that relationship means.</p>
+        <div class="rel-wrap">
+          <div class="rel-svg-box">
+            <svg viewBox="0 0 480 340" style="width:100%; height:auto;">
+              <rect x="190" y="20" width="100" height="46" rx="8" fill="#3FA796"/>
+              <text x="240" y="48" text-anchor="middle" fill="#0E1620" font-family="IBM Plex Mono" font-weight="700">NCFO</text>
+              <rect x="40" y="260" width="100" height="46" rx="8" fill="#D98E3F"/>
+              <text x="90" y="288" text-anchor="middle" fill="#0E1620" font-family="IBM Plex Mono" font-weight="700">NCFI</text>
+              <rect x="340" y="260" width="100" height="46" rx="8" fill="#B5536B"/>
+              <text x="390" y="288" text-anchor="middle" fill="#fff" font-family="IBM Plex Mono" font-weight="700">NCFF</text>
+
+              <g class="rel-arrow" data-rel="1"><line x1="240" y1="66" x2="390" y2="258" stroke="#E3B23C" stroke-width="2.5" marker-end="url(#arrow)"/><circle cx="320" cy="170" r="11" fill="#E3B23C"/><text x="320" y="174" text-anchor="middle" class="rel-num" fill="#0E1620">1</text></g>
+              <g class="rel-arrow" data-rel="2"><line x1="240" y1="66" x2="100" y2="258" stroke="#E3B23C" stroke-width="2.5" marker-end="url(#arrow)"/><circle cx="160" cy="170" r="11" fill="#E3B23C"/><text x="160" y="174" text-anchor="middle" class="rel-num" fill="#0E1620">2</text></g>
+              <g class="rel-arrow" data-rel="3"><line x1="345" y1="270" x2="145" y2="270" stroke="#E3B23C" stroke-width="2.5" marker-end="url(#arrow)" transform="translate(0,30)"/><circle cx="240" cy="318" r="11" fill="#E3B23C"/><text x="240" y="322" text-anchor="middle" class="rel-num" fill="#0E1620">3</text></g>
+              <g class="rel-arrow" data-rel="4"><line x1="345" y1="265" x2="245" y2="68" stroke="#E3B23C" stroke-width="2.5" marker-end="url(#arrow)"/><circle cx="300" cy="160" r="11" fill="#E3B23C" opacity="0"/></g>
+              <g class="rel-arrow" data-rel="5"><line x1="100" y1="265" x2="350" y2="280" stroke="#E3B23C" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow)"/></g>
+            </svg>
+          </div>
+          <div class="rel-info" id="rel-info">
+            <span class="river-info-label" style="color:var(--gold);">Click a numbered point</span>
+            Each arrow is one real way cash moves between operating, investing, and financing activities inside a single company.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="sub">Worked example · HP Company, 2022–2024 (Billion VND)</span>
+        <h3>A different mix from the main case</h3>
+        <div class="scroll-x">
+        <table class="ledger">
+          <thead><tr><th>Item</th><th>2022</th><th>2023</th><th>2024</th></tr></thead>
+          <tbody>
+            <tr><td>NCFO</td><td>285</td><td>(726)</td><td>1,018</td></tr>
+            <tr><td>NCFI</td><td>(817)</td><td>(257)</td><td>(1,714)</td></tr>
+            <tr><td>NCFF</td><td>932</td><td>883</td><td>596</td></tr>
+            <tr class="total"><td>NCF</td><td>400</td><td>(100)</td><td>(100)</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p>In 2023, NCFO actually turned negative — operations consumed cash rather than generated it — yet NCFF stayed strongly positive (883), covering the shortfall and keeping total NCF only mildly negative. That's relationship #4 in action: <strong>financing plugging an operating shortfall.</strong></p>
+      </div>
+
+      <div class="card">
+        <span class="sub">Sources &amp; uses of cash · one period, HP Company</span>
+        <h3>Where the cash came from, where it went</h3>
+        <div class="su-toggle">
+          <button class="su-btn active" data-su="sources">Sources of cash</button>
+          <button class="su-btn" data-su="uses">Uses of cash</button>
+        </div>
+        <div class="su-panel active" id="su-sources">
+          <table class="ledger">
+            <thead><tr><th>Source</th><th>Value</th><th>%</th></tr></thead>
+            <tbody>
+              <tr><td>Net Cash Flow from Operating Activities</td><td>285</td><td>2.71%</td></tr>
+              <tr><td>Receipts from disposals of fixed assets &amp; CIP</td><td>272</td><td>2.58%</td></tr>
+              <tr><td>Receipts from collecting loans / sale of debt instruments</td><td>145</td><td>1.38%</td></tr>
+              <tr><td>Interest &amp; dividends received</td><td>27</td><td>0.26%</td></tr>
+              <tr><td>Proceeds from borrowings</td><td>9,596</td><td>91.17%</td></tr>
+              <tr><td>Cash at the beginning of period</td><td>200</td><td>1.90%</td></tr>
+              <tr class="total"><td>Total sources</td><td>10,525</td><td>100%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="su-panel" id="su-uses">
+          <table class="ledger">
+            <thead><tr><th>Use</th><th>Value</th><th>%</th></tr></thead>
+            <tbody>
+              <tr><td>Payments for fixed assets &amp; other long-term assets</td><td>1,189</td><td>11.98%</td></tr>
+              <tr><td>Payments for term deposits</td><td>72</td><td>0.73%</td></tr>
+              <tr><td>Payments to settle loan principals</td><td>8,664</td><td>87.29%</td></tr>
+              <tr class="total"><td>Total uses</td><td>9,925</td><td>100%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <strong>Difference = Total sources − Total uses = 10,525 − 9,925 = 600.</strong> That 600 is the net increase in cash for the period. Notice the structure itself tells a story before you even compute anything: <strong>91% of all sources came from new borrowing</strong>, while <strong>87% of all uses went to repaying loan principal</strong> — a company that is heavily cycling debt rather than funding itself from operations or asset sales.
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FORMULAS ================= -->
+    <section class="panel" id="formulas">
+      <span class="eyebrow-tag">Quick reference</span>
+      <h1 style="color:var(--text-on-dark);">Formula Sheet</h1>
+      <p class="lede">Everything you need to compute and interpret in under a minute, the night before the exam.</p>
+      <div class="formula-grid">
+        <div class="formula-card">
+          <div class="fname">Ability to pay debt</div>
+          <div class="fexpr">NOCF ÷ Total Debt</div>
+          <div class="fthresh">≥ 1 → cash generated covers principal due (room to borrow more). &lt; 1 → insufficient; should reduce borrowing.</div>
+          <div class="fhook">Memory hook: "can operations alone pay off everyone I owe?"</div>
+        </div>
+        <div class="formula-card">
+          <div class="fname">Ability to pay interest expense</div>
+          <div class="fexpr">NOCF ÷ Interest Expense</div>
+          <div class="fthresh">≥ 3 → debt is being used efficiently, flexibility to borrow more. &lt; 3 → borrowed funds used less efficiently; should deleverage.</div>
+          <div class="fhook">Memory hook: cash should comfortably out-earn its own interest bill.</div>
+        </div>
+        <div class="formula-card">
+          <div class="fname">Ability to distribute EAT</div>
+          <div class="fexpr">NOCF ÷ EAT</div>
+          <div class="fthresh">≥ 1 → can fully fund dividends from operating cash. &lt; 1 → operating cash alone can't cover the profit being distributed.</div>
+          <div class="fhook">Memory hook: "is the dividend backed by real cash, or by paper profit?"</div>
+        </div>
+        <div class="formula-card">
+          <div class="fname">Ability to pay due long-term debt</div>
+          <div class="fexpr">NOCF ÷ Due Long-Term Debt</div>
+          <div class="fthresh">≥ 1 → sufficient capacity to settle maturing long-term debt. &lt; 1 → must raise cash via investing or financing activities instead.</div>
+          <div class="fhook">Memory hook: if this fails, the company is forced to sell assets or raise new financing just to survive a maturity.</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:24px;">
+        <span class="sub">Reading net cash flow signs by life-cycle stage</span>
+        <table class="ledger">
+          <thead><tr><th>Stage</th><th>NCFO</th><th>NCFI</th><th>NCFF</th></tr></thead>
+          <tbody>
+            <tr><td>Start-up</td><td>Strongly negative</td><td>Highly negative</td><td>Strongly positive</td></tr>
+            <tr><td>Growth</td><td>Negative / slightly positive</td><td>Strongly negative</td><td>Slightly positive</td></tr>
+            <tr><td>Maturity</td><td>Strongly positive</td><td>Slightly negative</td><td>Slightly negative</td></tr>
+            <tr><td>Decline</td><td>Slightly positive / negative</td><td>Slightly positive</td><td>Slightly negative</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ================= PRACTICE ================= -->
+    <section class="panel" id="practice">
+      <span class="eyebrow-tag">Self-test</span>
+      <h1 style="color:var(--text-on-dark);">Essay Practice</h1>
+      <p class="lede">These mirror the chapter's learning outcomes — the most likely source of an essay prompt. Write your own answer first, then click to reveal a model outline and check your structure (not a script to copy — a checklist of what your answer should cover).</p>
+      <div id="flashcards"></div>
+    </section>
+
+  </main>
+</div>
+<footer class="app-foot">Built from your Chapter 5 lecture slides (HUB — Corporate Finance) for personal exam review.</footer>
+
+<script>
+/* ---------- helpers ---------- */
+function fmt(n){
+  var sign = n<0 ? '−' : '';
+  var v = Math.abs(Math.round(n));
+  return sign + v.toLocaleString('en-US');
+}
+
+/* ---------- nav ---------- */
+var navItems = document.querySelectorAll('.nav-item');
+var panels = document.querySelectorAll('.panel');
+navItems.forEach(function(btn){
+  btn.addEventListener('click', function(){
+    navItems.forEach(function(b){ b.classList.remove('active'); });
+    panels.forEach(function(p){ p.classList.remove('active'); });
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.target).classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+
+/* ---------- Rite Aid reveal ---------- */
+document.getElementById('case-toggle').addEventListener('click', function(){
+  var d = document.getElementById('case-detail');
+  d.classList.toggle('show');
+  this.textContent = d.classList.contains('show') ? 'Hide details ↑' : 'Read what happened →';
+});
+
+/* ---------- rivers diagram ---------- */
+var riverData = {
+  ocf: {label:'Operating · NCFO', color:'var(--ocf-soft)', text:"Cash generated (or used) by the company's core, day-to-day business — sales collected, suppliers and staff paid, taxes and interest settled. This is the cash a business should ultimately be able to live on."},
+  icf: {label:'Investing · NCFI', color:'var(--icf-soft)', text:"Cash spent on (or recovered from) long-term assets, securities, and lending to others — buying equipment, acquiring companies, or selling off investments. Shows where the company is placing its future bets."},
+  fcf: {label:'Financing · NCFF', color:'var(--fcf-soft)', text:"Cash raised from (or returned to) lenders and owners — borrowing, repaying debt, issuing shares, paying dividends. Shows how the company funds itself externally."}
+};
+document.querySelectorAll('.river').forEach(function(el){
+  el.addEventListener('click', function(){
+    var d = riverData[this.dataset.river];
+    var info = document.getElementById('river-info');
+    info.innerHTML = '<span class="river-info-label" style="color:'+d.color+';">'+d.label+'</span>'+d.text;
+  });
+});
+
+/* ---------- item interpreter ---------- */
+var items = [
+  ["EBT (Earnings Before Tax)","Higher revenue or lower expenses → stronger cash generation, other factors held constant.","If EBT falls while revenue keeps growing, check rising costs or shrinking margins. If both EBT and revenue fall, it may signal weak demand or declining sales."],
+  ["Depreciation & Amortization","The company has added more fixed assets, or is using existing assets more intensively.","Existing assets may be fully depreciated, or the company has cut back new capital investment."],
+  ["Provision Expense","Rising financial risk — e.g. more doubtful receivables, obsolete inventory, or expected losses.","Risk is better controlled, or fewer new provisions are being made."],
+  ["Reversal of Provisions","Can be a genuinely positive sign if the underlying risk improved (receivables recovered, inventory values up) — but frequent, large reversals raise doubts about how reliable the original estimates were.","Fewer provisions are available to reverse, or the underlying risks still exist."],
+  ["Foreign Exchange Differences","Greater exposure to FX risk.","Reduced FX risk."],
+  ["Gain from Asset Revaluation (Fair Value)","Be cautious if the gain is non-recurring or unrealized — it may not reflect sustainable operating performance.","The company relies less on non-recurring, non-operating income."],
+  ["Loss on Disposal of Fixed Assets","May signal inefficient asset management, or assets sold below carrying value.","A positive sign — fewer disposal losses, better asset management."],
+  ["Dividend / Interest Income from Investments","If this grows too large a share of profit, question earnings quality — profit may depend more on financial investments than on core operations.","Less reliance on investment income; more focus on core operating activities."],
+  ["Loss from Associates","Associated companies are performing poorly.","Associated companies' performance has improved."],
+  ["Accounts Receivable","Cash flow worsens — customers are taking longer to pay (slower collection).","Cash flow improves — customers pay faster."],
+  ["Inventory","Cash flow worsens — more cash tied up in inventory build-up.","Cash flow improves — inventory is sold and converted into cash."],
+  ["Accounts Payable","Cash flow improves — the company delays paying suppliers, retaining cash longer.","Cash flow worsens — more payments made to suppliers, higher outflows."],
+  ["Prepaid Expenses","Cash flow worsens — more expenses paid in advance.","Cash flow improves — previously prepaid expenses are recognized with little or no new cash outlay."],
+  ["Trading Securities (short-term investments)","Cash flow worsens — cash is used to acquire short-term investments.","Cash flow improves — short-term investments are sold, recovering cash."]
+];
+var grid = document.getElementById('interp-grid');
+items.forEach(function(it, idx){
+  var card = document.createElement('div');
+  card.className = 'interp-card';
+  card.innerHTML =
+    '<div class="item-name">'+it[0]+'</div>'+
+    '<div class="interp-btns">'+
+      '<button class="interp-btn up" data-idx="'+idx+'" data-dir="up">↑ Increase</button>'+
+      '<button class="interp-btn down" data-idx="'+idx+'" data-dir="down">↓ Decrease</button>'+
+    '</div>'+
+    '<div class="interp-text up-text">'+it[1]+'</div>'+
+    '<div class="interp-text down-text">'+it[2]+'</div>';
+  grid.appendChild(card);
+});
+grid.addEventListener('click', function(e){
+  var btn = e.target.closest('.interp-btn');
+  if(!btn) return;
+  var card = btn.closest('.interp-card');
+  var dir = btn.dataset.dir;
+  var upBtn = card.querySelector('.up');
+  var downBtn = card.querySelector('.down');
+  var upText = card.querySelector('.up-text');
+  var downText = card.querySelector('.down-text');
+  if(dir === 'up'){
+    var wasActive = upBtn.classList.contains('active');
+    upBtn.classList.remove('active'); downBtn.classList.remove('active');
+    upText.classList.remove('show'); downText.classList.remove('show');
+    if(!wasActive){ upBtn.classList.add('active'); upText.classList.add('show'); }
+  } else {
+    var wasActive2 = downBtn.classList.contains('active');
+    upBtn.classList.remove('active'); downBtn.classList.remove('active');
+    upText.classList.remove('show'); downText.classList.remove('show');
+    if(!wasActive2){ downBtn.classList.add('active'); downText.classList.add('show'); }
+  }
+});
+
+/* ---------- simple grouped bar chart (all-positive) ---------- */
+function renderGroupedBars(containerId, years, keys, colorVars){
+  var container = document.getElementById(containerId);
+  container.innerHTML = '';
+  var maxVal = 0;
+  years.forEach(function(y){ keys.forEach(function(k){ maxVal = Math.max(maxVal, y[k]); }); });
+  years.forEach(function(y){
+    var col = document.createElement('div'); col.className = 'cgroup-col';
+    var bars = document.createElement('div'); bars.className = 'cgroup-bars full-h';
+    keys.forEach(function(k){
+      var bar = document.createElement('div');
+      bar.className = 'cbar';
+      var pct = (y[k]/maxVal)*100;
+      bar.style.height = pct + '%';
+      bar.style.background = colorVars[k];
+      bar.innerHTML = '<span class="cbar-val">'+fmt(y[k])+'</span>';
+      bars.appendChild(bar);
+    });
+    col.appendChild(bars);
+    var lbl = document.createElement('div'); lbl.className = 'cgroup-year'; lbl.textContent = y.year;
+    col.appendChild(lbl);
+    container.appendChild(col);
+  });
+}
+renderGroupedBars('ebtNocfChart',
+  [{year:2022, EBT:7662, NOCF:5054},{year:2023, EBT:9203, NOCF:9517},{year:2024, EBT:11070, NOCF:11204}],
+  ['EBT','NOCF'], {EBT:'#D98E3F', NOCF:'#3FA796'});
+
+/* ---------- diverging (centered) bar chart for signed values ---------- */
+function renderDivergingBars(containerId, years, keys, colorVars, isPercent){
+  var container = document.getElementById(containerId);
+  container.innerHTML = '';
+  var maxAbs = 0;
+  years.forEach(function(y){ keys.forEach(function(k){ maxAbs = Math.max(maxAbs, Math.abs(y[k])); }); });
+  years.forEach(function(y){
+    var col = document.createElement('div'); col.className = 'cgroup-col';
+    var area = document.createElement('div'); area.className = 'diverging-area';
+    var base = document.createElement('div'); base.className = 'diverging-base';
+    area.appendChild(base);
+    var row = document.createElement('div');
+    row.style.position='absolute'; row.style.left='0'; row.style.right='0'; row.style.top='0'; row.style.bottom='0';
+    row.style.display='flex'; row.style.justifyContent='center'; row.style.gap='5px';
+    keys.forEach(function(k){
+      var val = y[k];
+      var bar = document.createElement('div');
+      bar.className = 'cbar';
+      bar.style.position='relative'; bar.style.width='16px';
+      bar.style.background = colorVars[k];
+      var halfPct = (Math.abs(val)/maxAbs)*50;
+      if(val >= 0){
+        bar.style.alignSelf='flex-end';
+        bar.style.marginBottom='50%';
+        bar.style.height = halfPct+'%';
+        bar.style.borderRadius='4px 4px 0 0';
+        var lab = document.createElement('span'); lab.className='cbar-val'; lab.textContent = fmt(val)+(isPercent?'%':'');
+        bar.appendChild(lab);
+      } else {
+        bar.style.alignSelf='flex-start';
+        bar.style.marginTop='50%';
+        bar.style.height = halfPct+'%';
+        bar.style.borderRadius='0 0 4px 4px';
+        bar.classList.add('neg');
+        var lab2 = document.createElement('span'); lab2.className='cbar-val'; lab2.textContent = fmt(val)+(isPercent?'%':'');
+        bar.appendChild(lab2);
+      }
+      row.appendChild(bar);
+    });
+    area.appendChild(row);
+    col.appendChild(area);
+    var lbl = document.createElement('div'); lbl.className = 'cgroup-year'; lbl.textContent = y.year;
+    col.appendChild(lbl);
+    container.appendChild(col);
+  });
+}
+renderDivergingBars('ncfTrendChart',
+  [{year:2022, NCFO:5054, NCFI:5757, NCFF:-9773, NCF:1038},
+   {year:2023, NCFO:9517, NCFI:-6548, NCFF:-1168, NCF:1800},
+   {year:2024, NCFO:11204, NCFI:-8462, NCFF:-2198, NCF:544}],
+  ['NCFO','NCFI','NCFF','NCF'],
+  {NCFO:'#3FA796', NCFI:'#D98E3F', NCFF:'#B5536B', NCF:'#E3B23C'});
+
+renderDivergingBars('structureChart',
+  [{year:2022, NCFO:487, NCFI:555, NCFF:-942},
+   {year:2023, NCFO:529, NCFI:-364, NCFF:-65},
+   {year:2024, NCFO:2059, NCFI:-1555, NCFF:-404}],
+  ['NCFO','NCFI','NCFF'],
+  {NCFO:'#3FA796', NCFI:'#D98E3F', NCFF:'#B5536B'}, true);
+
+/* ---------- waterfall chart ---------- */
+function renderWaterfall(containerId, steps){
+  var container = document.getElementById(containerId);
+  container.innerHTML = '';
+  var running = 0;
+  var computed = [];
+  steps.forEach(function(s){
+    if(s.type === 'total'){
+      if(computed.length === 0){ running = s.value; }
+      computed.push({label:s.label, type:'total', from:0, to:running, display:running});
+    } else {
+      var from = running;
+      running = running + s.value;
+      computed.push({label:s.label, type: s.value>=0?'pos':'neg', from:Math.min(from,running), to:Math.max(from,running), display:s.value, runningAfter:running});
+    }
+  });
+  // mark final total
+  computed[computed.length-1] = {label: steps[steps.length-1].label, type:'total', from:0, to:running, display:running};
+
+  var maxVal = Math.max.apply(null, computed.map(function(c){ return c.to; }));
+  computed.forEach(function(c){
+    var step = document.createElement('div'); step.className = 'wf-step';
+    var barsArea = document.createElement('div'); barsArea.className = 'wf-bars-area';
+    var bar = document.createElement('div'); bar.className = 'wf-bar';
+    var bottomPct = (c.from/maxVal)*100;
+    var heightPct = ((c.to-c.from)/maxVal)*100;
+    bar.style.bottom = bottomPct+'%';
+    bar.style.height = Math.max(heightPct,1.2)+'%';
+    bar.style.background = c.type==='total' ? '#E3B23C' : (c.type==='pos' ? '#3FA796' : '#B5536B');
+    var val = document.createElement('div'); val.className='wf-val';
+    val.style.bottom = (bottomPct+heightPct+2)+'%';
+    val.textContent = c.type==='total' ? fmt(c.display) : (c.display>=0? '+'+fmt(c.display) : fmt(c.display));
+    barsArea.appendChild(bar); barsArea.appendChild(val);
+    var lbl = document.createElement('div'); lbl.className='wf-label'; lbl.textContent=c.label;
+    step.appendChild(barsArea); step.appendChild(lbl);
+    container.appendChild(step);
+  });
+}
+renderWaterfall('waterfallChart', [
+  {label:'EBT', value:11070, type:'total'},
+  {label:'+ D&A', value:2535, type:'delta'},
+  {label:'+ Provisions', value:1149, type:'delta'},
+  {label:'+ FX loss', value:46, type:'delta'},
+  {label:'– Invest. income', value:-1725, type:'delta'},
+  {label:'+ Interest exp.', value:552, type:'delta'},
+  {label:'Op. profit b/f WC', value:null, type:'total'},
+  {label:'– Δ Receivables', value:-1914, type:'delta'},
+  {label:'– Δ Inventory', value:-265, type:'delta'},
+  {label:'+ Δ Payables', value:2876, type:'delta'},
+  {label:'– Δ Prepaid', value:-894, type:'delta'},
+  {label:'– Interest paid', value:-607, type:'delta'},
+  {label:'– Tax paid', value:-1210, type:'delta'},
+  {label:'– Other', value:-409, type:'delta'},
+  {label:'NOCF', value:null, type:'total'}
+]);
+
+/* ---------- accordion: 4-step framework ---------- */
+var steps = [
+  ["Step 1 — Major sources & uses of cash","Where does the company's cash come from, and where does it go? Which activity brings in the most cash, which one consumes the most, and does that mix fit the company's current stage — start-up, growth, maturity, or decline?"],
+  ["Step 2 — Drivers of CFO","Where is the cash coming from in core operations? If NCFO is positive, the company is generating cash from its main business. If NCFO is negative, it may be struggling to generate cash from day-to-day activities."],
+  ["Step 3 — Drivers of CFI","Where is the company investing, and is it selling assets? If NCFI is negative, the company is expanding — fine if properly funded. If NCFI is positive, it may be selling assets — worth asking whether that's from need for cash or deliberate downsizing."],
+  ["Step 4 — Drivers of CFF","Is the company borrowing or repaying debt? A high NCFF signals heavy reliance on external financing. A decreasing NCFF signals the company becoming more financially independent."]
+];
+var accWrap = document.getElementById('accordion-steps');
+steps.forEach(function(s, i){
+  var item = document.createElement('div'); item.className='accordion-item';
+  item.innerHTML =
+    '<button class="accordion-header"><span>'+s[0]+'</span><span class="chev">▾</span></button>'+
+    '<div class="accordion-body"><div class="accordion-body-inner">'+s[1]+'</div></div>';
+  accWrap.appendChild(item);
+});
+accWrap.addEventListener('click', function(e){
+  var header = e.target.closest('.accordion-header');
+  if(!header) return;
+  header.closest('.accordion-item').classList.toggle('open');
+});
+
+/* ---------- life-cycle matcher ---------- */
+var lcData = {
+  "Start-up": {NCFO:'Strongly negative', NCFI:'Highly negative', NCFF:'Strongly positive',
+    notes:["Not yet profitable","Receivables & inventory building up, leaning on payables","Heavy capital expenditure","High demand for external capital"]},
+  "Growth": {NCFO:'Negative / slightly positive', NCFI:'Strongly negative', NCFF:'Slightly positive',
+    notes:["Starting to generate profit","Investment needs keep rising","Capital demand grows to fund expansion"]},
+  "Maturity": {NCFO:'Strongly positive', NCFI:'Slightly negative', NCFF:'Slightly negative',
+    notes:["Operations generate strong, stable positive cash flow","Routine maintenance-level investment","Cash used to repay debt and pay dividends"]},
+  "Decline": {NCFO:'Slightly positive / negative', NCFI:'Slightly positive', NCFF:'Slightly negative',
+    notes:["NCFO still positive but weakening","Investment demand falling","Continues repaying loan principal, possibly via asset sales"]}
+};
+var lcTabs = document.getElementById('lc-tabs');
+var lcDisplay = document.getElementById('lc-display');
+function pillColor(text){
+  if(/strongly positive/i.test(text)) return {bg:'rgba(63,167,150,.22)', c:'#B9DFD8'};
+  if(/positive/i.test(text)) return {bg:'rgba(63,167,150,.12)', c:'#B9DFD8'};
+  if(/strongly negative|highly negative/i.test(text)) return {bg:'rgba(181,83,107,.25)', c:'#E9C0CB'};
+  return {bg:'rgba(181,83,107,.12)', c:'#E9C0CB'};
+}
+function showStage(stage){
+  var d = lcData[stage];
+  var rows = ['NCFO','NCFI','NCFF'].map(function(k){
+    var pc = pillColor(d[k]);
+    return '<div class="lc-row"><span class="lc-flow-label">'+k+'</span><span class="lc-pill" style="background:'+pc.bg+'; color:'+pc.c+';">'+d[k]+'</span></div>';
+  }).join('');
+  lcDisplay.innerHTML =
+    '<div class="lc-pattern">'+rows+'</div>'+
+    '<div><strong style="color:var(--text-on-dark); font-size:14px;">Typical of a '+stage.toLowerCase()+' company:</strong><ul style="margin-top:8px; padding-left:18px; color:var(--text-soft); font-size:14px;">'+
+    d.notes.map(function(n){ return '<li>'+n+'</li>'; }).join('')+'</ul></div>';
+}
+Object.keys(lcData).forEach(function(stage, i){
+  var tab = document.createElement('button');
+  tab.className = 'lc-tab' + (i===0?' active':'');
+  tab.textContent = stage;
+  tab.addEventListener('click', function(){
+    document.querySelectorAll('.lc-tab').forEach(function(t){ t.classList.remove('active'); });
+    tab.classList.add('active');
+    showStage(stage);
+  });
+  lcTabs.appendChild(tab);
+});
+showStage('Start-up');
+
+/* ---------- relationship diagram ---------- */
+var relData = {
+  "1":"Distribute profits / repay due debts — NCFO funds dividend payments to shareholders and repayment of debts as they come due.",
+  "2":"Expand investments — NCFO funds growth in investing activities, letting the company self-fund expansion without new borrowing.",
+  "3":"Raise long-term loans or additional equity — financing inflows are used specifically to expand investing activities.",
+  "4":"Borrow from banks — financing activity steps in to compensate for an operating cash flow shortfall.",
+  "5":"Sell assets — investing activity (asset disposals) generates cash used to repay debts or cover shortfalls elsewhere."
+};
+document.querySelectorAll('.rel-arrow').forEach(function(el){
+  el.addEventListener('click', function(){
+    var n = this.dataset.rel;
+    document.getElementById('rel-info').innerHTML =
+      '<span class="river-info-label" style="color:var(--gold);">Relationship '+n+'</span>'+relData[n];
+  });
+});
+
+/* ---------- ratio calculator ---------- */
+var calcIds = ['calc-nocf','calc-debt','calc-int','calc-eat','calc-ltdebt'];
+function renderRatios(){
+  var nocf = parseFloat(document.getElementById('calc-nocf').value) || 0;
+  var debt = parseFloat(document.getElementById('calc-debt').value) || 0;
+  var intr = parseFloat(document.getElementById('calc-int').value) || 0;
+  var eat = parseFloat(document.getElementById('calc-eat').value) || 0;
+  var lt = parseFloat(document.getElementById('calc-ltdebt').value) || 0;
+
+  var ratios = [
+    {name:'Ability to pay debt', formula:'NOCF ÷ Total Debt', val: debt? nocf/debt : 0, threshold:1,
+     good:'Cash from operations covers debt principal — room to take on more borrowing.', weak:'Operating cash falls short of debt obligations — should reduce borrowing.'},
+    {name:'Ability to pay interest', formula:'NOCF ÷ Interest Expense', val: intr? nocf/intr : 0, threshold:3,
+     good:'Borrowed funds are used efficiently; strong flexibility to borrow more if needed.', weak:'Borrowed funds used less efficiently; should reduce debt burden and improve repayment capacity.'},
+    {name:'Ability to distribute EAT', formula:'NOCF ÷ EAT', val: eat? nocf/eat : 0, threshold:1,
+     good:'Operating cash can fully back the profit distributed as dividends.', weak:'Operating cash cannot fully fund the profit being distributed.'},
+    {name:'Ability to pay due LT debt', formula:'NOCF ÷ Due LT Debt', val: lt? nocf/lt : 0, threshold:1,
+     good:'Sufficient capacity to settle maturing long-term debt from operations.', weak:'Must raise cash via investing or financing activities to cover the maturity.'}
+  ];
+  var out = document.getElementById('ratio-results');
+  out.innerHTML = ratios.map(function(r){
+    var passing = r.val >= r.threshold;
+    return '<div class="ratio-card">'+
+      '<div><div class="rname">'+r.name+'</div><div class="rformula">'+r.formula+' · threshold ≥ '+r.threshold+'</div></div>'+
+      '<div class="rvalue">'+r.val.toFixed(2)+'</div>'+
+      '<div class="badge '+(passing?'good':'weak')+'">'+(passing?'Sufficient':'Insufficient')+'</div>'+
+      '<div class="ratio-interp">'+(passing?r.good:r.weak)+'</div>'+
+    '</div>';
+  }).join('');
+}
+calcIds.forEach(function(id){ document.getElementById(id).addEventListener('input', renderRatios); });
+renderRatios();
+
+/* ---------- sources & uses toggle ---------- */
+document.querySelectorAll('.su-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.su-btn').forEach(function(b){ b.classList.remove('active'); });
+    document.querySelectorAll('.su-panel').forEach(function(p){ p.classList.remove('active'); });
+    btn.classList.add('active');
+    document.getElementById('su-'+btn.dataset.su).classList.add('active');
+  });
+});
+
+/* ---------- flashcards ---------- */
+var faqs = [
+  {tag:"Outcome 1", q:"Explain how operating cash flow analysis helps assess a company's debt-repayment capacity, profit-distribution capability, and investment potential.",
+   a:["Define NOCF and why it's the cash a company can rely on without selling assets or borrowing.","Introduce the three NOCF-based ratios: NOCF/Total Debt, NOCF/Interest Expense, NOCF/EAT.","State each threshold (≥1, ≥3, ≥1) and what crossing it means.","Tie it together: a company with all three ratios comfortably above threshold can repay debt, fund dividends, and still has room to expand investment from its own operations."]},
+  {tag:"Outcome 2", q:"What does a negative vs. a positive NCFI tell us about a company's investment orientation?",
+   a:["Negative NCFI = net cash outflow into investing → the company is expanding (buying assets, acquisitions) — healthy if NCFO or well-structured financing supports it.","Positive NCFI = net cash inflow from investing → the company is selling assets/investments — could be raising needed cash, or deliberately downsizing.","Always ask 'why' before judging: the same sign can mean very different things depending on the company's stage and stated strategy."]},
+  {tag:"Outcome 3", q:"Explain what a high vs. a decreasing NCFF indicates about a firm's reliance on external financing.",
+   a:["High NCFF → heavy reliance on borrowing/equity issuance to fund the business.","Decreasing NCFF → the company is becoming more financially independent, relying less on external funding.","Connect to life-cycle stages: high NCFF is normal/expected for start-ups, decreasing/negative NCFF is expected in maturity."]},
+  {tag:"Core concept", q:"Why can a profitable company report an operating cash flow that's different from its accounting profit? Give one example of an adjustment in each direction.",
+   a:["Three categories: (1) non-cash items added back/removed — e.g. depreciation (added back, increases NOCF), investment income (removed, decreases NOCF since it's non-operating).","(2) working-capital changes — e.g. an increase in accounts receivable decreases NOCF (cash not yet collected); an increase in accounts payable increases NOCF (cash not yet paid out).","(3) cash items profit doesn't capture directly — e.g. actual interest paid and tax paid reduce NOCF.","Use the case number as proof: EBT 11,070 vs NOCF 11,204 in 2024 — a difference of 134 explained entirely by these three categories."]},
+  {tag:"Outcome 5", q:"Using the sources-and-uses framework, explain how a company can use financing inflows to cover an operating cash shortfall, and why this matters for assessing financial health.",
+   a:["Describe relationship #4 from the circulation map: NCFF (e.g. new bank borrowing) compensates when NCFO is negative.","Use the HP Company example: NCFO was −726 in 2023, but NCFF stayed at +883, keeping total NCF only mildly negative.","Why it matters: covering a shortfall this way is sustainable only if it's temporary — repeated reliance on financing to plug operating gaps is a warning sign of structural weakness, not just a timing issue."]},
+  {tag:"Applied insight", q:"Why can vertical (%) analysis of cash flow structure produce extreme percentages — illustrate using the case's 2024 NCFO contribution of 2,059%?",
+   a:["Vertical analysis divides each activity's net cash flow by total NCF.","When total NCF (the denominator) is small relative to the gross flows — as in 2024, where NCF was only 544 against an NCFO of 11,204 — the resulting percentage is stretched far beyond a believable range.","Conclusion: extreme percentages don't necessarily mean something is wrong; they mean the % view needs to be checked against the absolute figures (horizontal analysis) before drawing conclusions."]}
+];
+var fcWrap = document.getElementById('flashcards');
+faqs.forEach(function(f){
+  var card = document.createElement('div');
+  card.className = 'flashcard';
+  card.innerHTML =
+    '<div class="fc-tag">'+f.tag+'</div>'+
+    '<div class="fc-q">'+f.q+'</div>'+
+    '<div class="fc-a"><ul>'+f.a.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul></div>'+
+    '<div class="fc-hint">Click to reveal model outline</div>';
+  card.addEventListener('click', function(){ card.classList.toggle('revealed'); });
+  fcWrap.appendChild(card);
+});
+</script>
+</body>
+</html>
