@@ -302,9 +302,63 @@ svg .rel-num{font-family:var(--mono); font-weight:700; font-size:12px;}
 }
 footer.app-foot{margin-left:248px; padding:20px 54px 50px; color:var(--text-soft); font-size:12.5px; border-top:1px solid var(--ink-line);}
 @media (max-width:880px){footer.app-foot{margin-left:0; padding:20px 20px 50px;}}
+/* ===== Global Chapter Navigation ===== */
+
+.chapter-nav{
+    background:#0E1620;
+    padding:10px;
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.chapter-nav a{
+    color:#dbe7ef;
+    text-decoration:none;
+    padding:8px 14px;
+    border-radius:8px;
+    transition:.2s;
+    font-size:14px;
+    font-weight:600;
+}
+
+.chapter-nav a:hover{
+    background:#1C2B3A;
+}
+
+.chapter-nav a.active{
+    background:#E3B23C;
+    color:#111;
+}
 </style>
 </head>
 <body>
+<div class="chapter-nav">
+
+<a href="index.html">🏠 Ch1</a>
+
+<a href="chapter2_financial_statements.html">📗 Ch2</a>
+
+<a href="chapter3_business_performance_analysis.html">📙 Ch3</a>
+
+<a href="chapter4_hub_finance.html">📕 Ch4 Hub</a>
+
+<a href="chapter4_analysis_of_assets_and_capital_sources.html">
+📖 Ch4 Notes
+</a>
+
+<a href="chapter4_study_app.html">
+📝 Study
+</a>
+
+<a class="active"
+href="chapter5_cashflow.html">
+📒 Ch5
+</a>
+
+</div>
 <div class="app">
   <nav class="sidebar">
     <div class="brand">
