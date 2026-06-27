@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Chapter 4 – Assets & Capital Sources | HUB Finance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#16213F;--ink-s:#48527A;--ink-f:#8088A8;
+  --bg:#FBF7EE;--bg2:#F0EAD6;--white:#FFFEFA;
+  --rule:#DCD2B6;--rule2:#C9BC92;
+  --gr:#2E6B4F;--gr-s:#E3EEE3;--gr-d:#1F4D38;
+  --re:#9B3A33;--re-s:#F4E4DF;--re-d:#742A25;
+  --go:#B07F1E;--go-s:#F3E6C2;--go-d:#8A6314;
+  --sh:0 1px 3px rgba(22,33,63,.07),0 6px 20px -10px rgba(22,33,63,.18);
+  --serif:'Fraunces',Georgia,serif;
+  --sans:'Inter',-apple-system,sans-serif;
+  --mono:'IBM Plex Mono',Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;}
+h1,h2,h3,h4{font-family:var(--serif);line-height:1.15;color:var(--ink);}
+p{margin-bottom:.85em;}p:last-child{margin-bottom:0;}
+a{color:var(--gr-d);}
+::selection{background:var(--go-s);}
+
+.wrap{max-width:960px;margin:0 auto;padding:0 20px;}
+.section{padding:64px 0;border-bottom:1px solid var(--rule);}
+.section:nth-of-type(even){background:var(--bg2);}
+
+/* PROGRESS BAR */
+#pbar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--go),var(--gr));z-index:9999;transition:width .1s;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:500;background:rgba(251,247,238,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule);}
+.nav-in{display:flex;align-items:center;gap:12px;max-width:960px;margin:0 auto;padding:8px 20px;}
+.brand{font-family:var(--serif);font-weight:700;font-size:14px;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:6px;white-space:nowrap;}
+.badge{font-family:var(--mono);font-size:10px;background:var(--go-s);color:var(--go-d);padding:2px 6px;border-radius:3px;}
+.navlinks{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;}
+.navlinks::-webkit-scrollbar{display:none;}
+.navlinks a{font-size:12px;font-weight:600;color:var(--ink-s);text-decoration:none;padding:6px 10px;border-radius:18px;white-space:nowrap;transition:all .15s;}
+.navlinks a:hover,.navlinks a.act{background:var(--ink);color:#fff;}
+.pbtn{font-size:12px;font-weight:700;color:#fff;background:var(--gr-d);padding:6px 13px;border-radius:18px;text-decoration:none;white-space:nowrap;flex-shrink:0;}
+
+/* HERO */
+.hero{padding:56px 0 48px;background:radial-gradient(800px 380px at 80% 0%,rgba(46,107,79,.08),transparent 60%),radial-gradient(600px 340px at 5% 100%,rgba(176,127,30,.11),transparent 60%),var(--bg);border-bottom:1px solid var(--rule);}
+.hero .wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center;}
+@media(max-width:800px){.hero .wrap{grid-template-columns:1fr;}}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gr-d);display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.eyebrow::before{content:"";width:18px;height:1px;background:var(--gr-d);}
+.hero h1{font-size:clamp(24px,3.8vw,42px);margin-bottom:12px;}
+.hero h1 em{font-style:italic;color:var(--gr-d);}
+.hero p{font-size:15px;color:var(--ink-s);max-width:50ch;margin-bottom:18px;}
+.cta-row{display:flex;gap:10px;flex-wrap:wrap;}
+.btn{font-family:var(--sans);font-weight:700;font-size:13px;padding:10px 17px;border-radius:4px;border:1.5px solid var(--ink);text-decoration:none;display:inline-flex;align-items:center;cursor:pointer;transition:transform .1s,box-shadow .1s;}
+.btn:hover{transform:translateY(-1px);box-shadow:var(--sh);}
+.btn-p{background:var(--ink);color:#fff;}
+.btn-g{background:transparent;color:var(--ink);border-color:var(--rule2);}
+.hero-card{background:var(--white);border:1px solid var(--rule);border-radius:8px;box-shadow:var(--sh);padding:18px;}
+.clbl{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-f);margin-bottom:10px;}
+
+/* SEC HEAD */
+.stag{display:inline-flex;font-family:var(--mono);font-size:11px;color:var(--go-d);background:var(--go-s);padding:4px 10px;border-radius:18px;margin-bottom:12px;font-weight:600;letter-spacing:.03em;}
+.shead{margin-bottom:28px;max-width:720px;}
+.shead h2{font-size:clamp(21px,2.7vw,29px);margin-bottom:8px;}
+.shead p{font-size:15px;color:var(--ink-s);}
+.subh{display:flex;align-items:baseline;gap:9px;margin:38px 0 12px;padding-top:14px;border-top:1px solid var(--rule2);}
+.subh:first-of-type{border-top:none;margin-top:0;padding-top:0;}
+.subh .sn{font-family:var(--mono);font-size:11px;color:var(--go-d);font-weight:700;}
+.subh h3{font-size:18px;}
+
+/* ACCORDION (details/summary – no JS needed) */
+.fw{border:1px solid var(--rule);border-radius:8px;overflow:hidden;background:var(--white);box-shadow:var(--sh);margin-bottom:20px;}
+.fw details{border-bottom:1px solid var(--rule);}
+.fw details:last-child{border-bottom:none;}
+.fw summary{display:flex;align-items:center;gap:11px;padding:14px 16px;cursor:pointer;list-style:none;user-select:none;transition:background .12s;}
+.fw summary::-webkit-details-marker,.fw summary::marker{display:none;}
+.fw summary:hover{background:var(--bg2);}
+.fl{width:27px;height:27px;flex-shrink:0;border-radius:50%;background:var(--ink);color:#fff;font-family:var(--serif);font-weight:600;font-size:12px;display:flex;align-items:center;justify-content:center;}
+.fq{font-weight:700;font-size:13.5px;color:var(--ink);flex:1;}
+.fa{width:15px;height:15px;color:var(--ink-f);flex-shrink:0;transition:transform .2s;}
+details[open]>.fw-sum .fa,details[open]>summary .fa{transform:rotate(180deg);}
+.fb{padding:4px 16px 16px 54px;font-size:13.5px;color:var(--ink-s);}
+.fb ul{padding-left:18px;margin:6px 0;}
+.fb li{margin-bottom:4px;}
+.fb strong{color:var(--ink);}
+.fb p{margin-bottom:.65em;}
+
+/* FORMULA */
+.formula{background:var(--ink);color:#fff;border-radius:6px;padding:18px 20px;font-family:var(--mono);font-size:13.5px;line-height:1.9;margin:14px 0;overflow-x:auto;}
+.formula .fl2{color:rgba(243,230,194,.65);font-size:10px;text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:5px;}
+.gt{color:#8FD1A8;}.rt{color:#E89B92;}
+
+/* TABLES */
+.tw{overflow-x:auto;margin:14px 0;border:1px solid var(--rule);border-radius:6px;box-shadow:var(--sh);}
+table{width:100%;border-collapse:collapse;font-size:13px;background:var(--white);min-width:480px;}
+thead th{background:var(--ink);color:#fff;font-size:11px;text-transform:uppercase;letter-spacing:.04em;text-align:left;padding:9px 12px;}
+tbody td{padding:8px 12px;border-bottom:1px solid var(--rule);}
+tbody td:first-child{font-weight:600;color:var(--ink);}
+tbody tr:nth-child(even){background:var(--bg);}
+tbody tr:hover{background:var(--go-s);}
+.pos{color:var(--gr-d);font-weight:700;}.neg{color:var(--re-d);font-weight:700;}
+.tnote{font-size:11px;color:var(--ink-f);padding:6px 12px;border-top:1px solid var(--rule);background:var(--bg);font-style:italic;}
+
+/* CALLOUTS */
+.callout{border-radius:6px;padding:14px 16px;margin:16px 0;border:1px solid;display:flex;gap:11px;font-size:13.5px;}
+.callout svg{flex-shrink:0;width:19px;height:19px;margin-top:2px;}
+.ct{font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px;}
+.callout p:last-child{margin-bottom:0;}
+.mis{background:var(--re-s);border-color:#e3c4bd;color:var(--re-d);}
+.ins{background:var(--gr-s);border-color:#c4dbc8;color:var(--gr-d);}
+.tip{background:var(--go-s);border-color:#e2cd96;color:var(--go-d);}
+
+/* CASE CARD */
+.case{background:var(--white);border:1px solid var(--rule);border-radius:8px;padding:20px;margin:18px 0;box-shadow:var(--sh);position:relative;}
+.clabel{position:absolute;top:-10px;left:16px;background:var(--ink);color:#fff;font-family:var(--mono);font-size:10px;padding:2px 9px;border-radius:3px;letter-spacing:.04em;}
+.case h4{font-size:15.5px;margin:6px 0 9px;}
+.step{display:flex;gap:10px;margin:9px 0;align-items:flex-start;font-size:13.5px;}
+.sn2{flex-shrink:0;width:21px;height:21px;border-radius:50%;background:var(--go-s);color:var(--go-d);font-family:var(--mono);font-weight:700;font-size:11px;display:flex;align-items:center;justify-content:center;}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;}
+@media(max-width:700px){.g2,.g3{grid-template-columns:1fr;}}
+.card{background:var(--white);border:1px solid var(--rule);border-radius:6px;padding:15px 17px;box-shadow:var(--sh);}
+.card.good{border-top:3px solid var(--gr);}
+.card.bad{border-top:3px solid var(--re);}
+.card.neu{border-top:3px solid var(--go);}
+.ch{font-weight:700;font-size:13px;margin-bottom:6px;color:var(--ink);}
+
+/* SLIDER WIDGET */
+.sw{background:var(--white);border:1px solid var(--rule);border-radius:8px;padding:20px;box-shadow:var(--sh);margin:18px 0;}
+.sliders{display:flex;flex-direction:column;gap:12px;margin-top:14px;}
+.sliders label{font-size:12px;font-weight:700;color:var(--ink-s);display:flex;justify-content:space-between;}
+.sliders input[type=range]{width:100%;accent-color:var(--go-d);}
+.readout{font-family:var(--mono);text-align:center;margin-top:11px;padding:11px;border-radius:6px;font-size:13px;font-weight:600;transition:all .25s;}
+.readout .rv{font-size:20px;display:block;margin-top:2px;}
+
+/* QUIZ */
+.qbox{background:var(--white);border:1px solid var(--rule);border-radius:8px;padding:22px;box-shadow:var(--sh);}
+.qprog{display:flex;gap:4px;margin-bottom:16px;}
+.qprog .d{height:4px;flex:1;background:var(--rule);border-radius:2px;transition:background .2s;}
+.qprog .d.done{background:var(--gr);}
+.qprog .d.cur{background:var(--go);}
+.qmeta{font-family:var(--mono);font-size:10px;color:var(--ink-f);text-transform:uppercase;margin-bottom:12px;}
+.qtext{font-size:14.5px;font-weight:700;margin-bottom:12px;line-height:1.4;}
+.qopts{display:flex;flex-direction:column;gap:7px;}
+.opt{text-align:left;border:1.5px solid var(--rule2);background:var(--bg);border-radius:6px;padding:10px 14px;cursor:pointer;font-family:var(--sans);font-size:13.5px;color:var(--ink);transition:all .15s;}
+.opt:hover:not(:disabled){border-color:var(--ink);}
+.opt.ok{background:var(--gr-s);border-color:var(--gr);}
+.opt.no{background:var(--re-s);border-color:var(--re);}
+.opt:disabled{cursor:default;}
+.qexp{margin-top:12px;padding:11px 14px;background:var(--go-s);border-radius:6px;font-size:13px;border-left:3px solid var(--go);display:none;}
+.qfoot{display:flex;justify-content:space-between;align-items:center;margin-top:16px;flex-wrap:wrap;gap:8px;}
+.qscore{font-family:var(--mono);font-size:13px;font-weight:600;}
+
+/* BUTTONS */
+.ib{background:var(--white);border:1.5px solid var(--rule2);border-radius:18px;padding:8px 15px;font-family:var(--sans);font-weight:700;font-size:12px;cursor:pointer;color:var(--ink);transition:all .12s;}
+.ib:hover{background:var(--bg2);}
+.ib.p{background:var(--ink);color:#fff;border-color:var(--ink);}
+
+/* FLASHCARDS */
+.fcbar{display:flex;gap:8px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
+.fccnt{font-family:var(--mono);font-size:12px;color:var(--ink-s);margin-left:auto;}
+.fcstage{perspective:1200px;max-width:480px;margin:0 auto;}
+.fc{position:relative;width:100%;height:210px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s cubic-bezier(.4,.2,.2,1);}
+.fc.flip{transform:rotateY(180deg);}
+.fcf{position:absolute;inset:0;backface-visibility:hidden;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;box-shadow:var(--sh);}
+.fcfr{background:var(--ink);color:#fff;}
+.fcfr .fct{font-family:var(--serif);font-size:21px;font-weight:600;}
+.fcfr .fch{font-family:var(--mono);font-size:10px;color:rgba(243,230,194,.7);margin-top:11px;}
+.fcbk{background:var(--go-s);color:var(--ink);transform:rotateY(180deg);border:1px solid var(--go);}
+.fcbk p{font-size:13.5px;}
+.fcnav{display:flex;justify-content:center;gap:10px;margin-top:13px;}
+
+/* SORT EXERCISE */
+.pool{display:flex;flex-wrap:wrap;gap:8px;padding:14px;background:var(--white);border:2px dashed var(--rule2);border-radius:8px;min-height:52px;}
+.chip{background:var(--ink);color:#fff;font-size:12px;font-weight:600;padding:7px 12px;border-radius:16px;cursor:pointer;user-select:none;transition:all .15s;}
+.chip:hover{opacity:.85;}
+.chip.sel{background:var(--go-d);}
+.chip.placed{opacity:.28;cursor:not-allowed;}
+.bins{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
+@media(max-width:580px){.bins{grid-template-columns:1fr;}}
+.bin{border-radius:8px;padding:12px;min-height:130px;border:2px dashed var(--rule2);}
+.bin.use{background:rgba(155,58,51,.05);}
+.bin.source{background:rgba(46,107,79,.05);}
+.bin h5{font-size:11px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:7px;}
+.bin.use h5{color:var(--re-d);}
+.bin.source h5{color:var(--gr-d);}
+.bitems{display:flex;flex-wrap:wrap;gap:6px;}
+.bitems .chip{cursor:default;background:var(--bg2);color:var(--ink);font-size:11.5px;}
+.sfb{font-family:var(--mono);font-size:12px;padding:9px 13px;border-radius:6px;display:none;margin-top:9px;}
+.sfb.show{display:block;}
+.sfb.ok{background:var(--gr-s);color:var(--gr-d);}
+.sfb.err{background:var(--re-s);color:var(--re-d);}
+
+/* WCR CALC */
+.wcalc{background:var(--white);border:1px solid var(--rule);border-radius:8px;padding:20px;box-shadow:var(--sh);margin:18px 0;}
+.wf{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:14px 0;}
+@media(max-width:580px){.wf{grid-template-columns:1fr;}}
+.wff label{font-size:11.5px;font-weight:700;color:var(--ink-s);display:block;margin-bottom:4px;}
+.wff input{width:100%;padding:8px 11px;border:1.5px solid var(--rule2);border-radius:5px;font-family:var(--mono);font-size:13px;background:var(--bg);color:var(--ink);outline:none;transition:border .15s;}
+.wff input:focus{border-color:var(--go);}
+.wres{background:var(--ink);color:#fff;border-radius:6px;padding:14px 18px;font-family:var(--mono);font-size:13px;line-height:2;margin-top:4px;}
+
+/* ESSAY */
+.eq{background:var(--white);border:1px solid var(--rule);border-radius:8px;padding:16px 18px;margin:12px 0;box-shadow:var(--sh);}
+.eqt{font-weight:700;font-size:14px;margin-bottom:9px;display:flex;gap:8px;align-items:flex-start;line-height:1.4;}
+.eqm{color:var(--go-d);font-family:var(--serif);font-style:italic;font-size:17px;line-height:1;flex-shrink:0;}
+.rbtn{font-size:12px;font-weight:700;color:var(--gr-d);background:var(--gr-s);border:1px solid #c4dbc8;padding:5px 12px;border-radius:14px;cursor:pointer;}
+.rbtn:hover{background:var(--gr-d);color:#fff;}
+.ans{margin-top:11px;padding-top:11px;border-top:1px dashed var(--rule2);font-size:13.5px;color:var(--ink-s);display:none;}
+.ans.show{display:block;}
+.ans .at{font-family:var(--mono);font-size:10px;text-transform:uppercase;color:var(--go-d);font-weight:700;letter-spacing:.05em;display:block;margin-bottom:5px;}
+
+/* VOCAB */
+.vocab{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0;}
+.vp{background:var(--white);border:1px solid var(--rule2);border-radius:4px;padding:5px 9px;font-family:var(--mono);font-size:11.5px;color:var(--ink);}
+.vp b{color:var(--go-d);}
+
+/* DASHBOARD */
+.dash{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;}
+@media(max-width:740px){.dash{grid-template-columns:1fr;}}
+.clist{display:flex;flex-direction:column;gap:6px;}
+.cli{display:flex;align-items:center;gap:9px;padding:9px 12px;background:var(--white);border:1px solid var(--rule);border-radius:6px;font-size:13px;cursor:pointer;}
+.cli input{width:15px;height:15px;accent-color:var(--gr-d);flex-shrink:0;cursor:pointer;}
+.cli.done{background:var(--gr-s);border-color:#c4dbc8;}
+.cli.done label{text-decoration:line-through;color:var(--ink-f);}
+.cli label{cursor:pointer;flex:1;}
+.sc{background:var(--ink);color:#fff;border-radius:10px;padding:24px;text-align:center;}
+.sbig{font-family:var(--serif);font-size:50px;font-weight:600;color:var(--go-s);line-height:1;}
+.slbl{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;opacity:.7;margin-top:7px;}
+.smsg{font-size:13px;margin-top:13px;opacity:.85;padding-top:13px;border-top:1px solid rgba(255,255,255,.15);}
+.brow{display:flex;align-items:center;gap:9px;margin-top:9px;}
+.brow span{font-family:var(--mono);font-size:10px;white-space:nowrap;opacity:.7;width:110px;text-align:right;}
+.bo{flex:1;height:5px;background:rgba(255,255,255,.18);border-radius:3px;overflow:hidden;}
+.bi{height:100%;background:var(--go-s);border-radius:3px;transition:width .4s;}
+
+footer{padding:32px 0 48px;text-align:center;color:var(--ink-f);font-size:12px;}
+footer .wrap{border-top:1px solid var(--rule);padding-top:24px;}
+</style>
+</head>
+<body>
+
+<div id="pbar"></div>
+
+<nav>
+  <div class="nav-in">
+    <a class="brand" href="#intro">LEDGER <span class="badge">CH.04</span></a>
+    <div class="navlinks" id="navlinks">
+      <a href="#intro" data-s="intro">Intro</a>
+      <a href="#s41" data-s="s41">4.1 Assets</a>
+      <a href="#s42" data-s="s42">4.2 Capital</a>
+      <a href="#s43" data-s="s43">4.3 Sources&amp;Uses</a>
+      <a href="#s44" data-s="s44">4.4 Balance</a>
+      <a href="#s45" data-s="s45">4.5 WCR</a>
+      <a href="#practice" data-s="practice">Practice</a>
+    </div>
+    <a href="#dashboard" class="pbtn">My Progress</a>
+  </div>
+</nav>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero" id="intro">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Ho Chi Minh University of Banking · Financial Analysis Ch.4</div>
+      <h1>Why must a balance sheet <em>balance</em> — and what happens when it doesn't?</h1>
+      <p>Chapter 4 is one question asked five ways: <strong>is the money a company raised matched, in time and in risk, to how it is being spent?</strong> Master that and NWC, WCR, asset structure, capital structure all become logical — not arbitrary.</p>
+      <div class="cta-row">
+        <a href="#s41" class="btn btn-p">Start with 4.1 Assets →</a>
+        <a href="#practice" class="btn btn-g">Jump to Practice &amp; Quiz</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="clbl">Signature concept · drag the sliders to explore NWC</div>
+      <canvas id="heroC" width="340" height="110" style="width:100%;border-radius:5px;"></canvas>
+      <div class="sliders">
+        <label>Long-term Capital (LTC) <span id="hLV" style="font-family:var(--mono);font-weight:700">600</span></label>
+        <input type="range" id="hL" min="200" max="1000" value="600" step="10">
+        <label>Long-term Assets (LTA) <span id="hAV" style="font-family:var(--mono);font-weight:700">600</span></label>
+        <input type="range" id="hA" min="200" max="1000" value="600" step="10">
+      </div>
+      <div class="readout" id="hR"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 4.1 ASSETS ==================== -->
+<section class="section" id="s41">
+  <div class="wrap">
+    <div class="shead">
+      <div class="stag">§ 4.1 — The Asset Side</div>
+      <h2>Asset Analysis: Where Did the Money Go?</h2>
+      <p>Every dollar on the asset side represents a decision already made. Asset analysis reads those decisions back out of the numbers and judges whether they were wise.</p>
+    </div>
+
+    <div class="subh"><span class="sn">4.1.1</span><h3>Asset Fluctuation Analysis (Horizontal)</h3></div>
+    <div class="fw">
+      <details open>
+        <summary><span class="fl">A</span><span class="fq">What is it?</span><svg class="fa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="fb"><p>Horizontal analysis tracks one asset item <strong>across time</strong> — month-to-month, year-to-year — computing absolute change (e.g. +35,000 million VND) and relative change (e.g. +8.4%). It answers <em>how is this number moving</em>, not how big is it now.</p></div>
+      </details>
+      <details>
+        <summary><span class="fl">B</span><span class="fq">Why does it matter?</span><svg class="fa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="fb"><ul>
+          <li><strong>Managers</strong> use it to check whether investment decisions are happening as planned and at the right pace.</li>
+          <li><strong>Creditors</strong> watch whether the assets backing their loan are growing, shrinking, or converting into something less liquid.</li>
+          <li><strong>Investors</strong> read fluctuation as a proxy for strategy in motion — expansion, contraction, or a pivot in business model.</li>
+        </ul></div>
+      </details>
+      <details>
+        <summary><span class="fl">C</span><span class="fq">What is the financial logic?</span><svg class="fa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="fb"><p>An asset cannot grow on its own — every increase must be financed by something. This is the seed of §4.3: <em>asset fluctuation is "uses of funds" viewed item-by-item.</em> Before judging an increase, always ask: <strong>what financed it, and is that financing appropriate for this asset's time horizon?</strong></p></div>
+      </details>
+      <details>
+        <summary><span class="fl">D</span><span class="fq">How to interpret increases &amp; decreases</span><svg class="fa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="fb">
+          <div class="tw"><table><thead><tr><th>Item</th><th>↑ Increase usually means</th><th>↓ Decrease usually means</th></tr></thead><tbody>
+            <tr><td>Cash &amp; equivalents</td><td>Liquidity improves — but idle cash earns little</td><td>Tighter liquidity, or cash put to productive use</td></tr>
+            <tr><td>Accounts receivable</td><td>Looser credit terms — capital tied up, bad-debt risk rises</td><td>Faster collection / stricter policy — good for liquidity</td></tr>
+            <tr><td>Inventories</td><td>Expecting demand growth — or early overstocking</td><td>Leaner operations, or risk of stock-outs</td></tr>
+            <tr><td>Fixed assets</td><td>Capacity expansion, higher operating leverage</td><td>Divestment, depreciation outpacing capex</td></tr>
+          </tbody></table></div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="fl">G</span><span class="fq">Common student mistakes</span><svg class="fa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="fb"><ul>
+          <li>Reporting only % change and ignoring absolute amount — 783% on a tiny base may be financially trivial.</li>
+          <li>Calling every increase "growth" without asking which item moved and why.</li>
+          <li>Forgetting to connect asset fluctuation to its financing source (the §4.3 link).</li>
+        </ul></div>
+      </details>
+    </div>
+
+    <div class="case">
+      <span class="clabel">WORKED CASE · TAN COMPANY 2022–2024 (unit: million VND)</span>
+      <h4>Reading the horizontal-analysis table like an examiner</h4>
+      <div class="tw"><table><thead><tr><th>Item</th><th>2022</th><th>2023</th><th>2024</th><th>Δ 23/22</th><th>Δ 24/23</th></tr></thead><tbody>
+        <tr><td>I. Current Assets</td><td>171,300</td><td>161,100</td><td>178,300</td><td class="neg">−6.0%</td><td class="pos">+10.7%</td></tr>
+        <tr><td>&nbsp; Cash &amp; equivalents</td><td>26,000</td><td>61,000</td><td>10,000</td><td class="pos">+134.6%</td><td class="neg">−83.6%</td></tr>
+        <tr><td>&nbsp; ST financial investments</td><td>5,600</td><td>6,000</td><td>53,000</td><td class="pos">+7.1%</td><td class="pos">+783.3%</td></tr>
+        <tr><td>&nbsp; Accounts receivable</td><td>17,000</td><td>7,700</td><td>12,000</td><td class="neg">−54.7%</td><td class="pos">+55.8%</td></tr>
+        <tr><td>&nbsp; Inventories</td><td>120,000</td><td>84,000</td><td>100,000</td><td class="neg">−30.0%</td><td class="pos">+19.0%</td></tr>
+        <tr><td>II. Non-current Assets</td><td>39,020</td><td>40,040</td><td>39,700</td><td class="pos">+2.6%</td><td class="neg">−0.8%</td></tr>
+        <tr><td><strong>Total Assets</strong></td><td><strong>210,320</strong></td><td><strong>201,140</strong></td><td><strong>218,000</strong></td><td class="neg">−4.4%</td><td class="pos">+8.4%</td></tr>
+      </tbody></table></div>
+      <div class="step"><span class="sn2">1</span><div><strong>Read the total first.</strong> Assets fell 4.4% in 2023, then recovered 8.4% in 2024 — a non-linear path signalling something happened beneath the surface.</div></div>
+      <div class="step"><span class="sn2">2</span><div><strong>Find the driver.</strong> 2024's growth was concentrated in ST investments (+783%) while cash collapsed (−83.6%). This is not "the company grew" — it is "the company reallocated idle cash into short-term investments."</div></div>
+      <div class="step"><span class="sn2">3</span><div><strong>Check risky items.</strong> Receivables jumped 55.8% in 2024 after falling 54.7% in 2023 — a swing warranting investigation of whether credit policy loosened and collection risk is rising.</div></div>
+      <div class="step"><span class="sn2">4</span><div><strong>Conclude with a judgement.</strong> "TAN's 2024 growth was driven by treasury reallocation and looser receivables, not core operational expansion — lower-quality growth than a similar increase driven by inventory and fixed assets supporting higher sales."</div></div>
+    </div>
+
+    <div class="subh"><span class="sn">4.1.2</span><h3>Asset Structure Analysis (Vertical)</h3></div>
+    <div class="fw">
+      <details open>
+        <summary><span class="fl">A</span><span class="fq">What is it?</span><svg class="fa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="fb"><p>Vertical analysis expresses every asset as a <strong>% of total assets</strong>. It answers "how is the pie sliced right now — and is the company over-concentrated in one slice?"</p></div>
+      </details>
+      <details>
+        <summary><span class="fl">C</span><span class="fq">Financial logic: asset structure = business-model fingerprint</span><svg class="fa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="fb"><p>A trading company naturally carries high inventory and receivables with low fixed assets. A manufacturer or utility carries heavy fixed assets. A bank carries almost no inventory. There is no universally "correct" structure — only one that is, or isn't, consistent with how the company earns revenue. Use industry norms as a benchmark.</p></div>
+      </details>
+      <details>
+        <summary><span class="fl">E</span><span class="fq">Implications of asset structure decisions</span><svg class="fa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="fb">
+          <div class="g3" style="gap:10px;margin-top:6px;">
+            <div class="card neu"><div class="ch">⚖ Current vs Non-current</div><p style="font-size:13px">Current = liquidity reserve; non-current = productive capacity. The balance is a trade-off between <strong>flexibility</strong> and <strong>scale of operation</strong>.</p></div>
+            <div class="card bad"><div class="ch">🏭 Rising Fixed Assets</div><p style="font-size:13px">Signals capacity expansion. Raises <strong>operating leverage</strong>: fixed costs (depreciation) stay constant regardless of sales — profit becomes more volatile.</p></div>
+            <div class="card good"><div class="ch">📦 Rising Inventories</div><p style="font-size:13px">Can mean positioning for demand growth <em>or</em> that goods aren't selling. Check whether inventory growth is proportional to — or faster than — revenue.</p></div>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <div class="case">
+      <span class="clabel">TAN COMPANY — Vertical structure table</span>
+      <h4>Each item as % of Total Assets</h4>
+      <div class="tw"><table><thead><tr><th>Item</th><th>2022</th><th>2023</th><th>2024</th></tr></thead><tbody>
+        <tr><td>I. Current Assets</td><td>81.45%</td><td>80.09%</td><td>81.79%</td></tr>
+        <tr><td>&nbsp; Cash &amp; equivalents</td><td>12.36%</td><td>30.33%</td><td>4.59%</td></tr>
+        <tr><td>&nbsp; ST financial investments</td><td>2.66%</td><td>2.98%</td><td>24.31%</td></tr>
+        <tr><td>&nbsp; Inventories</td><td>57.06%</td><td>41.76%</td><td>45.87%</td></tr>
+        <tr><td>II. Non-current Assets</td><td>18.55%</td><td>19.91%</td><td>18.21%</td></tr>
+        <tr><td>&nbsp; Fixed assets</td><td>13.31%</td><td>14.02%</td><td>12.71%</td></tr>
+        <tr><td><strong>Total Assets</strong></td><td>100%</td><td>100%</td><td>100%</td></tr>
+      </tbody></table></div>
+      <p style="font-size:13px;color:var(--ink-s);margin-top:10px;"><strong>Key takeaway:</strong> Inventories alone make up 42–57% of total assets every year — TAN's single biggest concentration risk. An essay answer must flag this and connect it to inventory-specific risks: obsolescence, holding cost, demand forecasting errors.</p>
+    </div>
+
+    <div class="callout tip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      <div><div class="ct">Exam tip</div><p>Examiners reward students who explicitly separate <strong>horizontal</strong> (trend) from <strong>vertical</strong> (structure) — and then synthesize both into one judgement. Never present two tables without a concluding sentence.</p></div>
+    </div>
+
+    <div class="subh"><span class="sn">Exam</span><h3>Essay questions — Asset Analysis</h3></div>
+    <div class="eq">
+      <div class="eqt"><span class="eqm">"</span>Explain asset structure analysis. What might a rising share of fixed assets in total assets indicate about a company's strategy and risk?</div>
+      <button class="rbtn" onclick="tog(this)">Show model answer</button>
+      <div class="ans"><span class="at">Model answer outline</span>
+        <p><strong>Define:</strong> Vertical analysis expresses each asset as % of total assets to assess diversification and risk exposure; combined with horizontal analysis to track how that structure evolves.</p>
+        <p><strong>Rising fixed assets:</strong> Signals capacity-expansion strategy — investment in production lines or equipment to support anticipated demand. Raises <strong>operating leverage</strong>: higher fixed costs (depreciation) make profit more sensitive to revenue swings.</p>
+        <p><strong>Risk:</strong> Ask whether the fixed-asset growth was financed with long-term capital (appropriate per §4.4) or short-term capital (financing mismatch risk). Reasonable if demand forecasts hold and financing matches; otherwise raises both operating risk and financial risk simultaneously.</p>
+      </div>
+    </div>
+    <div class="eq">
+      <div class="eqt"><span class="eqm">"</span>A company's inventories increased 30% while sales grew only 8%. Is this positive or negative? Justify your answer.</div>
+      <button class="rbtn" onclick="tog(this)">Show model answer</button>
+      <div class="ans"><span class="at">Model answer outline</span>
+        <p>Lead with the mismatch: inventory growth (30%) outpacing sales (8%) is a <strong>warning sign</strong>, not automatically negative. Two interpretations: (1) deliberate stock-build ahead of expected demand — defensible if forward orders support it; (2) slowing sell-through / overstocking — inefficient capital use and rising obsolescence risk. A strong answer evaluates both and states what further evidence (inventory turnover, order backlog) would resolve the ambiguity rather than picking one side without justification.</p>
+      </div>
+    </div>
+    <div class="vocab">
+      <span class="vp"><b>horizontal analysis</b></span><span class="vp"><b>vertical analysis</b></span>
+      <span class="vp"><b>concentration risk</b></span><span class="vp"><b>operating leverage</b></span>
+      <span class="vp"><b>asset diversification</b></span><span class="vp"><b>obsolescence risk</b></span>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 4.2 CAPITAL ==================== -->
+<section class="section" id="s42">
+  <div class="wrap">
+    <div class="shead">
+      <div class="stag">§ 4.2 — The Capital Side</div>
+      <h2>Capital Analysis: Whose Money Is It, and What Does That Cost?</h2>
+      <p>Capital analysis asks the mirror question: <strong>where did the money come from, and what claim does that source hold over the company?</strong> Every source — supplier credit, bank loan, shareholder investment — carries a different price, deadline, and amount of control surrendered.</p>
+    </div>
+
+    <div class="subh"><span class="sn">4.2.1</span><h3>Capital Fluctuation Analysis (Horizontal)</h3></div>
+    <div class="fw">
+      <details open>
+        <summary><span class="fl">A</span><span class="fq">What is it?</span><svg class="fa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="fb"><p>The same horizontal logic as §4.1.1, applied to liabilities and equity: track each capital item's absolute and % change across periods to assess the company's <strong>capacity to mobilise financial resources</strong>.</p></div>
+      </details>
+      <details>
+        <summary><span class="fl">D</span><span class="fq">How to interpret changes in capital items</span><svg class="fa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="fb">
+          <div class="tw"><table><thead><tr><th>Item</th><th>↑ Increase usually means</th><th>↓ Decrease usually means</th></tr></thead><tbody>
+            <tr><td>Accounts payable</td><td>Greater reliance on supplier credit — efficient, or a sign of cash strain</td><td>Paying faster — builds supplier trust, but uses cash sooner</td></tr>
+            <tr><td>Short-term borrowings</td><td>Financing a short-term need or covering a liquidity gap</td><td>Deleveraging — improves safety, frees future cash flow</td></tr>
+            <tr><td>Retained earnings</td><td>Company profitable and reinvesting — stronger internal financing</td><td>Losses or heavy dividends — weakens reinvestment capacity</td></tr>
+            <tr><td>Shareholders' equity</td><td>New shares issued — permanent capital, but ownership diluted</td><td>Share buybacks or losses — may signal confidence or distress</td></tr>
+          </tbody></table></div>
+        </div>
+      </details>
+    </div>
+
+    <div class="case">
+      <span class="clabel">TAN COMPANY — Liabilities &amp; Equity 2022–2024 (million VND)</span>
+      <h4>A company shifting from debt to equity financing</h4>
+      <div class="tw"><table><thead><tr><th>Item</th><th>2022</th><th>2023</th><th>2024</th><th>Δ 23/22</th><th>Δ 24/23</th></tr></thead><tbody>
+        <tr><td>I. Liabilities</td><td>16,320</td><td>6,840</td><td>9,000</td><td class="neg">−58.1%</td><td class="pos">+31.6%</td></tr>
+        <tr><td>&nbsp; Short-term borrowings</td><td>7,500</td><td>—</td><td>—</td><td class="neg">−100%</td><td>—</td></tr>
+        <tr><td>II. Shareholders' Equity</td><td>194,000</td><td>194,300</td><td>209,000</td><td class="pos">+0.2%</td><td class="pos">+7.6%</td></tr>
+        <tr><td>&nbsp; Retained earnings</td><td>(2,000)</td><td>(1,700)</td><td>13,000</td><td class="pos">↑</td><td class="pos">Turned positive</td></tr>
+        <tr><td><strong>Total</strong></td><td><strong>210,320</strong></td><td><strong>201,140</strong></td><td><strong>218,000</strong></td><td class="neg">−4.4%</td><td class="pos">+8.4%</td></tr>
+      </tbody></table></div>
+      <p style="font-size:13px;color:var(--ink-s);margin-top:10px;"><strong>Key insight:</strong> TAN paid off 100% of short-term borrowings by 2023. Retained earnings flipped from (−2,000) to +13,000 by 2024 — the company moved from accumulated losses into genuine profitability. This is arguably the most important single line for an essay: it signals improving self-financing capacity.</p>
+    </div>
+
+    <div class="subh"><span class="sn">4.2.2</span><h3>Capital Structure Analysis (Vertical) — the Debt vs. Equity Trade-off</h3></div>
+    <div class="fw">
+      <details open>
+        <summary><span class="fl">C</span><span class="fq">Financial logic: risk, autonomy &amp; cost of capital</span><svg class="fa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="fb">
+          <p><strong>Debt</strong> is cheaper than equity (interest is tax-deductible; creditors take less risk so they demand a lower return) but it creates a fixed, contractual obligation — missed payments can trigger default regardless of how the year went.</p>
+          <p><strong>Equity</strong> is more expensive (owners bear residual risk) but flexible — no contractual obligation to pay a dividend in a bad year.</p>
+          <p>This is the <strong>risk–return trade-off of financing:</strong> more debt lowers average cost of capital and can amplify ROE in good years (financial leverage), but raises probability and severity of distress in bad years. More equity raises cost of capital but buys safety and independence.</p>
+        </div>
+      </details>
+      <details>
+        <summary><span class="fl">D</span><span class="fq">How to interpret capital structure ratios</span><svg class="fa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="fb">
+          <div class="tw"><table><thead><tr><th>Ratio</th><th>Higher value implies</th><th>Lower value implies</th></tr></thead><tbody>
+            <tr><td>Liabilities / Total Capital</td><td>Greater financial leverage — can lift ROE, but raises financial risk and debt-service burden</td><td>Lower financial risk; possibly under-using debt's tax shield</td></tr>
+            <tr><td>Equity / Total Capital</td><td>Strong financial autonomy and stability; less refinancing risk</td><td>Weaker independence; more vulnerable to credit-market changes</td></tr>
+            <tr><td>Retained Earnings / Total Capital</td><td>Strong internal financing — growth doesn't depend on outside capital</td><td>Recurring losses or heavy payouts limiting reinvestment</td></tr>
+          </tbody></table></div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="fl">G</span><span class="fq">Common student mistakes</span><svg class="fa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="fb"><ul>
+          <li>"More equity is always better" — it is safer, not strictly better; it raises cost of capital and can reduce returns.</li>
+          <li>Confusing <strong>financial risk</strong> (from leverage) with <strong>business/operating risk</strong> (from operations) — they are different, additive sources of total risk.</li>
+          <li>Forgetting that the cost of debt is usually lower than the cost of equity — moderate leverage can be efficient, not just risky.</li>
+        </ul></div>
+      </details>
+    </div>
+
+    <div class="g2">
+      <div class="card bad"><div class="ch">🏦 More Debt — trade-offs</div>
+        <p style="font-size:13px;margin-bottom:6px"><strong>Pros:</strong> cheaper cost of capital, interest tax shield, amplifies ROE, no ownership dilution.</p>
+        <p style="font-size:13px"><strong>Cons:</strong> fixed obligation regardless of performance, higher financial risk, refinancing risk, possible restrictive covenants.</p>
+      </div>
+      <div class="card good"><div class="ch">🧾 More Equity — trade-offs</div>
+        <p style="font-size:13px;margin-bottom:6px"><strong>Pros:</strong> no obligatory repayment, greater financial autonomy, more resilience to downturns, no covenants.</p>
+        <p style="font-size:13px"><strong>Cons:</strong> higher cost of capital, ownership dilution, may under-utilise leverage's return-boosting effect.</p>
+      </div>
+    </div>
+
+    <div class="callout ins">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+      <div><div class="ct">Core trade-off in one sentence</div><p><strong>Financial autonomy and financial risk move in opposite directions.</strong> The more a company finances itself with equity, the more independent and stable it is — but the more it gives up debt's cheaper cost and leverage benefits. And vice versa.</p></div>
+    </div>
+
+    <div class="subh"><span class="sn">Exam</span><h3>Essay questions — Capital Analysis</h3></div>
+    <div class="eq">
+      <div class="eqt"><span class="eqm">"</span>Discuss the trade-off between debt and equity financing. Why might two equally profitable companies choose very different capital structures?</div>
+      <button class="rbtn" onclick="tog(this)">Show model answer</button>
+      <div class="ans"><span class="at">Model answer outline</span>
+        <p><strong>Frame the trade-off:</strong> Debt is cheaper (tax-deductible interest, lower required return) but contractually fixed; equity is more expensive but flexible and loss-absorbing.</p>
+        <p><strong>Financial leverage:</strong> Moderate debt raises ROE when operating returns exceed cost of debt, but increases variance and probability of distress.</p>
+        <p><strong>Two equally profitable firms differ because of:</strong> industry volatility (stable utility can safely carry more debt than cyclical manufacturer), management risk appetite, access to capital markets, growth stage, and existing covenant constraints.</p>
+        <p><strong>Conclusion:</strong> No single optimal structure exists — only one appropriate to the company's risk profile, growth needs, and cash-flow stability.</p>
+      </div>
+    </div>
+    <div class="vocab">
+      <span class="vp"><b>financial autonomy</b></span><span class="vp"><b>financial leverage</b></span>
+      <span class="vp"><b>cost of capital</b></span><span class="vp"><b>tax shield</b></span>
+      <span class="vp"><b>equity dilution</b></span><span class="vp"><b>financial risk vs business risk</b></span>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 4.3 SOURCES & USES ==================== -->
+<section class="section" id="s43">
+  <div class="wrap">
+    <div class="shead">
+      <div class="stag">§ 4.3 — Connecting Both Sides</div>
+      <h2>Analysis of Sources and Uses of Funds</h2>
+      <p>§4.1 and §4.2 look at each side in isolation. Sources-and-uses analysis puts them back together and traces the <strong>flow of money</strong> — double-entry bookkeeping logic turned into a diagnostic tool.</p>
+    </div>
+
+    <div class="fw">
+      <details open>
+        <summary><span class="fl">A</span><span class="fq">What is it?</span><svg class="fa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="fb"><p>A statement that reclassifies every balance-sheet change between two dates into a <strong>Use of Funds</strong> (money was deployed) or a <strong>Source of Funds</strong> (money was raised/released). Because the balance sheet must balance, total uses always equal total sources — a useful self-check.</p></div>
+      </details>
+      <details>
+        <summary><span class="fl">C</span><span class="fq">Why are asset increases a "use" and liability/equity increases a "source"?</span><svg class="fa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="fb">
+          <p>Reason it through — don't memorise:</p>
+          <ul>
+            <li><strong>Assets are where cash goes when deployed.</strong> Buying inventory, letting receivables grow, purchasing equipment — every one <em>consumes</em> cash → use of funds. Conversely, an asset decrease <em>releases</em> cash → source of funds.</li>
+            <li><strong>Liabilities and equity are where cash comes from.</strong> Borrowing more or issuing shares brings cash <em>in</em> → source of funds. Repaying a loan sends cash <em>out</em> → use of funds.</li>
+          </ul>
+        </div>
+      </details>
+      <details>
+        <summary><span class="fl">G</span><span class="fq">Common student mistakes</span><svg class="fa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="fb"><ul>
+          <li>Flipping the rule for liabilities/equity — it is the <em>opposite</em> direction from assets.</li>
+          <li>Forgetting that total uses must equal total sources; an unbalanced table means a classification error.</li>
+          <li>Stopping at the table without Step 4's interpretation — examiners want the "so what", not just the arithmetic.</li>
+        </ul></div>
+      </details>
+    </div>
+
+    <div class="formula">
+      <span class="fl2">Classification rule — the whole framework in two lines</span>
+      <div>↑ Assets → <span class="rt">USE</span> of Funds &nbsp;|&nbsp; ↓ Assets → <span class="gt">SOURCE</span> of Funds</div>
+      <div>↑ Liabilities or Equity → <span class="gt">SOURCE</span> of Funds &nbsp;|&nbsp; ↓ Liabilities or Equity → <span class="rt">USE</span> of Funds</div>
+      <div style="font-size:11px;opacity:.6;margin-top:5px;">Self-check: Total Uses = Total Sources always</div>
+    </div>
+
+    <div class="subh"><span class="sn">Method</span><h3>The four-step procedure</h3></div>
+    <div class="g2">
+      <div class="card"><div class="ch">① Condense the balance sheet</div><p style="font-size:13px">Group minor or similar items so the statement highlights what matters, not drowning in line items. The level of detail depends on the purpose of the analysis.</p></div>
+      <div class="card"><div class="ch">② Build the statement of changes</div><p style="font-size:13px">List every item's change between two dates and classify each as Use or Source using the rule above. Every line must go into exactly one column.</p></div>
+      <div class="card"><div class="ch">③ Summarise into Uses / Sources table</div><p style="font-size:13px">Aggregate: (↑Assets + ↓Liabilities + ↓Equity) = <strong>Total Uses</strong>. (↓Assets + ↑Liabilities + ↑Equity) = <strong>Total Sources</strong>. Compute each as value and %.</p></div>
+      <div class="card"><div class="ch">④ Interpret (the critical step)</div><p style="font-size:13px">Answer three questions: What was the primary capital need? What were the main sources and their character? Do sources and uses match in time-horizon and risk?</p></div>
+    </div>
+
+    <div class="case">
+      <span class="clabel">WORKED CASE · TAN COMPANY 2022→2023</span>
+      <h4>Step 3 result — Uses &amp; Sources summary table</h4>
+      <div class="g2">
+        <div class="tw"><table><thead><tr><th>Capital Uses</th><th>Value</th><th>%</th></tr></thead><tbody>
+          <tr><td>I. Increase Assets</td><td>36,520</td><td>78.2%</td></tr>
+          <tr><td>II. Decrease Liabilities</td><td>10,200</td><td>21.8%</td></tr>
+          <tr><td>III. Decrease Equity</td><td>0</td><td>0.0%</td></tr>
+          <tr><td><strong>Total Uses</strong></td><td><strong>46,720</strong></td><td><strong>100%</strong></td></tr>
+        </tbody></table></div>
+        <div class="tw"><table><thead><tr><th>Capital Sources</th><th>Value</th><th>%</th></tr></thead><tbody>
+          <tr><td>I. Decrease Assets</td><td>45,700</td><td>97.8%</td></tr>
+          <tr><td>II. Increase Liabilities</td><td>720</td><td>1.5%</td></tr>
+          <tr><td>III. Increase Equity</td><td>300</td><td>0.6%</td></tr>
+          <tr><td><strong>Total Sources</strong></td><td><strong>46,720</strong></td><td><strong>100%</strong></td></tr>
+        </tbody></table></div>
+      </div>
+      <div class="step" style="margin-top:14px;"><span class="sn2">★</span><div><strong>Step 4 model interpretation:</strong> "In 2023, 97.8% of TAN's financing came from <em>running down its own assets</em> — mainly inventory (−36,000) and receivables (−9,300) — rather than from raising new capital. This released cash was used to build assets elsewhere (78.2%, mainly cash +35,000) and repay short-term borrowings in full (21.8%). The picture is a company <strong>deleveraging by liquidating working capital</strong> — a conservative, balance-sheet-strengthening move. However, the inventory drawdown raises a follow-up question: does it reflect efficient management or slowing production?"</div></div>
+    </div>
+
+    <div class="subh"><span class="sn">Practice</span><h3>Classify each item: Use or Source of Funds?</h3></div>
+    <p style="font-size:13px;color:var(--ink-s);margin-bottom:12px;">Click a chip to select it (turns gold), then click the correct bin below. Click a selected chip again to deselect.</p>
+    <div class="pool" id="pool">
+      <div class="chip" data-ans="use">Inventories increase +16,000</div>
+      <div class="chip" data-ans="source">Cash decreases −51,000</div>
+      <div class="chip" data-ans="source">LT borrowings increase +5,000</div>
+      <div class="chip" data-ans="use">Accounts payable decreases −300</div>
+      <div class="chip" data-ans="source">Common shares issued +10,000</div>
+      <div class="chip" data-ans="source">Accounts receivable decreases −2,000</div>
+      <div class="chip" data-ans="use">Fixed assets purchased +8,000</div>
+      <div class="chip" data-ans="use">Dividends paid, retained earnings −1,500</div>
+    </div>
+    <div class="bins">
+      <div class="bin use" id="binU" onclick="toBin('use')"><h5>↑ Use of Funds</h5><div class="bitems" id="bUi"></div></div>
+      <div class="bin source" id="binS" onclick="toBin('source')"><h5>↓ Source of Funds</h5><div class="bitems" id="bSi"></div></div>
+    </div>
+    <div style="display:flex;gap:9px;margin-top:11px;flex-wrap:wrap;">
+      <button class="ib p" onclick="chkSort()">Check answers</button>
+      <button class="ib" onclick="rstSort()">Reset</button>
+    </div>
+    <div class="sfb" id="sfb"></div>
+
+    <div class="subh"><span class="sn">Exam</span><h3>Essay questions — Sources &amp; Uses</h3></div>
+    <div class="eq">
+      <div class="eqt"><span class="eqm">"</span>Why is an increase in accounts receivable a use of funds, while an increase in accounts payable is a source of funds?</div>
+      <button class="rbtn" onclick="tog(this)">Show model answer</button>
+      <div class="ans"><span class="at">Model answer outline</span>
+        <p>Receivables are an asset representing cash <em>owed but not yet collected</em> — letting this balance grow means the company is financing its customers, tying up cash: a use of funds. Payables are a liability representing cash <em>owed but not yet paid</em> — letting this balance grow means suppliers are financing the company, freeing up cash: a source of funds. Both illustrate the same underlying idea: an asset increase consumes cash; a liability increase provides cash.</p>
+      </div>
+    </div>
+    <div class="vocab">
+      <span class="vp"><b>use of funds</b></span><span class="vp"><b>source of funds</b></span>
+      <span class="vp"><b>condensed balance sheet</b></span><span class="vp"><b>capital mobilisation</b></span>
+      <span class="vp"><b>matching of sources and uses</b></span>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 4.4 FINANCIAL BALANCE ==================== -->
+<section class="section" id="s44">
+  <div class="wrap">
+    <div class="shead">
+      <div class="stag">§ 4.4 — The Time-Matching Principle</div>
+      <h2>Financial Balance Analysis &amp; Net Working Capital (NWC)</h2>
+      <p>This is the conceptual heart of the chapter. Financial balance analysis asks the question that determines survival: <strong>is the timing of financing matched to the timing of the assets it funds?</strong></p>
+    </div>
+
+    <div class="fw">
+      <details open>
+        <summary><span class="fl">A</span><span class="fq">What is Net Working Capital (NWC)?</span><svg class="fa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="fb"><p>NWC is the <strong>cushion of long-term capital left over after funding all long-term assets</strong> — equivalently, the portion of current assets financed by long-term (stable) capital rather than short-term capital. It is the primary indicator of structural financial balance.</p></div>
+      </details>
+      <details>
+        <summary><span class="fl">C</span><span class="fq">The golden rule of financing — why must maturity match?</span><svg class="fa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="fb"><p>The <strong>golden rule of financing</strong>: the maturity of a financing source should match the time horizon of what it funds. A factory takes years to generate cash flow — finance it with capital that won't be recalled for years (long-term debt, equity). If financed with a 90-day loan, the company must refinance repeatedly, and any single failed refinancing can force a fire-sale of a productive asset. Short-term assets like inventory naturally convert to cash quickly and can safely be financed with short-term capital.</p></div>
+      </details>
+      <details>
+        <summary><span class="fl">B</span><span class="fq">Why does NWC matter — who uses it?</span><svg class="fa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="fb"><p>NWC is the first number creditors and analysts check when assessing <strong>structural</strong> (not just day-to-day) liquidity risk. A company can be profitable and still collapse if its financial structure is mismatched — this is why "profitable companies going bankrupt" is a real and recurring phenomenon, almost always traceable to a negative-NWC financing mismatch.</p></div>
+      </details>
+    </div>
+
+    <div class="formula">
+      <span class="fl2">NWC — two equivalent views of the same number</span>
+      <div>NWC = Long-term Capital (LTC) − Long-term Assets (LTA) &nbsp;<span style="opacity:.55">← financing view</span></div>
+      <div>NWC = Current Assets (CA) − Current Liabilities (CL) &nbsp;<span style="opacity:.55">← liquidity view</span></div>
+      <div style="font-size:11px;opacity:.6;margin-top:5px;">Proof: LTA + CA = LTC + CL (balance-sheet identity), so LTC − LTA = CA − CL ✓ They are always identical.</div>
+    </div>
+
+    <div class="callout ins">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+      <div><div class="ct">Why two formulas?</div><p>The first tells you <strong>where the surplus came from</strong> (financing decisions). The second tells you <strong>what it's available for</strong> (day-to-day liquidity). A strong essay uses whichever framing fits the question — and shows you know they are the same number viewed from both sides of the balance sheet.</p></div>
+    </div>
+
+    <div class="subh"><span class="sn">Explore</span><h3>Interactive balance-sheet diagram — drag to change NWC case</h3></div>
+    <div class="sw">
+      <div class="clbl">LTA = 600 (fixed). Drag LTC to shift between the three cases.</div>
+      <canvas id="diagC" width="700" height="170" style="width:100%;border-radius:5px;margin:10px 0;"></canvas>
+      <div class="sliders">
+        <label>Long-term Capital (LTC) <span id="dLV" style="font-family:var(--mono);font-weight:700">700</span></label>
+        <input type="range" id="dL" min="300" max="1000" value="700" step="10">
+      </div>
+      <div class="readout" id="dR"></div>
+    </div>
+
+    <div class="g3">
+      <div class="card good"><div class="ch">Case 1 · NWC &gt; 0 ✓</div>
+        <p style="font-size:13px;margin-bottom:6px"><strong>LTC &gt; LTA.</strong> All long-term assets covered by long-term capital, with a surplus helping fund current assets. Structurally safe, low refinancing risk.</p>
+        <p style="font-size:13px"><strong>Watch for:</strong> if surplus is excessive, expensive long-term capital is funding assets that don't need it — unnecessarily raising cost of capital.</p>
+      </div>
+      <div class="card neu"><div class="ch">Case 2 · NWC = 0 ⚠</div>
+        <p style="font-size:13px;margin-bottom:6px"><strong>LTC = LTA exactly.</strong> Current assets funded entirely by current liabilities — zero cushion.</p>
+        <p style="font-size:13px">Structurally "balanced" on paper but <strong>fragile</strong>: any disruption to short-term financing immediately leaves current assets under-funded. Works only if nothing goes wrong.</p>
+      </div>
+      <div class="card bad"><div class="ch">Case 3 · NWC &lt; 0 ✗</div>
+        <p style="font-size:13px;margin-bottom:6px"><strong>LTC &lt; LTA.</strong> Long-term capital cannot cover long-term assets — part of the fixed asset base is financed with short-term capital.</p>
+        <p style="font-size:13px"><strong>Dangerous:</strong> short-term capital must be renewed periodically, but the asset won't generate cash for years. A single refusal to roll over can force financial distress.</p>
+      </div>
+    </div>
+
+    <div class="subh"><span class="sn">4.4.2</span><h3>Quantifying: how safe or how severe?</h3></div>
+    <div class="g2">
+      <div class="card"><div class="ch">If NWC &gt; 0 — how is current-asset financing split?</div>
+        <div class="formula" style="padding:13px 15px;font-size:12.5px;margin:9px 0;">
+          <div>LT capital financing CA% = <span class="gt">(LTC − LTA)</span> / CA</div>
+          <div>ST capital financing CA% = <span class="rt">CL</span> / CA</div>
+        </div>
+        <p style="font-size:13px">Higher long-term share = lower refinancing risk, but higher cost of capital.</p>
+      </div>
+      <div class="card"><div class="ch">If NWC &lt; 0 — how severe is the shortfall?</div>
+        <div class="formula" style="padding:13px 15px;font-size:12.5px;margin:9px 0;">
+          <div>ST capital financing LTA% = <span class="rt">(LTA − LTC)</span> / LTA</div>
+        </div>
+        <p style="font-size:13px">Higher % = more severe mismatch. This share of fixed assets could be recalled within a year — quantified distress risk.</p>
+      </div>
+    </div>
+
+    <div class="case">
+      <span class="clabel">TAN COMPANY — NWC Analysis (million VND)</span>
+      <h4>Case 1 in practice: comfortably balanced and improving</h4>
+      <div class="tw"><table><thead><tr><th>Indicator</th><th>2022</th><th>2023</th><th>2024</th></tr></thead><tbody>
+        <tr><td>LT capital (LTC)</td><td>195,320</td><td>195,640</td><td>210,100</td></tr>
+        <tr><td>LT assets (LTA)</td><td>39,020</td><td>40,040</td><td>39,700</td></tr>
+        <tr><td><strong>NWC = LTC − LTA</strong></td><td class="pos"><strong>156,300</strong></td><td class="pos"><strong>155,600</strong></td><td class="pos"><strong>170,400</strong></td></tr>
+        <tr><td>Current assets (CA)</td><td>171,300</td><td>161,100</td><td>178,300</td></tr>
+        <tr><td>LT capital financing CA%</td><td>91.2%</td><td>96.6%</td><td>95.6%</td></tr>
+        <tr><td>ST capital financing CA%</td><td>8.8%</td><td>3.4%</td><td>4.4%</td></tr>
+      </tbody></table></div>
+      <p style="font-size:13px;color:var(--ink-s);margin-top:10px;"><strong>Interpretation:</strong> TAN sits firmly in Case 1 — long-term capital covers long-term assets several times over and also finances 91–97% of current assets. Very safe, but a complete essay answer notes: this also means TAN has an unnecessarily high cost of capital since equity (its dominant source) is the most expensive financing. A moderate increase in short-term supplier credit would reduce cost without meaningfully raising risk.</p>
+    </div>
+
+    <div class="case">
+      <span class="clabel">CONTRAST CASE · BINH MINH CONSTRUCTION CO. (illustrative)</span>
+      <h4>Case 3 in practice: imbalance worsening rapidly</h4>
+      <div class="tw"><table><thead><tr><th>Indicator (billion VND)</th><th>Year N</th><th>Year N+1</th></tr></thead><tbody>
+        <tr><td>LT capital (LTC)</td><td>420</td><td>410</td></tr>
+        <tr><td>LT assets (LTA)</td><td>480</td><td>520</td></tr>
+        <tr><td><strong>NWC = LTC − LTA</strong></td><td class="neg"><strong>−60</strong></td><td class="neg"><strong>−110</strong></td></tr>
+        <tr><td>ST capital financing LTA%</td><td>12.5%</td><td>21.2%</td></tr>
+      </tbody></table></div>
+      <p style="font-size:13px;color:var(--ink-s);margin-top:10px;"><strong>Interpretation:</strong> The imbalance is not only present but <strong>worsening</strong> — the share of fixed assets financed by short-term capital nearly doubled. This pattern (heavy capex funded by short-term loans) is common in construction mid-project: the company races against its own creditors' willingness to keep renewing short-term financing for a building that won't generate cash until completion.</p>
+    </div>
+
+    <div class="subh"><span class="sn">Exam</span><h3>Essay questions — Financial Balance</h3></div>
+    <div class="eq">
+      <div class="eqt"><span class="eqm">"</span>"A company can be profitable yet still face the risk of bankruptcy." Use the concept of Net Working Capital to explain how this is possible.</div>
+      <button class="rbtn" onclick="tog(this)">Show model answer</button>
+      <div class="ans"><span class="at">Model answer outline</span>
+        <p><strong>Separate two dimensions:</strong> Profitability (income-statement performance) and financial balance (balance-sheet time-matching) are not the same. A company can score well on one and fail on the other.</p>
+        <p><strong>Mechanism:</strong> If NWC &lt; 0, part of long-term assets is financed by short-term capital that must be continually renewed. Even a highly profitable company generates cash slowly, over the life of its fixed assets — it cannot suddenly produce enough cash to repay a short-term loan on demand. If a lender refuses to roll over that financing (credit crunch, covenant breach), the company faces genuine liquidity crisis despite healthy profit.</p>
+        <p><strong>Conclusion:</strong> A firm must be analysed on both profitability and financial balance — not profitability alone. This is why NWC is a structural risk indicator, not a performance indicator.</p>
+      </div>
+    </div>
+    <div class="eq">
+      <div class="eqt"><span class="eqm">"</span>Is NWC = 0 a healthy financial position? Why is it described as "balanced but fragile"?</div>
+      <button class="rbtn" onclick="tog(this)">Show model answer</button>
+      <div class="ans"><span class="at">Model answer outline</span>
+        <p>Yes, technically balanced — long-term capital exactly covers long-term assets, satisfying the basic time-matching rule. However, it provides <strong>zero margin of safety</strong>: 100% of current assets depend on current liabilities being continuously available. Any shock — a supplier shortening payment terms, a bank reducing a credit line, a slow sales month — immediately threatens the company's ability to fund its current assets. "Fragile" captures that the structure works only if nothing goes wrong.</p>
+      </div>
+    </div>
+    <div class="vocab">
+      <span class="vp"><b>net working capital (NWC)</b></span><span class="vp"><b>golden rule of financing</b></span>
+      <span class="vp"><b>refinancing risk</b></span><span class="vp"><b>structural liquidity</b></span>
+      <span class="vp"><b>margin of safety</b></span><span class="vp"><b>financial distress</b></span>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 4.5 WCR ==================== -->
+<section class="section" id="s45">
+  <div class="wrap">
+    <div class="shead">
+      <div class="stag">§ 4.5 — The Operating Cycle</div>
+      <h2>Working Capital Requirement (WCR)</h2>
+      <p>NWC tells you whether the financial <em>structure</em> is safe. WCR tells you how much working capital the company <em>operationally needs</em> just to keep day-to-day business running.</p>
+    </div>
+
+    <div class="fw">
+      <details open>
+        <summary><span class="fl">A</span><span class="fq">What is WCR?</span><svg class="fa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="fb">
+          <p>Working Capital Requirement (WCR) is the amount of capital required to finance the <strong>gap between when money goes out and when money comes back in</strong> from operating activities.</p>
+          <div class="formula" style="padding:13px 15px;font-size:13px;margin:9px 0;">
+            <div>WCR = Current Assets (CA) − Short-term Operating Liabilities (STOL)</div>
+            <div style="font-size:11px;opacity:.6;margin-top:4px;">STOL = current liabilities from operations (payables, accruals) — NOT short-term bank debt</div>
+          </div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="fl">C</span><span class="fq">Why does WCR exist? The cash-cycle logic</span><svg class="fa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="fb">
+          <p>WCR arises from a timing mismatch in operations:</p>
+          <ul>
+            <li>You <strong>pay suppliers</strong> for raw materials now (or in 30 days)</li>
+            <li>You <strong>hold inventory</strong> for weeks or months while processing and selling</li>
+            <li>You <strong>sell on credit</strong> and wait 60+ days to collect cash</li>
+          </ul>
+          <p>The gap between paying out and collecting back in must be <strong>financed by working capital</strong>. Longer cycle = more WCR needed. Shorter cycle = less.</p>
+          <div style="background:var(--bg);border-radius:6px;padding:12px;margin-top:8px;font-size:12px;font-family:var(--mono);">
+            Pay Suppliers ──── Hold Inventory ──── Sell on Credit ──── Collect Cash<br>
+            <span style="color:var(--re-d);">←————— THIS ENTIRE GAP MUST BE FINANCED BY WCR —————→</span>
+          </div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="fl">D</span><span class="fq">How to interpret WCR changes</span><svg class="fa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="fb">
+          <div class="tw"><table><thead><tr><th>WCR change</th><th>Driven by</th><th>Implication</th></tr></thead><tbody>
+            <tr><td>WCR ↑</td><td>Receivables growing, inventories building</td><td>Company needs MORE cash to fund operations — monitor liquidity</td></tr>
+            <tr><td>WCR ↓</td><td>Faster collections, inventory reduction, extended payables</td><td>Operations more cash-efficient — positive if driven by improved terms</td></tr>
+            <tr><td>WCR &lt; 0</td><td>Suppliers finance the company (STOL &gt; CA)</td><td>Very cash-efficient — common in retail. Sustainable only with strong bargaining power</td></tr>
+          </tbody></table></div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="fl">E</span><span class="fq">How can managers reduce WCR?</span><svg class="fa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="fb">
+          <ul>
+            <li><strong>Reduce receivables:</strong> tighter credit policies, faster collection, invoice factoring</li>
+            <li><strong>Reduce inventory:</strong> just-in-time procurement, better demand forecasting, faster production cycles</li>
+            <li><strong>Extend payables:</strong> negotiate longer payment terms with suppliers (without damaging relationships)</li>
+          </ul>
+          <p style="margin-top:8px;"><strong>The growth trap:</strong> Growing companies often need <em>more</em> WCR even as they become more profitable — sales growth requires proportionally more inventory and receivables. Fast-growing profitable companies can still run out of cash because profit grows slower than WCR.</p>
+        </div>
+      </details>
+      <details>
+        <summary><span class="fl">G</span><span class="fq">Common student mistakes — especially NWC vs WCR</span><svg class="fa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="fb"><ul>
+          <li><strong>Confusing WCR with NWC</strong> — NWC is about <em>financial structure</em> (is long-term financing adequate?); WCR is about <em>operational cash needs</em> (how much does the operating cycle consume?).</li>
+          <li>Including <strong>short-term bank debt</strong> in STOL — it is a financing choice, not an automatic operating consequence. Only trade payables, accruals, and customer advances belong in STOL.</li>
+          <li>Treating any WCR increase as bad — for a growing company, rising WCR can simply reflect healthy business expansion.</li>
+        </ul></div>
+      </details>
+    </div>
+
+    <div class="subh"><span class="sn">Tool</span><h3>WCR Calculator</h3></div>
+    <div class="wcalc">
+      <p style="font-size:13px;color:var(--ink-s);margin-bottom:4px;">Enter values to analyse WCR change between two periods (any unit — million VND, billion, etc.).</p>
+      <div class="wf">
+        <div class="wff"><label>Current Assets — Beginning</label><input type="number" id="ca1" placeholder="e.g. 171300" oninput="calcW()"></div>
+        <div class="wff"><label>Current Assets — End</label><input type="number" id="ca2" placeholder="e.g. 161100" oninput="calcW()"></div>
+        <div class="wff"><label>ST Operating Liabilities — Beginning</label><input type="number" id="s1" placeholder="e.g. 15000" oninput="calcW()"></div>
+        <div class="wff"><label>ST Operating Liabilities — End</label><input type="number" id="s2" placeholder="e.g. 5500" oninput="calcW()"></div>
+      </div>
+      <div class="wres" id="wres">Enter all four values above to see the analysis.</div>
+    </div>
+
+    <div class="subh"><span class="sn">Exam</span><h3>Essay questions — WCR</h3></div>
+    <div class="eq">
+      <div class="eqt"><span class="eqm">"</span>Explain why a rapidly growing, profitable company may face a cash shortage. Use the concept of Working Capital Requirement.</div>
+      <button class="rbtn" onclick="tog(this)">Show model answer</button>
+      <div class="ans"><span class="at">Model answer outline</span>
+        <p><strong>Define WCR:</strong> Capital required to bridge the gap between cash going out (paying suppliers, holding inventory) and cash coming back in (collecting from customers) — the financial cost of the operating cycle.</p>
+        <p><strong>Link to growth:</strong> As revenue grows, a company must hold more inventory and carry more receivables. These increase CA faster than STOL typically grows, so WCR rises proportionally with revenue — often faster.</p>
+        <p><strong>The growth trap:</strong> A profitable company generating 500m VND in net profit may simultaneously need 800m VND in additional working capital to support its growing sales — a net cash drain of 300m VND despite strong profitability. If not financed (through credit lines, equity, or more efficient cash conversion), the company can become insolvent while appearing profitable on paper.</p>
+      </div>
+    </div>
+    <div class="vocab">
+      <span class="vp"><b>working capital requirement (WCR)</b></span><span class="vp"><b>cash conversion cycle</b></span>
+      <span class="vp"><b>ST operating liabilities (STOL)</b></span><span class="vp"><b>inventory days</b></span>
+      <span class="vp"><b>receivable days</b></span><span class="vp"><b>payable days</b></span><span class="vp"><b>the growth trap</b></span>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PRACTICE ==================== -->
+<section class="section" id="practice">
+  <div class="wrap">
+    <div class="shead">
+      <div class="stag">Practice</div>
+      <h2>Flashcards &amp; Quiz</h2>
+      <p>Rehearse key terms with flashcards, then test your conceptual understanding with the 8-question quiz.</p>
+    </div>
+
+    <div class="subh"><span class="sn">A</span><h3>Flashcards — 10 key terms</h3></div>
+    <div class="fcbar">
+      <button class="ib" onclick="prevC()">← Prev</button>
+      <button class="ib p" onclick="flipC()">Flip card</button>
+      <button class="ib" onclick="nextC()">Next →</button>
+      <span class="fccnt" id="fccnt">1 / 10</span>
+    </div>
+    <div class="fcstage">
+      <div class="fc" id="fc" onclick="flipC()">
+        <div class="fcf fcfr"><div class="fct" id="fct">Net Working Capital</div><div class="fch">Tap / click to reveal definition</div></div>
+        <div class="fcf fcbk"><p id="fcd">The surplus of long-term capital after funding all long-term assets. Equals Current Assets minus Current Liabilities. Measures structural financial balance (§4.4).</p></div>
+      </div>
+    </div>
+
+    <div class="subh" style="margin-top:44px;"><span class="sn">B</span><h3>Multiple-choice quiz — 8 questions</h3></div>
+    <div class="qbox" id="qbox">
+      <div class="qprog" id="qprog"></div>
+      <div class="qmeta" id="qmeta"></div>
+      <div class="qtext" id="qtext"></div>
+      <div class="qopts" id="qopts"></div>
+      <div class="qexp" id="qexp"></div>
+      <div class="qfoot">
+        <div class="qscore" id="qsc"></div>
+        <button class="ib p" id="qnxt" onclick="nextQ()" style="display:none;">Next →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== DASHBOARD ==================== -->
+<section class="section" id="dashboard">
+  <div class="wrap">
+    <div class="shead">
+      <div class="stag">Progress</div>
+      <h2>My Study Progress</h2>
+      <p>Check a topic once you can explain it from memory — no notes. The score card updates automatically.</p>
+    </div>
+    <div class="dash">
+      <div class="clist">
+        <div class="cli" id="cl0"><input type="checkbox" id="c0" onchange="upd()"><label for="c0">4.1.1 Asset Fluctuation Analysis (horizontal)</label></div>
+        <div class="cli" id="cl1"><input type="checkbox" id="c1" onchange="upd()"><label for="c1">4.1.2 Asset Structure Analysis (vertical)</label></div>
+        <div class="cli" id="cl2"><input type="checkbox" id="c2" onchange="upd()"><label for="c2">4.2.1 Capital Fluctuation Analysis</label></div>
+        <div class="cli" id="cl3"><input type="checkbox" id="c3" onchange="upd()"><label for="c3">4.2.2 Capital Structure — debt vs equity trade-off</label></div>
+        <div class="cli" id="cl4"><input type="checkbox" id="c4" onchange="upd()"><label for="c4">4.3 Sources and Uses of Funds (4-step method)</label></div>
+        <div class="cli" id="cl5"><input type="checkbox" id="c5" onchange="upd()"><label for="c5">4.4 NWC formula derivation (both views)</label></div>
+        <div class="cli" id="cl6"><input type="checkbox" id="c6" onchange="upd()"><label for="c6">4.4 Three NWC cases and their implications</label></div>
+        <div class="cli" id="cl7"><input type="checkbox" id="c7" onchange="upd()"><label for="c7">4.5 WCR definition and cash-cycle logic</label></div>
+        <div class="cli" id="cl8"><input type="checkbox" id="c8" onchange="upd()"><label for="c8">4.5 How managers reduce WCR (3 levers)</label></div>
+        <div class="cli" id="cl9"><input type="checkbox" id="c9" onchange="upd()"><label for="c9">Wrote a practice essay under timed conditions</label></div>
+      </div>
+      <div class="sc">
+        <div class="sbig" id="spc">0%</div>
+        <div class="slbl">topics mastered</div>
+        <div id="sbars"></div>
+        <div class="smsg" id="smsg">Start checking topics as you master them.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Ho Chi Minh University of Banking · Financial Statement Analysis · Chapter 4</p>
+    <p style="margin-top:4px;opacity:.7">Built to teach understanding first, memorisation second.</p>
+  </div>
+</footer>
+
+<script>
+/* ===== PROGRESS BAR + NAV ===== */
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement;
+  const pct=(h.scrollTop||document.body.scrollTop)/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('pbar').style.width=Math.min(pct,100)+'%';
+  const ids=['intro','s41','s42','s43','s44','s45','practice'];
+  let cur='intro';
+  ids.forEach(id=>{const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<=90)cur=id;});
+  document.querySelectorAll('.navlinks a').forEach(a=>a.classList.toggle('act',a.dataset.s===cur));
+});
+
+/* ===== HERO CANVAS ===== */
+function heroUpdate(){
+  const ltc=+document.getElementById('hL').value,lta=+document.getElementById('hA').value;
+  document.getElementById('hLV').textContent=ltc;
+  document.getElementById('hAV').textContent=lta;
+  const nwc=ltc-lta,r=document.getElementById('hR');
+  if(nwc>0){r.style.cssText='background:#E3EEE3;color:#1F4D38;';r.innerHTML='NWC = '+ltc+' − '+lta+' = <span class="rv">+'+nwc+' &nbsp;Case 1: Balanced ✓</span>';}
+  else if(nwc===0){r.style.cssText='background:#F3E6C2;color:#8A6314;';r.innerHTML='NWC = '+ltc+' − '+lta+' = <span class="rv">0 &nbsp;Case 2: Fragile ⚠</span>';}
+  else{r.style.cssText='background:#F4E4DF;color:#742A25;';r.innerHTML='NWC = '+ltc+' − '+lta+' = <span class="rv">'+nwc+' &nbsp;Case 3: Imbalanced ✗</span>';}
+  drawHero(ltc,lta);
+}
+function drawHero(ltc,lta){
+  const c=document.getElementById('heroC');if(!c)return;
+  const W=c.width,H=c.height,ctx=c.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+  const mx=Math.max(ltc,lta,1)*1.05,sc=W/mx;
+  ctx.fillStyle='#2E6B4F';ctx.fillRect(0,8,ltc*sc,44);
+  ctx.fillStyle='#9B3A33';ctx.fillRect(0,58,lta*sc,44);
+  ctx.fillStyle='#fff';ctx.font='bold 12px Inter,sans-serif';ctx.textBaseline='middle';
+  if(ltc*sc>60)ctx.fillText('LTC '+ltc,6,30);
+  if(lta*sc>60)ctx.fillText('LTA '+lta,6,80);
+  const nwc=ltc-lta;
+  if(nwc!==0){
+    const x1=Math.min(ltc,lta)*sc,x2=Math.max(ltc,lta)*sc;
+    ctx.fillStyle=nwc>0?'rgba(46,107,79,.22)':'rgba(155,58,51,.22)';
+    ctx.fillRect(x1,4,x2-x1,H-8);
+    ctx.strokeStyle=nwc>0?'#2E6B4F':'#9B3A33';ctx.setLineDash([4,3]);ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(x2,2);ctx.lineTo(x2,H-2);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle=nwc>0?'#1F4D38':'#742A25';ctx.font='bold 11px IBM Plex Mono,monospace';
+    if((x2-x1)>32)ctx.fillText('NWC='+(nwc>0?'+':'')+nwc,x1+(x2-x1)/2-20,H/2);
+  }
+}
+document.getElementById('hL').addEventListener('input',heroUpdate);
+document.getElementById('hA').addEventListener('input',heroUpdate);
+
+/* ===== DIAGRAM CANVAS (§4.4) ===== */
+function diagUpdate(){
+  const ltc=+document.getElementById('dL').value,lta=600;
+  document.getElementById('dLV').textContent=ltc;
+  const nwc=ltc-lta,r=document.getElementById('dR');
+  if(nwc>0){r.style.cssText='background:#E3EEE3;color:#1F4D38;';r.innerHTML='LTC('+ltc+') &gt; LTA('+lta+') → NWC = <strong>+'+nwc+'</strong> → Case 1: Balanced &amp; Safe ✓';}
+  else if(nwc===0){r.style.cssText='background:#F3E6C2;color:#8A6314;';r.innerHTML='LTC('+ltc+') = LTA('+lta+') → NWC = <strong>0</strong> → Case 2: Balanced but Fragile ⚠';}
+  else{r.style.cssText='background:#F4E4DF;color:#742A25;';r.innerHTML='LTC('+ltc+') &lt; LTA('+lta+') → NWC = <strong>'+nwc+'</strong> → Case 3: Financially Imbalanced ✗';}
+  drawDiag(ltc,lta);
+}
+function drawDiag(ltc,lta){
+  const c=document.getElementById('diagC');if(!c)return;
+  const W=c.offsetWidth||700,H=170;c.width=W;c.height=H;
+  const ctx=c.getContext('2d'),pad=8,hw=(W-3*pad)/2;
+  // Assets side
+  const total=lta+300;
+  const ltaH=Math.round((lta/total)*(H-2*pad));
+  const caH=(H-2*pad)-ltaH;
+  ctx.fillStyle='#8088A8';ctx.fillRect(pad,pad,hw,caH);
+  ctx.fillStyle='#48527A';ctx.fillRect(pad,pad+caH,hw,ltaH);
+  ctx.fillStyle='#fff';ctx.font='bold 12px Inter,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  if(caH>18)ctx.fillText('Current Assets',pad+hw/2,pad+caH/2);
+  if(ltaH>18)ctx.fillText('Long-term Assets ('+lta+')',pad+hw/2,pad+caH+ltaH/2);
+  ctx.strokeStyle='#DCD2B6';ctx.lineWidth=1;ctx.strokeRect(pad,pad,hw,H-2*pad);
+  ctx.fillStyle='#16213F';ctx.font='bold 10px IBM Plex Mono,monospace';
+  ctx.fillText('ASSETS',pad+hw/2,H-3);
+  // Capital side
+  const rX=hw+2*pad;
+  const ltcH=Math.round((ltc/total)*(H-2*pad));
+  const clH=(H-2*pad)-ltcH;
+  ctx.fillStyle='#742A25';ctx.fillRect(rX,pad,hw,clH);
+  ctx.fillStyle='#1F4D38';ctx.fillRect(rX,pad+clH,hw,ltcH);
+  ctx.fillStyle='#fff';
+  if(clH>18)ctx.fillText('Short-term Capital',rX+hw/2,pad+clH/2);
+  if(ltcH>18)ctx.fillText('Long-term Capital ('+ltc+')',rX+hw/2,pad+clH+ltcH/2);
+  ctx.strokeRect(rX,pad,hw,H-2*pad);
+  ctx.fillStyle='#16213F';ctx.font='bold 10px IBM Plex Mono,monospace';
+  ctx.fillText('CAPITAL',rX+hw/2,H-3);
+  // NWC visual connector
+  const nwc=ltc-lta;
+  if(Math.abs(nwc)>5){
+    const assetLine=pad+caH;
+    const capLine=pad+clH;
+    ctx.strokeStyle=nwc>0?'#2E6B4F':'#9B3A33';
+    ctx.setLineDash([5,3]);ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(pad+hw,assetLine);ctx.lineTo(rX,capLine);ctx.stroke();
+    ctx.setLineDash([]);
+    const mx=(pad+hw+rX)/2,my=(assetLine+capLine)/2;
+    ctx.fillStyle=nwc>0?'#1F4D38':'#742A25';ctx.font='bold 11px IBM Plex Mono,monospace';
+    ctx.fillText('NWC='+(nwc>0?'+':'')+nwc,mx-30,my-6);
+  }
+  ctx.textAlign='left';
+}
+const dEl=document.getElementById('dL');
+if(dEl){dEl.addEventListener('input',diagUpdate);window.addEventListener('load',()=>{setTimeout(()=>{heroUpdate();diagUpdate();},80);});}
+
+/* ===== WCR CALCULATOR ===== */
+function calcW(){
+  const ca1=+document.getElementById('ca1').value,ca2=+document.getElementById('ca2').value;
+  const s1=+document.getElementById('s1').value,s2=+document.getElementById('s2').value;
+  if(!ca1||!ca2||!s1||!s2){document.getElementById('wres').innerHTML='Enter all four values to see the analysis.';return;}
+  const w1=ca1-s1,w2=ca2-s2,dw=w2-w1;
+  const pct=w1!==0?((dw/Math.abs(w1))*100).toFixed(1):'—';
+  let msg=dw>0?'WCR <span style="color:#E89B92">increased</span> — the company needs MORE cash to fund operations. Monitor liquidity carefully.'
+    :dw<0?'WCR <span style="color:#8FD1A8">decreased</span> — operations becoming more cash-efficient. Positive if driven by better terms, not forced sales.'
+    :'WCR unchanged between periods.';
+  document.getElementById('wres').innerHTML=
+    'WCR (Beginning) = '+ca1+' − '+s1+' = <strong>'+(w1>=0?'+':'')+w1+'</strong><br>'+
+    'WCR (End) &nbsp;&nbsp;&nbsp;&nbsp;= '+ca2+' − '+s2+' = <strong>'+(w2>=0?'+':'')+w2+'</strong><br>'+
+    'Δ WCR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= <strong>'+(dw>=0?'+':'')+dw+'</strong> ('+pct+'%)<br><br>'+msg;
+}
+
+/* ===== ESSAY REVEAL ===== */
+function tog(btn){
+  const a=btn.nextElementSibling;
+  a.classList.toggle('show');
+  btn.textContent=a.classList.contains('show')?'Hide model answer':'Show model answer';
+}
+
+/* ===== SORT EXERCISE ===== */
+let sel=null;
+document.querySelectorAll('.chip[data-ans]').forEach(ch=>{
+  ch.addEventListener('click',()=>{
+    if(ch.classList.contains('placed'))return;
+    if(sel===ch){ch.classList.remove('sel');sel=null;return;}
+    if(sel)sel.classList.remove('sel');
+    sel=ch;ch.classList.add('sel');
+  });
+});
+function toBin(t){
+  if(!sel)return;
+  const ok=sel.dataset.ans===t;
+  const c=document.createElement('div');
+  c.className='chip';c.textContent=sel.textContent;
+  c.dataset.ok=ok?'1':'0';
+  c.style.background=ok?'#1F4D38':'#742A25';
+  document.getElementById(t==='use'?'bUi':'bSi').appendChild(c);
+  sel.classList.add('placed');sel.classList.remove('sel');sel=null;
+}
+function chkSort(){
+  const all=[...document.getElementById('bUi').children,...document.getElementById('bSi').children];
+  if(!all.length){sfbShow('Place at least one item first.','err');return;}
+  all.forEach(c=>{c.style.outline='2px solid '+(c.dataset.ok==='1'?'#2E6B4F':'#E89B92');});
+  const ok=all.filter(c=>c.dataset.ok==='1').length;
+  sfbShow(ok+'/'+all.length+' correct. '+(ok===all.length?'Perfect! ✓':'Items with orange outline are misplaced.'),ok===all.length?'ok':'err');
+}
+function sfbShow(m,t){const f=document.getElementById('sfb');f.textContent=m;f.className='sfb '+t+' show';}
+function rstSort(){
+  document.getElementById('bUi').innerHTML='';document.getElementById('bSi').innerHTML='';
+  document.querySelectorAll('.chip[data-ans]').forEach(c=>c.classList.remove('placed','sel'));
+  sel=null;document.getElementById('sfb').className='sfb';
+}
+
+/* ===== FLASHCARDS ===== */
+const cards=[
+  {t:'Net Working Capital (NWC)',d:'Surplus of long-term capital after funding all long-term assets. Equals CA − CL. Measures structural financial balance. Two views: LTC−LTA (financing) = CA−CL (liquidity).'},
+  {t:'Working Capital Requirement (WCR)',d:'Capital needed to bridge the gap between cash going out (paying suppliers, holding inventory) and cash coming back in (collecting from customers). WCR = CA − STOL.'},
+  {t:'Horizontal Analysis',d:'Comparing the same item across multiple periods to identify trend, magnitude, and direction of change. Computes absolute Δ and % Δ. Used in §4.1.1 and §4.2.1.'},
+  {t:'Vertical Analysis',d:'Expressing each item as a % of a base total (e.g. total assets, total capital) at one point in time. Reveals structure, diversification, and concentration. Used in §4.1.2 and §4.2.2.'},
+  {t:'Source of Funds',d:'Any action that brings cash IN to the company: ↓ assets, ↑ liabilities, ↑ equity. Examples: collecting receivables, borrowing from bank, issuing shares.'},
+  {t:'Use of Funds',d:'Any action that sends cash OUT of the company: ↑ assets, ↓ liabilities, ↓ equity. Examples: buying inventory, repaying a loan, paying dividends.'},
+  {t:'Golden Rule of Financing',d:'The maturity of a financing source should match the time horizon of the asset it funds. Long-term assets → long-term capital. Short-term assets → short-term capital.'},
+  {t:'Financial Autonomy',d:'Degree to which a company finances itself with equity rather than debt. Higher equity ratio = greater independence from external creditors. Trade-off: higher autonomy = higher cost of capital.'},
+  {t:'Financial Leverage',d:'Use of debt to amplify returns to equity holders. Moderate leverage can increase ROE in good years but raises financial risk and probability of distress in bad years.'},
+  {t:'Operating Leverage',d:'Sensitivity of profit to revenue changes due to fixed costs. High fixed assets → high operating leverage → profit more volatile with revenue swings (amplified upside and downside).'},
+];
+let ci=0;
+function showC(i){
+  document.getElementById('fc').classList.remove('flip');
+  document.getElementById('fct').textContent=cards[i].t;
+  document.getElementById('fcd').textContent=cards[i].d;
+  document.getElementById('fccnt').textContent=(i+1)+' / '+cards.length;
+}
+function flipC(){document.getElementById('fc').classList.toggle('flip');}
+function prevC(){ci=(ci-1+cards.length)%cards.length;showC(ci);}
+function nextC(){ci=(ci+1)%cards.length;showC(ci);}
+showC(0);
+
+/* ===== QUIZ ===== */
+const qs=[
+  {q:'Which formula correctly derives NWC?',o:['NWC = Total Assets − Total Liabilities','NWC = Long-term Capital − Long-term Assets','NWC = Revenue − Operating Costs','NWC = Fixed Assets − Current Liabilities'],a:1,e:'NWC = LTC − LTA (financing view) = CA − CL (liquidity view). Both are equivalent because the balance sheet identity LTA+CA = LTC+CL always holds.'},
+  {q:'A company increases its accounts receivable by 20 million. In a Sources and Uses statement, this is classified as:',o:['Source of funds — cash is flowing in','Source of funds — equity is growing','Use of funds — cash is being consumed to finance customers','Use of funds — a liability is decreasing'],a:2,e:'Any asset increase is a use of funds — cash is being deployed. The company is effectively lending to its customers, tying up cash that would otherwise be available.'},
+  {q:'TAN Company has NWC = +156,300 million and 91% of current assets financed by long-term capital. What is the main risk to flag?',o:['Case 3 — the company is financially imbalanced','Case 1 — safe structure but possibly excessive cost of capital from heavy equity reliance','Case 2 — balanced but fragile with zero cushion','Case 1 — no risks; this is the ideal structure'],a:1,e:'Case 1 (NWC > 0) is safe, but 91% of CA financed by long-term capital — and virtually all equity — may be unnecessarily expensive. Equity has a higher required return than debt. A moderate use of short-term supplier credit would reduce cost of capital without meaningfully raising risk.'},
+  {q:'NWC = 0 means:',o:['The company has no current assets','Long-term capital exactly covers long-term assets; current assets are 100% financed by current liabilities — zero cushion','The company is bankrupt','Current assets equal total liabilities'],a:1,e:'NWC = LTC − LTA = 0 means long-term capital just barely covers long-term assets. Every dollar of current assets depends on current liabilities being available — the structure is technically balanced but fragile.'},
+  {q:"A company's WCR increased sharply despite no change in production. What is the MOST likely cause?",o:['The company repaid all long-term debt','Suppliers shortened payment terms, reducing accounts payable (STOL fell)','The company purchased new equipment','Net profit declined due to lower selling prices'],a:1,e:'WCR = CA − STOL. If suppliers shorten terms, accounts payable (part of STOL) falls, causing WCR to rise even with no change in CA or operations. This is a squeeze from the payables side of the working capital equation.'},
+  {q:'Which action would REDUCE a company\'s Working Capital Requirement?',o:['Extending longer credit terms to customers','Building up safety stock to prevent stock-outs','Negotiating longer payment terms with suppliers','Issuing new long-term bonds'],a:2,e:'WCR = CA − STOL. Extending supplier payment terms increases accounts payable (STOL), which reduces WCR. The other options either increase CA (longer customer credit, larger inventories) or affect long-term financing without changing the operating cycle.'},
+  {q:"In TAN's 2022→2023 sources & uses statement, 97.8% of sources came from decreasing assets. Is this positive?",o:['Yes — it means the company raised a lot of external capital for growth','Not necessarily — it could reflect efficient working-capital management or slowing production; only context distinguishes them','Yes — decreasing assets always reduces risk','No — decreasing assets is always a negative sign'],a:1,e:'A source from decreasing assets could be deliberate (lean inventory management, faster collection) or forced (demand slowdown forcing asset liquidation). The table shows what happened; surrounding context determines whether it is healthy or a warning sign.'},
+  {q:'Why can a profitable company still face bankruptcy risk according to NWC analysis?',o:['Because profitability increases income tax, reducing cash','Because if NWC < 0, long-term assets are funded by short-term capital that must be continually renewed — a failed refinancing can force distress even when profit is healthy','Because high profitability always leads to high debt','Because profitable companies pay large dividends that drain cash'],a:1,e:'Profitability (income-statement performance) and financial balance (balance-sheet time-matching) are independent dimensions. A profitable company generates cash slowly over the life of its fixed assets — it cannot produce enough cash on-demand to repay a short-term loan. If NWC < 0, a single lender refusing to roll over short-term financing triggers a crisis despite healthy profit.'},
+];
+let qi=0,sc=0,done=false;
+function renderQ(){
+  const q=qs[qi];
+  document.getElementById('qprog').innerHTML=qs.map((_,i)=>`<div class="d ${i<qi?'done':i===qi?'cur':''}"></div>`).join('');
+  document.getElementById('qmeta').textContent='Question '+(qi+1)+' of '+qs.length+' · Score: '+sc+'/'+qs.length;
+  document.getElementById('qtext').textContent=q.q;
+  document.getElementById('qopts').innerHTML=q.o.map((o,i)=>`<button class="opt" onclick="ansQ(${i})">${o}</button>`).join('');
+  document.getElementById('qexp').style.display='none';
+  document.getElementById('qnxt').style.display='none';
+  done=false;
+}
+function ansQ(i){
+  if(done)return;done=true;
+  const q=qs[qi];
+  document.getElementById('qopts').querySelectorAll('.opt').forEach((o,j)=>{
+    o.disabled=true;
+    if(j===q.a)o.classList.add('ok');
+    else if(j===i&&i!==q.a)o.classList.add('no');
+  });
+  if(i===q.a)sc++;
+  const ex=document.getElementById('qexp');
+  ex.textContent='💡 '+q.e;ex.style.display='block';
+  document.getElementById('qsc').textContent='Score: '+sc+' / '+qs.length;
+  const nb=document.getElementById('qnxt');nb.style.display='inline-flex';
+  if(qi===qs.length-1)nb.textContent='See results ✓';
+}
+function nextQ(){
+  if(qi<qs.length-1){qi++;renderQ();}else{showRes();}
+}
+function showRes(){
+  const p=Math.round(sc/qs.length*100);
+  const m=p<50?'Keep reviewing — re-read the flagged sections carefully.':p<75?'Good foundation — focus on the cases you missed.':p<90?'Strong performance! Ready for exam questions.':'Excellent — you have mastered Chapter 4!';
+  document.getElementById('qbox').innerHTML=`<div style="text-align:center;padding:18px 0;"><div style="font-family:var(--serif);font-size:52px;font-weight:600;color:${p>=75?'var(--gr-d)':'var(--re-d)'}">${p}%</div><p style="color:var(--ink-s);font-size:14px;margin:10px 0;">${sc} / ${qs.length} correct</p><p style="max-width:38ch;margin:0 auto 18px;color:var(--ink-s);font-size:13.5px;">${m}</p><button class="ib p" onclick="restQ()">Restart quiz</button></div>`;
+}
+function restQ(){qi=0;sc=0;document.getElementById('qbox').innerHTML=`<div class="qprog" id="qprog"></div><div class="qmeta" id="qmeta"></div><div class="qtext" id="qtext"></div><div class="qopts" id="qopts"></div><div class="qexp" id="qexp"></div><div class="qfoot"><div class="qscore" id="qsc"></div><button class="ib p" id="qnxt" onclick="nextQ()" style="display:none;">Next →</button></div>`;renderQ();}
+renderQ();
+
+/* ===== DASHBOARD ===== */
+const topics=['Asset Fluctuation','Asset Structure','Capital Fluctuation','Capital Structure','Sources &amp; Uses','NWC Formula','NWC 3 Cases','WCR Definition','WCR Management','Practice Essay'];
+function upd(){
+  const total=10,done=[...Array(10).keys()].filter(i=>{const c=document.getElementById('c'+i);return c&&c.checked;}).length;
+  const p=Math.round(done/total*100);
+  document.getElementById('spc').textContent=p+'%';
+  const msgs=['Check a topic once you can explain it from memory.','Great start! Keep going.','Halfway there — solid progress.','Almost done — one more push!','Chapter 4 complete. Exam ready! ✓'];
+  document.getElementById('smsg').textContent=msgs[p===0?0:p<40?1:p<70?2:p<100?3:4];
+  document.querySelectorAll('.cli').forEach((el,i)=>{const c=document.getElementById('c'+i);el.classList.toggle('done',!!(c&&c.checked));});
+  document.getElementById('sbars').innerHTML=topics.map((t,i)=>{
+    const ch=document.getElementById('c'+i);
+    return `<div class="brow"><span>${t}</span><div class="bo"><div class="bi" style="width:${ch&&ch.checked?100:0}%"></div></div></div>`;
+  }).join('');
+}
+upd();
+
+/* ===== LOAD ===== */
+window.addEventListener('load',()=>{setTimeout(()=>{heroUpdate();diagUpdate();},100);});
+</script>
+</body>
+</html>
