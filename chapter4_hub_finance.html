@@ -241,6 +241,27 @@ tbody tr:hover{background:var(--go-s);}
 
 footer{padding:32px 0 48px;text-align:center;color:var(--ink-f);font-size:12px;}
 footer .wrap{border-top:1px solid var(--rule);padding-top:24px;}
+.chapter-item{
+
+display:block;
+
+padding:12px 16px;
+
+color:#1b2748;
+
+text-decoration:none;
+
+border-bottom:1px solid #eee;
+
+font-weight:600;
+
+}
+
+.chapter-item:hover{
+
+background:#f5f7fb;
+
+}
 </style>
 </head>
 <body>
@@ -248,19 +269,93 @@ footer .wrap{border-top:1px solid var(--rule);padding-top:24px;}
 <div id="pbar"></div>
 
 <nav>
-  <div class="nav-in">
-    <a class="brand" href="#intro">LEDGER <span class="badge">CH.04</span></a>
-    <div class="navlinks" id="navlinks">
-      <a href="#intro" data-s="intro">Intro</a>
-      <a href="#s41" data-s="s41">4.1 Assets</a>
-      <a href="#s42" data-s="s42">4.2 Capital</a>
-      <a href="#s43" data-s="s43">4.3 Sources&amp;Uses</a>
-      <a href="#s44" data-s="s44">4.4 Balance</a>
-      <a href="#s45" data-s="s45">4.5 WCR</a>
-      <a href="#practice" data-s="practice">Practice</a>
-    </div>
-    <a href="#dashboard" class="pbtn">My Progress</a>
-  </div>
+
+<div class="nav-in">
+
+<div style="position:relative;">
+
+<button class="pbtn" onclick="toggleMenu()">
+📚 Chapters ▼
+</button>
+
+<div id="chapterMenu" style="
+display:none;
+position:absolute;
+top:42px;
+left:0;
+background:#fff;
+min-width:260px;
+border-radius:10px;
+box-shadow:0 10px 30px rgba(0,0,0,.15);
+overflow:hidden;
+z-index:9999;
+">
+
+<a class="chapter-item" href="index.html">📘 Chapter 1</a>
+
+<a class="chapter-item" href="chapter2_financial_statements.html">
+📗 Chapter 2
+</a>
+
+<a class="chapter-item" href="chapter3_business_performance_analysis.html">
+📙 Chapter 3
+</a>
+
+<a class="chapter-item"
+style="background:#eef6ff;font-weight:bold;"
+href="chapter4_hub_finance.html">
+📕 Chapter 4 Hub
+</a>
+
+<a class="chapter-item"
+href="chapter4_analysis_of_assets_and_capital_sources.html">
+📖 Chapter 4 Notes
+</a>
+
+<a class="chapter-item"
+href="chapter4_study_app.html">
+📝 Study App
+</a>
+
+<a class="chapter-item"
+href="chapter5_cashflow.html">
+📒 Chapter 5
+</a>
+
+</div>
+
+</div>
+
+
+<a class="brand" href="#intro">
+LEDGER
+<span class="badge">CH.04</span>
+</a>
+
+<div class="navlinks" id="navlinks">
+
+<a href="#intro">Intro</a>
+
+<a href="#s41">4.1 Assets</a>
+
+<a href="#s42">4.2 Capital</a>
+
+<a href="#s43">4.3 Sources&Uses</a>
+
+<a href="#s44">4.4 Balance</a>
+
+<a href="#s45">4.5 WCR</a>
+
+<a href="#practice">Practice</a>
+
+</div>
+
+<a href="#dashboard" class="pbtn">
+My Progress
+</a>
+
+</div>
+
 </nav>
 
 <!-- ==================== HERO ==================== -->
@@ -1189,6 +1284,31 @@ upd();
 
 /* ===== LOAD ===== */
 window.addEventListener('load',()=>{setTimeout(()=>{heroUpdate();diagUpdate();},100);});
+</script>
+<script>
+
+function toggleMenu(){
+
+const m=document.getElementById("chapterMenu");
+
+m.style.display=
+m.style.display==="block"
+? "none"
+: "block";
+
+}
+
+window.addEventListener("click",function(e){
+
+if(!e.target.closest("#chapterMenu") &&
+!e.target.closest("button")){
+
+document.getElementById("chapterMenu").style.display="none";
+
+}
+
+});
+
 </script>
 </body>
 </html>
